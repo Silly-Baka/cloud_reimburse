@@ -7,6 +7,7 @@ import app.service.UserService;
 import app.utils.PwdUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userDTO.setToken(token);
 
         return userDTO;
+    }
+
+    @Override
+    public Boolean updatePwd(String username, String email, String curPwd, String newPwd) {
+
+        // 查询对应username或email的用户
+        QueryChainWrapper<User> wrapper = this.query();
+        if(StrUtil.isNotBlank(username)) {
+            wrapper.eq("username", username);
+        }
+        if(StrUtil.isNotBlank(email)) {
+            wrapper.eq("email", email);
+        }
+        User user = wrapper.one();
+        // 没有对应用户，修改错误
+        if(user == null) {
+            return false;
+        }
+        // 比对密码
+        curPwd = PwdUtil.encodePwd(curPwd);
+
+        if(!StrUtil.equals(user.getPassword(), curPwd)) {
+            return false;
+        }
+
+        // 修改密码为newPwd
+        newPwd = PwdUtil.encodePwd(newPwd);
+        user.setPassword(newPwd);
+
+        return this.updateById(user);
     }
 }

@@ -20,25 +20,28 @@ import javax.annotation.Resource;
 @RestController("/api/v1")
 public class ApiController {
 
-    @Resource
-    private UserApi userApi;
+//    @Resource
+//    private UserApi userApi;
 
     @ApiOperation("注册用户")
     @PostMapping("/register")
     public CommonResult register(@RequestParam User user) {
-        return userApi.register(user);
+//        return userApi.register(user);
+        return null;
     }
 
     @ApiOperation("登录用户")
     @PostMapping("/login")
     public CommonResult login(@RequestParam User user) {
-        return userApi.login(user);
+//        return userApi.login(user);
+        return null;
     }
 
     @ApiOperation("修改用户信息")
     @PostMapping("/update")
     public CommonResult<String> update(@RequestParam User user) {
-        return userApi.update(user);
+//        return userApi.update(user);
+        return null;
     }
 
     @ApiOperation("修改密码")
@@ -46,6 +49,7 @@ public class ApiController {
     public CommonResult<String> updatePwd(@RequestParam(name = "username", required = false) String username,
                                           @RequestParam(name = "email", required = false) String email,
                                           @RequestParam("password") String newPassword) {
-        return userApi.updatePwd(username, email, newPassword);
+//        return userApi.updatePwd(username, email, newPassword);
+        return null;
     }
 }

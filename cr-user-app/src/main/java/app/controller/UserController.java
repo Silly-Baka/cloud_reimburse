@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  *
  * @Author SillyBaka
  **/
-//TODO 待实现方法逻辑
+//DONE 待实现方法逻辑
 @RestController("/user")
 public class UserController {
 
@@ -36,7 +36,7 @@ public class UserController {
         if(!flag) {
             return CommonResult.fail(400, "注册新用户失败，请检查格式");
         }
-        return CommonResult.ok(null);
+        return CommonResult.ok();
     }
 
     @ApiOperation("登录用户")
@@ -61,16 +61,28 @@ public class UserController {
 
     @ApiOperation("修改用户信息")
     @PostMapping("/update")
-    public CommonResult<String> update(@RequestParam User user) {
-        return null;
+    public CommonResult update(@RequestParam User user) {
+        boolean result = userService.updateById(user);
+
+        if(!result) {
+            return CommonResult.fail(200, "更新失败，不存在此用户");
+        }
+        return CommonResult.ok();
     }
 
     @ApiOperation("修改密码")
     @PostMapping("/updatePwd")
-    public CommonResult<String> updatePwd(@RequestParam(name = "username", required = false) String username,
+    public CommonResult updatePwd(@RequestParam(name = "username", required = false) String username,
                                           @RequestParam(name = "email", required = false) String email,
-                                          @RequestParam("password") String newPassword) {
-        return null;
+                                          @RequestParam("curPwd") String curPwd,
+                                          @RequestParam("newPwd") String newPwd) {
+
+        boolean result = userService.updatePwd(username, email, curPwd, newPwd);
+
+        if(!result) {
+            return CommonResult.fail(200, "修改密码失败，请重新检查参数");
+        }
+        return CommonResult.ok();
     }
 
 }

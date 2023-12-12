@@ -16,4 +16,6 @@ public interface UserService extends IService<User> {
     Boolean register(User user);
 
     UserDTO login(String username, String password);
+
+    Boolean updatePwd(String username, String email, String curPwd, String newPwd);
 }

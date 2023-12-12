@@ -26,6 +26,16 @@ public class CommonResult<T> {
 
     /**
      * 返回成功响应
+     * @return
+     * @param <T>
+     */
+    public static <T> CommonResult<T> ok() {
+        return new CommonResult<>(null);
+    }
+
+
+    /**
+     * 返回成功响应
      * @param data
      * @return
      * @param <T>
@@ -43,6 +53,7 @@ public class CommonResult<T> {
     public static CommonResult<?> fail(Integer code, String message) {
         return new CommonResult<>(code, message);
     }
+
 
     public CommonResult(T data) {
         this.data = data;
