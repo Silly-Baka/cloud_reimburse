@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @Author SillyBaka
  **/
-@FeignClient(name = "api-user")   //TODO 补充configuration、内部写url、端口等信息
+@FeignClient(name = "api-user", url = "${api.url.api-user}")   //TODO 补充configuration、内部写url、端口等信息
 public interface UserApi {
 
     @ApiOperation("注册用户")
     @PostMapping("/register")
-    CommonResult register(@RequestParam User user);
+    CommonResult register(@RequestParam("user") User user);
 
     @ApiOperation("登录用户")
     @PostMapping("/login")
-    CommonResult login(@RequestParam User user);
+    CommonResult login(@RequestParam("user") User user);
 
     @ApiOperation("修改用户信息")
     @PostMapping("/update")
-    CommonResult<String> update(@RequestParam User user);
+    CommonResult<String> update(@RequestParam("user") User user);
 
     @ApiOperation("修改密码")
     @PostMapping("/updatePwd")

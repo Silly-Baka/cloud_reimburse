@@ -1,0 +1,8 @@
+server:
+  port: 8089
+
+api:
+  url:
+    api-leaf: http://localhost:8090
+    api-user: http://localhost:8091
+    api-roleAuth: http://localhost:8091

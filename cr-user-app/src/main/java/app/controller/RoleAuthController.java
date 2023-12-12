@@ -31,7 +31,7 @@ public class RoleAuthController {
 
     @ApiOperation("增加权限单元，目前仅供开发使用")
     @PostMapping("/addAuth")
-    public CommonResult addAuth(@RequestParam Authority authority) {
+    public CommonResult addAuth(@RequestParam("authority") Authority authority) {
 
         boolean result = authService.save(authority);
         if(!result) {

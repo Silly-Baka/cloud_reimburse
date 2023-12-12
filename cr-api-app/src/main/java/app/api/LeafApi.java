@@ -9,6 +9,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  *
  * @Author SillyBaka
  **/
-@FeignClient("api-leaf")
+@FeignClient(name = "api-leaf", url = "${api.url.api-leaf}")
 public interface LeafApi {
 }
