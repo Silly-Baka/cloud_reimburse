@@ -32,6 +32,7 @@ public interface UserApi {
     @ApiOperation("修改密码")
     @PostMapping("/updatePwd")
     CommonResult<String> updatePwd(@RequestParam(name = "username", required = false) String username,
-                                          @RequestParam(name = "email", required = false) String email,
-                                          @RequestParam("password") String newPassword);
+                                   @RequestParam(name = "email", required = false) String email,
+                                   @RequestParam("curPwd") String curPwd,
+                                   @RequestParam("newPwd") String newPwd);
 }
