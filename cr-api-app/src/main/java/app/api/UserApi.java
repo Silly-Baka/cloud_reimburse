@@ -1,11 +1,16 @@
 package app.api;
 
 import app.dto.CommonResult;
+import app.dto.UserDTO;
+import app.dto.UserQryDTO;
 import app.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Description：
@@ -35,4 +40,13 @@ public interface UserApi {
                                    @RequestParam(name = "email", required = false) String email,
                                    @RequestParam("curPwd") String curPwd,
                                    @RequestParam("newPwd") String newPwd);
+
+    @ApiOperation("条件查询用户信息")
+    @GetMapping("/getUserSelective")
+    CommonResult<List<UserDTO>> getUserSelective(UserQryDTO qryDTO);
+
+    @ApiOperation("查找指定部门的指定角色人员")
+    @GetMapping("/getUserByDeptAndRole")
+    CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName") String deptName,
+                                                  @RequestParam("roleName") String roleName);
 }

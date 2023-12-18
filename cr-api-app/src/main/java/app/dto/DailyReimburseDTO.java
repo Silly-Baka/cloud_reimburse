@@ -1,16 +1,18 @@
-package app.entity;
+package app.dto;
+
+import app.entity.DailySheetInfo;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
- * Description：报销单基础信息
- * <p>Date: 2023/11/21
- * <p>Time: 22:34
+ * Description：日常报销单DTO
+ * <p>Date: 2023/12/18
+ * <p>Time: 19:48
  *
  * @Author SillyBaka
  **/
-public class ReimburseSheet {
-
+public class DailyReimburseDTO {
     /**
      * 唯一标识
      */
@@ -27,7 +29,7 @@ public class ReimburseSheet {
      *  1-日常费用，
      *  2-业务招待费用
      */
-    private Integer type;
+    private final Integer type = 1;
 
     /**
      * 报销申请人用户id
@@ -67,6 +69,10 @@ public class ReimburseSheet {
      */
     private String relevantProj;
 
+    /**
+     * 报销费用事项列表
+     */
+    private List<DailySheetInfo> dailySheetInfoList;
 
     public Long getId() {
         return id;
@@ -86,10 +92,6 @@ public class ReimburseSheet {
 
     public Integer getType() {
         return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Long getApplicantId() {
@@ -146,5 +148,13 @@ public class ReimburseSheet {
 
     public void setRelevantProj(String relevantProj) {
         this.relevantProj = relevantProj;
+    }
+
+    public List<DailySheetInfo> getDailySheetInfoList() {
+        return dailySheetInfoList;
+    }
+
+    public void setDailySheetInfoList(List<DailySheetInfo> dailySheetInfoList) {
+        this.dailySheetInfoList = dailySheetInfoList;
     }
 }

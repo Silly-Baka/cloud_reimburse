@@ -2,15 +2,18 @@ package app.controller;
 
 import app.common.CommonResult;
 import app.dto.UserDTO;
+import app.dto.UserQryDTO;
 import app.entity.User;
 import app.service.UserService;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description：用户模块controller
@@ -83,6 +86,21 @@ public class UserController {
             return CommonResult.fail(200, "修改密码失败，请重新检查参数");
         }
         return CommonResult.ok();
+    }
+
+    @ApiOperation("条件查询用户信息")
+    @GetMapping("/getUserSelective")
+    public CommonResult getUserSelective(UserQryDTO qryDTO) {
+        //TODO：补充逻辑
+        return null;
+    }
+
+    @ApiOperation("查找指定部门的指定角色人员")
+    @GetMapping("/getUserByDeptAndRole")
+    public CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName") String deptName,
+                                                                 @RequestParam("roleName") String roleName) {
+        //TODO：补充逻辑
+        return null;
     }
 
 }
