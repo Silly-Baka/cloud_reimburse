@@ -8,9 +8,12 @@ import app.utils.PwdUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -22,6 +25,10 @@ import java.util.UUID;
  **/
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public Boolean register(User user) {
         // 将密码加密后存入库中
@@ -86,5 +93,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(newPwd);
 
         return this.updateById(user);
+    }
+
+    @Override
+    public List<Long> getUserByDeptAndRole(String deptName, String roleName) {
+        return userMapper.getUserByDeptAndRole(deptName, roleName);
     }
 }

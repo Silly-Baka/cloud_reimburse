@@ -95,12 +95,16 @@ public class UserController {
         return null;
     }
 
-    @ApiOperation("查找指定部门的指定角色人员")
+    @ApiOperation("查找指定部门的指定角色人员ID")
     @GetMapping("/getUserByDeptAndRole")
-    public CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName") String deptName,
-                                                                 @RequestParam("roleName") String roleName) {
-        //TODO：补充逻辑
-        return null;
+    public CommonResult getUserByDeptAndRole(@RequestParam("deptName") String deptName,
+                                             @RequestParam("roleName") String roleName) {
+        //DONE：补充逻辑
+        if(StrUtil.isBlank(deptName) || StrUtil.isBlank(roleName)) {
+            return CommonResult.fail(400, "请求参数不能为空");
+        }
+
+        return CommonResult.ok(userService.getUserByDeptAndRole(deptName, roleName));
     }
 
 }

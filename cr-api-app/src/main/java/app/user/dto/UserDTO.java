@@ -48,6 +48,11 @@ public class UserDTO {
      */
     private String headerUrl;
 
+    /**
+     * 登录凭证
+     */
+    private String token;
+
     public Long getId() {
         return id;
     }
@@ -110,5 +115,13 @@ public class UserDTO {
 
     public void setHeaderUrl(String headerUrl) {
         this.headerUrl = headerUrl;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

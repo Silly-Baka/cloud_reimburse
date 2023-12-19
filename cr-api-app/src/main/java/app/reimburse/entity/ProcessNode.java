@@ -100,6 +100,14 @@ public class ProcessNode {
         this.state = state;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public String getFeedback() {
         return feedback;
     }
