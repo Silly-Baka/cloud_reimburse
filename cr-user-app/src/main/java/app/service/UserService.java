@@ -1,7 +1,7 @@
 package app.service;
 
-import app.dto.UserDTO;
-import app.entity.User;
+import app.user.dto.UserDTO;
+import app.user.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,13 +1,13 @@
-package app.dto;
+package app.user.entity;
 
 /**
- * Description：用户条件查询DTO
- * <p>Date: 2023/12/18
- * <p>Time: 21:20
+ * Description：用户信息
+ * <p>Date: 2023/11/21
+ * <p>Time: 22:38
  *
  * @Author SillyBaka
  **/
-public class UserQryDTO {
+public class User {
 
     /**
      * 用户id
@@ -18,6 +18,11 @@ public class UserQryDTO {
      * 用户名，用于登陆
      */
     private String username;
+
+    /**
+     * 用户密码，加密后存放
+     */
+    private String password;
 
     /**
      * 用户真实姓名
@@ -44,6 +49,11 @@ public class UserQryDTO {
      */
     private String sex;
 
+    /**
+     * 头像对应文件id
+     */
+    private Long headerId;
+
     public Long getId() {
         return id;
     }
@@ -58,6 +68,14 @@ public class UserQryDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRealName() {
@@ -98,5 +116,13 @@ public class UserQryDTO {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Long getHeaderId() {
+        return headerId;
+    }
+
+    public void setHeaderId(Long headerId) {
+        this.headerId = headerId;
     }
 }

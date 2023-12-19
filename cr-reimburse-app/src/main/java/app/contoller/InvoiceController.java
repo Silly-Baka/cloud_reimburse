@@ -1,7 +1,7 @@
 package app.contoller;
 
 import app.common.CommonResult;
-import app.dto.InvoiceDTO;
+import app.reimburse.dto.InvoiceDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 

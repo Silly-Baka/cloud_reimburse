@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.entity.Authority;
+import app.user.entity.Authority;
 import app.mapper.AuthMapper;
 import app.service.AuthService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

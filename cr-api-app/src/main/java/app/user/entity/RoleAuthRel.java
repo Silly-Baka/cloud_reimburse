@@ -1,19 +1,19 @@
-package app.entity;
+package app.user.entity;
 
 /**
- * Description：用户角色关联表
+ * Description：角色权限关联表
  * <p>Date: 2023/12/12
- * <p>Time: 22:17
+ * <p>Time: 22:18
  *
  * @Author SillyBaka
  **/
-public class UserRoleRel {
+public class RoleAuthRel {
 
     private Long id;
 
-    private Long userId;
-
     private Long roleId;
+
+    private Long authId;
 
     public Long getId() {
         return id;
@@ -23,19 +23,19 @@ public class UserRoleRel {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Long getRoleId() {
         return roleId;
     }
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public Long getAuthId() {
+        return authId;
+    }
+
+    public void setAuthId(Long authId) {
+        this.authId = authId;
     }
 }

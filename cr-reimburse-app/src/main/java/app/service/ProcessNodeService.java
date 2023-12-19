@@ -1,6 +1,6 @@
 package app.service;
 
-import app.entity.ProcessNode;
+import app.reimburse.entity.ProcessNode;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -14,8 +14,10 @@ public interface ProcessNodeService extends IService<ProcessNode> {
 
     /**
      * 生成报销流程图
-     * @param userId 报销发起者id
+     *
+     * @param userId  报销发起者id
      * @param sheetId 报销单id
+     * @return 当前流程节点id
      */
-    void generateReimburseProcessMap(Long userId, Long sheetId) throws Exception;
+    Long generateReimburseProcessMap(Long userId, Long sheetId) throws Exception;
 }

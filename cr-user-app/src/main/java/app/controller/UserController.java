@@ -1,9 +1,9 @@
 package app.controller;
 
 import app.common.CommonResult;
-import app.dto.UserDTO;
-import app.dto.UserQryDTO;
-import app.entity.User;
+import app.user.dto.UserDTO;
+import app.user.dto.UserQryDTO;
+import app.user.entity.User;
 import app.service.UserService;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;

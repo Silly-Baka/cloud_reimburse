@@ -1,6 +1,6 @@
 package app.service.impl;
 
-import app.entity.UserRoleRel;
+import app.user.entity.UserRoleRel;
 import app.mapper.UserRoleRelMapper;
 import app.service.UserRoleRelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,7 +1,7 @@
 package app.service.impl;
 
-import app.dto.UserDTO;
-import app.entity.User;
+import app.user.dto.UserDTO;
+import app.user.entity.User;
 import app.mapper.UserMapper;
 import app.service.UserService;
 import app.utils.PwdUtil;

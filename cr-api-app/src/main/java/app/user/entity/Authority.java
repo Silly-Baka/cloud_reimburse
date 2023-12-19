@@ -1,4 +1,4 @@
-package app.entity;
+package app.user.entity;
 
 /**
  * Description：权限

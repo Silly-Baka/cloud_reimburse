@@ -1,7 +1,7 @@
 package app.service.impl;
 
-import app.entity.RoleAuthRel;
-import app.entity.UserRoleRel;
+import app.user.entity.RoleAuthRel;
+import app.user.entity.UserRoleRel;
 import app.service.RoleAuthRelService;
 import app.service.RoleAuthService;
 import app.service.UserRoleRelService;

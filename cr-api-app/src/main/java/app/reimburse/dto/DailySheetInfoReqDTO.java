@@ -1,25 +1,15 @@
-package app.entity;
+package app.reimburse.dto;
 
 import java.sql.Date;
 
 /**
- * Description：日常报销单信息
- * <p>Date: 2023/12/18
- * <p>Time: 19:44
+ * Description：日常费用事项请求dto
+ * <p>Date: 2023/12/19
+ * <p>Time: 14:50
  *
  * @Author SillyBaka
  **/
-public class DailySheetInfo {
-
-    /**
-     * 唯一标识
-     */
-    private Long id;
-
-    /**
-     * 对应的报销单id
-     */
-    private Long sheetId;
+public class DailySheetInfoReqDTO {
 
     /**
      * 费用日期
@@ -46,22 +36,6 @@ public class DailySheetInfo {
      * 报销金额
      */
     private Double price;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSheetId() {
-        return sheetId;
-    }
-
-    public void setSheetId(Long sheetId) {
-        this.sheetId = sheetId;
-    }
 
     public Date getCostDate() {
         return costDate;

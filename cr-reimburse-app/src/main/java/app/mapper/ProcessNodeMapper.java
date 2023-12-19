@@ -1,7 +1,8 @@
 package app.mapper;
 
-import app.entity.ProcessNode;
+import app.reimburse.entity.ProcessNode;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Description：
@@ -10,5 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *
  * @Author SillyBaka
  **/
+@Mapper
 public interface ProcessNodeMapper extends BaseMapper<ProcessNode> {
 }

@@ -1,4 +1,4 @@
-package app.dto;
+package app;
 
 /**
  * Description：统一的返回值类型

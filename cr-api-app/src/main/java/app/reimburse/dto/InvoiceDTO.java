@@ -1,6 +1,6 @@
-package app.dto;
+package app.reimburse.dto;
 
-import app.entity.InvoiceInfo;
+import app.reimburse.entity.InvoiceInfo;
 
 import java.util.List;
 

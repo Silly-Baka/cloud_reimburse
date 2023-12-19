@@ -1,7 +1,7 @@
 package app.api;
 
-import app.dto.CommonResult;
-import app.entity.Authority;
+import app.CommonResult;
+import app.user.entity.Authority;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,8 +1,8 @@
 package app.api;
 
-import app.dto.CommonResult;
-import app.dto.DailyReimburseDTO;
-import app.dto.InvoiceDTO;
+import app.CommonResult;
+import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.InvoiceDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +40,6 @@ public interface ReimburseApi {
 
     @ApiOperation("日常费用报销申请")
     @PostMapping("/applyDaily")
-    CommonResult applyDaily(@RequestParam("dailyReimburseDTO") DailyReimburseDTO dailyReimburseDTO);
+    CommonResult applyDaily(@RequestParam("dailyReimburseReqDTO") DailyReimburseReqDTO dailyReimburseReqDTO);
 
 }

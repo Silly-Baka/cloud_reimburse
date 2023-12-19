@@ -1,6 +1,6 @@
 package app.mapper;
 
-import app.entity.Authority;
+import app.user.entity.Authority;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

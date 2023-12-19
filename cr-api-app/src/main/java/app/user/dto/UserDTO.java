@@ -1,14 +1,13 @@
-package app.entity;
+package app.user.dto;
 
 /**
- * Description：用户信息
- * <p>Date: 2023/11/21
- * <p>Time: 22:38
+ * Description：
+ * <p>Date: 2023/12/1
+ * <p>Time: 22:39
  *
  * @Author SillyBaka
  **/
-public class User {
-
+public class UserDTO {
     /**
      * 用户id
      */
@@ -18,11 +17,6 @@ public class User {
      * 用户名，用于登陆
      */
     private String username;
-
-    /**
-     * 用户密码，加密后存放
-     */
-    private String password;
 
     /**
      * 用户真实姓名
@@ -50,9 +44,9 @@ public class User {
     private String sex;
 
     /**
-     * 头像对应文件id
+     * 头像对应的url
      */
-    private Long headerId;
+    private String headerUrl;
 
     public Long getId() {
         return id;
@@ -68,14 +62,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getRealName() {
@@ -118,11 +104,11 @@ public class User {
         this.sex = sex;
     }
 
-    public Long getHeaderId() {
-        return headerId;
+    public String getHeaderUrl() {
+        return headerUrl;
     }
 
-    public void setHeaderId(Long headerId) {
-        this.headerId = headerId;
+    public void setHeaderUrl(String headerUrl) {
+        this.headerUrl = headerUrl;
     }
 }

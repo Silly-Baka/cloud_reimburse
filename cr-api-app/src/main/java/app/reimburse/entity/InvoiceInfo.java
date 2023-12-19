@@ -1,4 +1,4 @@
-package app.entity;
+package app.reimburse.entity;
 
 /**
  * Description：发票详情记录

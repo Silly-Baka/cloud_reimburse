@@ -1,6 +1,6 @@
 package app.mapper;
 
-import app.entity.RoleAuthRel;
+import app.user.entity.RoleAuthRel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

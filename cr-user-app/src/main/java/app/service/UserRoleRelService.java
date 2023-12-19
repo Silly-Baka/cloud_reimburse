@@ -1,6 +1,6 @@
 package app.service;
 
-import app.entity.UserRoleRel;
+import app.user.entity.UserRoleRel;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

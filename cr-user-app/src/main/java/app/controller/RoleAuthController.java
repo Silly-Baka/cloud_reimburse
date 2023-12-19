@@ -1,10 +1,9 @@
 package app.controller;
 
 import app.common.CommonResult;
-import app.entity.Authority;
+import app.user.entity.Authority;
 import app.service.AuthService;
 import app.service.RoleAuthService;
-import app.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

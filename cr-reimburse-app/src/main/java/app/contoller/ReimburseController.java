@@ -1,7 +1,7 @@
 package app.contoller;
 
 import app.common.CommonResult;
-import app.dto.DailyReimburseDTO;
+import app.reimburse.dto.DailyReimburseReqDTO;
 import app.service.ReimburseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +25,11 @@ public class ReimburseController {
 
     @ApiOperation("日常费用报销申请")
     @PostMapping("/applyDaily")
-    public CommonResult applyDaily(@RequestParam("dailyReimburseDTO") DailyReimburseDTO dailyReimburseDTO) {
-        //TODO：补充逻辑
-        return null;
+    public CommonResult applyDaily(@RequestParam("dailyReimburseReqDTO") DailyReimburseReqDTO dailyReimburseReqDTO) throws Exception {
+        //TODO：补充检查逻辑
+        if(!dailyReimburseReqDTO.checkParam()) {
+            return CommonResult.fail(400, "请求参数错误");
+        }
+        return CommonResult.ok(reimburseService.applyDaily(dailyReimburseReqDTO));
     }
 }

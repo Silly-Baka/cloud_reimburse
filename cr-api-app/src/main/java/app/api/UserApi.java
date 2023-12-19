@@ -1,9 +1,9 @@
 package app.api;
 
-import app.dto.CommonResult;
-import app.dto.UserDTO;
-import app.dto.UserQryDTO;
-import app.entity.User;
+import app.CommonResult;
+import app.user.dto.UserDTO;
+import app.user.dto.UserQryDTO;
+import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

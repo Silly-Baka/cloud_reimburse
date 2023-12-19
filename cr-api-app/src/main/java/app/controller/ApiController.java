@@ -2,9 +2,9 @@ package app.controller;
 
 import app.api.RoleAuthApi;
 import app.api.UserApi;
-import app.dto.CommonResult;
-import app.entity.Authority;
-import app.entity.User;
+import app.CommonResult;
+import app.user.entity.Authority;
+import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

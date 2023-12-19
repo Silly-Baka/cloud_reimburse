@@ -1,13 +1,14 @@
-package app.dto;
+package app.user.dto;
 
 /**
- * Description：
- * <p>Date: 2023/12/1
- * <p>Time: 22:39
+ * Description：用户条件查询DTO
+ * <p>Date: 2023/12/18
+ * <p>Time: 21:20
  *
  * @Author SillyBaka
  **/
-public class UserDTO {
+public class UserQryDTO {
+
     /**
      * 用户id
      */
@@ -42,11 +43,6 @@ public class UserDTO {
      * 性别
      */
     private String sex;
-
-    /**
-     * 头像对应的url
-     */
-    private String headerUrl;
 
     public Long getId() {
         return id;
@@ -102,13 +98,5 @@ public class UserDTO {
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getHeaderUrl() {
-        return headerUrl;
-    }
-
-    public void setHeaderUrl(String headerUrl) {
-        this.headerUrl = headerUrl;
     }
 }

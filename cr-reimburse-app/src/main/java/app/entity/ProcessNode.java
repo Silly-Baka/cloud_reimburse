@@ -43,6 +43,11 @@ public class ProcessNode {
     private Integer state;
 
     /**
+     * 节点类型，0-报销发起、1-业务审批、2-出纳付款、3-流程转发、4-报销完成
+     */
+    private Integer type;
+
+    /**
      * 节点操作反馈，若失败则返回失败原因，通过则返回通过意见
      */
     private String feedback;
@@ -93,6 +98,14 @@ public class ProcessNode {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getFeedback() {
