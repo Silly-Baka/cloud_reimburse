@@ -42,4 +42,8 @@ public interface ReimburseApi {
     @PostMapping("/applyDaily")
     CommonResult applyDaily(@RequestParam("dailyReimburseReqDTO") DailyReimburseReqDTO dailyReimburseReqDTO);
 
+    @ApiOperation("流程节点流转")
+    @PostMapping("/process/change")
+    CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId);
+
 }

@@ -3,6 +3,7 @@ package app.contoller;
 import app.common.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.service.ReimburseService;
+import cn.hutool.core.util.NumberUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,5 +32,14 @@ public class ReimburseController {
             return CommonResult.fail(400, "请求参数错误");
         }
         return CommonResult.ok(reimburseService.applyDaily(dailyReimburseReqDTO));
+    }
+
+    @ApiOperation("流程节点流转")
+    @PostMapping("/process/change")
+    public CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId) {
+        if(processNodeId == null || userId == null) {
+            return CommonResult.fail(400, "请求参数不能为空");
+        }
+        return null;
     }
 }

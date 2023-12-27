@@ -1,4 +1,4 @@
-package app.entity;
+package app.file.entity;
 
 /**
  * Description：文件信息

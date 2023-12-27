@@ -27,7 +27,6 @@ public class RoleAuthController {
     @Resource
     private AuthService authService;
 
-
     @ApiOperation("增加权限单元，目前仅供开发使用")
     @PostMapping("/addAuth")
     public CommonResult addAuth(@RequestParam("authority") Authority authority) {

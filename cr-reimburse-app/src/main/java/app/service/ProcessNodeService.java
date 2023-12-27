@@ -2,6 +2,7 @@ package app.service;
 
 import app.reimburse.entity.ProcessNode;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
 
 /**
  * Description：
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @Author SillyBaka
  **/
+@Service
 public interface ProcessNodeService extends IService<ProcessNode> {
 
     /**

@@ -19,14 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Description：流程节点-服务层实现类
- * <p>Date: 2023/12/18
- * <p>Time: 20:48
- *
- * @Author SillyBaka
- **/
-@Service
+
 public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, ProcessNode> implements ProcessNodeService {
 
     @Resource
@@ -118,8 +111,8 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         finishNode.setOrder(order++);
         finishNode.setState(CommonState.CONTINUE.getVal());
         finishNode.setType(ProcessNodeType.FINISH.getVal());
-        financeNode.setIsLast(1);
-        processNodeList.add(financeNode);
+        finishNode.setIsLast(1);
+        processNodeList.add(finishNode);
 
         this.saveBatch(processNodeList);
 
