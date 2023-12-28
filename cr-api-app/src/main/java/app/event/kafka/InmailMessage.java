@@ -18,8 +18,11 @@ public class InmailMessage {
     private Long id;
 
     /**
-     * 站内信类型， 1-通知型
-     *            2-待办事件型
+     * 站内信类型， 1-流程流转
+     *            2-新待办事件
+     *            3-流程督办
+     *            4-事件超时
+     *            5-流程失败
      */
     private Integer inmailType;
 

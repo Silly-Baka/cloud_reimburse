@@ -1,5 +1,8 @@
 package app.constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Description：流程节点类型常量
  * <p>Date: 2023/12/19
@@ -7,43 +10,43 @@ package app.constants;
  *
  * @Author SillyBaka
  **/
-public enum ProcessNodeType {
+public class ProcessNodeType {
 
     /**
      * 报销发起
      */
-    APPLY(0),
+    public static final int APPLY = 0;
 
     /**
      * 业务审批
      */
-    APPROVAL(1),
+    public static final int APPROVAL = 1;
 
     /**
      * 出纳付款
      */
-    PAY(2),
+    public static final int PAY = 2;
 
     /**
      * 流程转发
      */
-    RESEND(3),
+    public static final int RESEND = 3;
 
     /**
      * 报销完成
      */
-    FINISH(4);
+    public static final int FINISH = 4;
 
     /**
-     * 类型对应值
+     * [常量值 --> 类型名]的映射
      */
-    private int val;
+    public static final Map<Integer, String> NODE_TYPE_NAMES = new HashMap<>();
 
-    ProcessNodeType(int val) {
-        this.val = val;
-    }
-
-    public int getVal() {
-        return val;
+    static {
+        NODE_TYPE_NAMES.put(APPLY, "报销发起");
+        NODE_TYPE_NAMES.put(APPROVAL, "业务审批");
+        NODE_TYPE_NAMES.put(PAY, "出纳付款");
+        NODE_TYPE_NAMES.put(RESEND, "流程转发");
+        NODE_TYPE_NAMES.put(FINISH, "报销完成");
     }
 }

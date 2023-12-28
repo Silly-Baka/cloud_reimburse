@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      enable-auto-commit: false    # 关闭自动commit
+      auto-offset-reset: earliest  # 重连后offset设置为最初值
+
+      key-deserializer: org.springframework.kafka.support.serializer.JsonSerialize
+      value-deserializer: org.springframework.kafka.support.serializer.JsonSerialize
+
+kafka:
+  topic:
+    inmail-topic: inmail-topic    # 站内信topic
+    event-topic: event-topic  # 待办事件topic

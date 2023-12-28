@@ -1,5 +1,10 @@
 package app.service;
 
+import app.event.kafka.EventMessage;
+import app.event.kafka.InmailMessage;
+import app.reimburse.entity.ProcessNode;
+import app.reimburse.entity.ReimburseSheet;
+import app.utils.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,14 +31,14 @@ public class KafkaService {
     @Resource
     private KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Value("${kafka.topic.message-topic}")
-    private String messageTopic;
+    @Value("${kafka.topic.inmail-topic}")
+    private String inmailTopic;
 
     @Value("${kafka.topic.event-topic}")
     private String eventTopic;
 
     /**
-     * 发送消息给对应topic
+     * 发送消息给对应的topic
      * @param topic
      * @param message
      */
@@ -51,6 +56,32 @@ public class KafkaService {
         });
     }
 
+    /**
+     * 发起站内信通知报销单的发起者
+     * @param reimburseSheet 报销单信息
+     * @param curNode 当前流程节点
+     */
+    public void sendInmailMessage(ReimburseSheet reimburseSheet, ProcessNode curNode) {
+        InmailMessage inmailMessage = new InmailMessage();
+        inmailMessage.setId(IdGenerator.getUniqueId(InmailMessage.class));
+        inmailMessage.setInmailType(1);
+        inmailMessage.setReimburseSheet(reimburseSheet);
+        inmailMessage.setProcessNode(curNode);
+
+        sendMessage(inmailTopic, inmailMessage);
+    }
+
+    /**
+     * 发起事件通知目标节点的处理者
+     * @param processNode 目标节点
+     */
+    public void sendEventMessage(ProcessNode processNode) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setId(IdGenerator.getUniqueId(EventMessage.class));
+        eventMessage.setProcessNode(processNode);
+
+        sendMessage(eventTopic, eventMessage);
+    }
 
 
 }

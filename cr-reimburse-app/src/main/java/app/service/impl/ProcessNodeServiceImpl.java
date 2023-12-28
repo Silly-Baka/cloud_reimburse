@@ -53,7 +53,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         applyNode.setOrder(order++);
         applyNode.setOprUser(userId);
         applyNode.setState(CommonState.PASS.getVal());
-        applyNode.setType(ProcessNodeType.APPLY.getVal());
+        applyNode.setType(ProcessNodeType.APPLY);
         processNodeList.add(applyNode);
 
         // 生成节点-部门报销管控人员审批
@@ -69,7 +69,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         // 设置成部门内随机一个报销管控人员
         reimburseNode.setOprUser(reimburseController.get(random.nextInt(reimburseController.size())));
         reimburseNode.setState(CommonState.CONTINUE.getVal());
-        reimburseNode.setType(ProcessNodeType.APPROVAL.getVal());
+        reimburseNode.setType(ProcessNodeType.APPROVAL);
         processNodeList.add(reimburseNode);
 
         // 生成节点-部门领导审批
@@ -85,7 +85,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         // 设置成部门内随机一个领导
         deptNode.setOprUser(deptManagers.get(random.nextInt(deptManagers.size())));
         deptNode.setState(CommonState.CONTINUE.getVal());
-        deptNode.setType(ProcessNodeType.APPROVAL.getVal());
+        deptNode.setType(ProcessNodeType.APPROVAL);
         processNodeList.add(deptNode);
 
         // 生成节点-财务处理
@@ -101,7 +101,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         // 设置成随机一个财务
         financeNode.setOprUser(financeStaffs.get(random.nextInt(financeStaffs.size())));
         financeNode.setState(CommonState.CONTINUE.getVal());
-        financeNode.setType(ProcessNodeType.PAY.getVal());
+        financeNode.setType(ProcessNodeType.PAY);
         processNodeList.add(financeNode);
 
         // 生成节点-报销完成
@@ -110,8 +110,8 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         finishNode.setSheetId(sheetId);
         finishNode.setOrder(order++);
         finishNode.setState(CommonState.CONTINUE.getVal());
-        finishNode.setType(ProcessNodeType.FINISH.getVal());
-        finishNode.setIsLast(1);
+        finishNode.setType(ProcessNodeType.FINISH);
+        finishNode.setLast(true);
         processNodeList.add(finishNode);
 
         this.saveBatch(processNodeList);

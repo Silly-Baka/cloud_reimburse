@@ -8,6 +8,7 @@ import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
 import app.mapper.DailySheetInfoMapper;
 import app.mapper.ReimburseSheetMapper;
+import app.service.KafkaService;
 import app.service.ProcessNodeService;
 import app.service.ReimburseService;
 import app.utils.IdGenerator;
@@ -22,9 +23,13 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
 
     @Resource
     private ProcessNodeService processNodeService;
-
+    @Resource
+    private ReimburseSheetMapper reimburseSheetMapper;
     @Resource
     private DailySheetInfoMapper dailySheetInfoMapper;
+
+    @Resource
+    private KafkaService kafkaService;
 
     @Override
     @Transactional
@@ -86,9 +91,19 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         curNode.setFeedback(feedBack);
         processNodeService.updateById(curNode);
 
-        //TODO：发起站内信提醒【发起流程的用户】   -->  交给mq，
-        //TODO：发起待办事件提醒【下一节点的用户】   -->  交给mq
+        //DONE：发起站内信提醒【发起流程的用户】   -->  交给mq，
+        ReimburseSheet reimburseSheet = reimburseSheetMapper.selectById(curNode.getSheetId());
+        kafkaService.sendInmailMessage(reimburseSheet, curNode);
 
+        if(curNode.isLast()) {
+            return true;
+        }
+        //DONE：发起待办事件提醒【下一节点的用户】   -->  交给mq
+        ProcessNode nextNode = processNodeService.query()
+                .eq("sheet_id", curNode.getSheetId())
+                .eq("order", curOrder + 1)
+                .one();
+        kafkaService.sendEventMessage(nextNode);
 
         return true;
     }

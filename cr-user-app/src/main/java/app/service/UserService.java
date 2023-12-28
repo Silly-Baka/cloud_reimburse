@@ -30,4 +30,11 @@ public interface UserService extends IService<User> {
      * @return 用户id列表
      */
     List<Long> getUserByDeptAndRole(String deptName, String roleName);
+
+    /**
+     * 根据id获取用户信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    UserDTO getUserById(Long userId);
 }

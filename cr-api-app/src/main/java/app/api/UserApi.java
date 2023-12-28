@@ -7,6 +7,7 @@ import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,4 +50,8 @@ public interface UserApi {
     @GetMapping("/getUserByDeptAndRole")
     CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName") String deptName,
                                                   @RequestParam("roleName") String roleName);
+
+    @ApiOperation("根据id查询用户信息")
+    @GetMapping("/{userId}")
+    CommonResult<UserDTO> getUserById(@PathVariable("userId") Long userId);
 }

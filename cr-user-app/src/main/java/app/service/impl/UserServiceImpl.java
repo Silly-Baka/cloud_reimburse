@@ -99,4 +99,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<Long> getUserByDeptAndRole(String deptName, String roleName) {
         return userMapper.getUserByDeptAndRole(deptName, roleName);
     }
+
+    @Override
+    public UserDTO getUserById(Long userId) {
+
+        User user = this.getById(userId);
+
+        return BeanUtil.copyProperties(user, UserDTO.class);
+    }
 }

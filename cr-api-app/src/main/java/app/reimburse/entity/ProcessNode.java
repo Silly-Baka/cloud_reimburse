@@ -27,7 +27,7 @@ public class ProcessNode {
     /**
      * 是否是流程线最后一个节点，1-是， 0-不是
      */
-    private Integer isLast;
+    private Boolean isLast;
 
     /**
      * 经销人id，即需要操作此节点的人员
@@ -76,11 +76,11 @@ public class ProcessNode {
         this.order = order;
     }
 
-    public Integer getIsLast() {
+    public Boolean isLast() {
         return isLast;
     }
 
-    public void setIsLast(Integer isLast) {
+    public void setLast(Boolean isLast) {
         this.isLast = isLast;
     }
 

@@ -7,10 +7,7 @@ import app.user.entity.User;
 import app.service.UserService;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -107,4 +104,13 @@ public class UserController {
         return CommonResult.ok(userService.getUserByDeptAndRole(deptName, roleName));
     }
 
+    @ApiOperation("根据id查询用户信息")
+    @GetMapping("/{userId}")
+    public CommonResult getUserById(@PathVariable("userId") Long userId) {
+
+        if(userId == null) {
+            return CommonResult.fail(400, "请求参数不能为空");
+        }
+        return CommonResult.ok(userService.getUserById(userId));
+    }
 }
