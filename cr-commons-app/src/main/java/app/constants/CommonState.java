@@ -22,7 +22,12 @@ public enum CommonState {
     /**
      * 已完成
      */
-    PASS(1);
+    PASS(1),
+
+    /**
+     * 被督办
+     */
+    SUPERVISE(2);
 
     private final int val;
 

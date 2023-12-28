@@ -1,5 +1,6 @@
 package app.event.kafka;
 
+import app.event.entity.TodoEvent;
 import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
 
@@ -36,6 +37,11 @@ public class InmailMessage {
      */
     private ProcessNode processNode;
 
+    /**
+     * 对应的待办事件
+     */
+    private TodoEvent todoEvent;
+
     public Long getId() {
         return id;
     }
@@ -66,5 +72,13 @@ public class InmailMessage {
 
     public void setProcessNode(ProcessNode processNode) {
         this.processNode = processNode;
+    }
+
+    public TodoEvent getTodoEvent() {
+        return todoEvent;
+    }
+
+    public void setTodoEvent(TodoEvent todoEvent) {
+        this.todoEvent = todoEvent;
     }
 }
