@@ -27,6 +27,7 @@ import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.Calendar;
 
+import static app.constants.InmailContentFormat.NEW_EVENT_FORMAT;
 import static app.constants.InmailContentFormat.PROCESS_CHANGE_FORMAT;
 import static app.constants.InmailType.*;
 import static app.constants.ProcessNodeType.NODE_TYPE_NAMES;
@@ -52,6 +53,8 @@ public class MessageConsumerService {
     @Resource
     private TodoEventMapper todoEventMapper;
     @Resource
+    private TodoEventService todoEventService;
+    @Resource
     private UserApi userApi;
 
     private final InmailContentFormatter contentFormatter = new InmailContentFormatter();
@@ -74,15 +77,19 @@ public class MessageConsumerService {
         String content = "";
         switch (inmailMessage.getInmailType()) {
             case PROCESS_CHANGE:
-
                 ReimburseSheet reimburseSheet = inmailMessage.getReimburseSheet();
                 ProcessNode processNode = inmailMessage.getProcessNode();
+                message.setMsgType(PROCESS_CHANGE);
                 message.setTo(reimburseSheet.getApplicantId());
                 content = contentFormatter.processChangeContent(reimburseSheet, processNode);
                 break;
 
             case NEW_EVENT:
-                //TODO：待补充逻辑
+                //DONE：待补充逻辑
+                TodoEvent todoEvent = inmailMessage.getTodoEvent();
+                message.setMsgType(NEW_EVENT);
+                message.setTo(todoEvent.getTodoUser());
+                content = contentFormatter.newEventContent(todoEvent);
                 break;
 
             case PROCESS_SUPERVISE:
@@ -90,7 +97,7 @@ public class MessageConsumerService {
                 break;
 
             case TIMEOUT_EVENT:
-                //TODO：待补充逻辑
+                //TODO：待补充定时查询超时事件的逻辑
                 break;
 
             default:
@@ -190,9 +197,15 @@ public class MessageConsumerService {
          * 新事件-信息内容
          * @return
          */
-        public String newEventContent() {
-            //TODO：待补充逻辑
-            return null;
+        public String newEventContent(TodoEvent todoEvent) {
+            //TODO：待补充额外逻辑
+            Long userId = todoEvent.getTodoUser();
+
+            int unhandledEventsNum = todoEventService.getUnhandledEventsNum(userId);
+            int supervisedEventsNum = todoEventService.getSupervisedEventsNum(userId);
+            int outOfTimeEventsNum = todoEventService.getOutOfTimeEventsNum(userId);
+
+            return String.format(NEW_EVENT_FORMAT, unhandledEventsNum, supervisedEventsNum, outOfTimeEventsNum);
         }
 
     }

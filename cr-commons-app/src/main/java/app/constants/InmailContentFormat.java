@@ -18,5 +18,5 @@ public interface InmailContentFormat {
      * 新待办事件-内容格式
      */
     //TODO：待完善
-    String NEW_EVENT_FORMAT = "您有新的待办事件，目前有%d个事件尚未处理，可点击链接跳转至此事件";
+    String NEW_EVENT_FORMAT = "您有新的待办事件，可点击链接跳转至此事件，目前有%d个事件尚未处理，其中有%d个事件被督办，有%d个事件已超时";
 }

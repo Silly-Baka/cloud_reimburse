@@ -32,9 +32,8 @@ public class TodoEvent {
     private Long todoUser;
 
     /**
-     * 事件状态，0-未处理，1-已处理，2-被督办
-     */
-    private Integer state;
+     * 事件状态，0-未处理，1-已处理，2-被督办，3-已超时
+     */private Integer state;
 
     /**
      * 事件描述
