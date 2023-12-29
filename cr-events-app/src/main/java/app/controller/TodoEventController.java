@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @Author SillyBaka
  **/
-@RestController
+@RestController("/todo")
 public class TodoEventController {
 }

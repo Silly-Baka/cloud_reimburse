@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @Author SillyBaka
  **/
-@FeignClient(name = "api-user", url = "${api.url.api-user}")   //TODO 补充configuration、内部写url、端口等信息
+@FeignClient(name = "api-user", url = "${api.url.api-user}", path = "/user")   //TODO 补充configuration、内部写url、端口等信息
 public interface UserApi {
 
     @ApiOperation("注册用户")

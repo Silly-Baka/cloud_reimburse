@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @Author SillyBaka
  **/
-@FeignClient(name = "api-roleAuth", url = "${api.url.api-roleAuth}")
+@FeignClient(name = "api-roleAuth", url = "${api.url.api-roleAuth}", path = "/auth")
 public interface RoleAuthApi {
     @ApiOperation("增加权限单元，目前仅供开发使用")
     @PostMapping("/addAuth")
