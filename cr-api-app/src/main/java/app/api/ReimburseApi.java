@@ -2,7 +2,7 @@ package app.api;
 
 import app.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
-import app.reimburse.dto.InvoiceDTO;
+import app.reimburse.dto.InvoiceAddDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public interface ReimburseApi {
 
     @ApiOperation("上传发票")
     @PostMapping("/invoice/upload")
-    CommonResult upload(@RequestParam("invoice") InvoiceDTO invoice);
+    CommonResult upload(@RequestParam("invoice") InvoiceAddDTO invoice);
 
     @ApiOperation("查询个人所有发票")
     @GetMapping("/invoice/getOwnInvoice")
@@ -33,7 +33,7 @@ public interface ReimburseApi {
 
     @ApiOperation("更新发票信息")
     @PutMapping("/invoice/update")
-    CommonResult update(@RequestParam("invoice") InvoiceDTO invoice);
+    CommonResult update(@RequestParam("invoice") InvoiceAddDTO invoice);
 
 
     // ----------  报销单服务  -------------

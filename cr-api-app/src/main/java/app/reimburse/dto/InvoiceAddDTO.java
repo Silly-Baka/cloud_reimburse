@@ -5,13 +5,13 @@ import app.reimburse.entity.InvoiceInfo;
 import java.util.List;
 
 /**
- * Description：发票DTO
+ * Description：发票-添加用DTO
  * <p>Date: 2023/12/18
  * <p>Time: 18:47
  *
  * @Author SillyBaka
  **/
-public class InvoiceDTO {
+public class InvoiceAddDTO {
     /**
      * 发票id
      */
