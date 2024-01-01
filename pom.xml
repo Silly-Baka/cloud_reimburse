@@ -14,9 +14,6 @@
         <module>cr-reimburse-app</module>
         <module>cr-finance-app</module>
         <module>cr-events-app</module>
-        <module>cr-admin-web</module>
-        <module>cr-events-app</module>
-        <module>cr-admin-web</module>
         <module>cr-api-app</module>
         <module>cr-leaf-app</module>
     </modules>

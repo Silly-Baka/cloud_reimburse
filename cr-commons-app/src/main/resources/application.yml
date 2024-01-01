@@ -11,3 +11,4 @@ spring:
     host: 192.168.75.100
     password: hjh123213
     database: 3    # 用第三个库存储，前两个个人已使用
+

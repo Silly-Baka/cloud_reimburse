@@ -4,6 +4,7 @@ import app.user.entity.RoleAuthRel;
 import app.mapper.RoleAuthRelMapper;
 import app.service.RoleAuthRelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * Description：
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  *
  * @Author SillyBaka
  **/
+@Service
+
 public class RoleAuthRelServiceImpl extends ServiceImpl<RoleAuthRelMapper, RoleAuthRel> implements RoleAuthRelService {
 }

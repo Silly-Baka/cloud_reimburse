@@ -2,6 +2,7 @@ package app.service;
 
 import app.user.entity.RoleAuthRel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
 
 /**
  * Description：

@@ -4,6 +4,7 @@ import app.user.entity.Authority;
 import app.mapper.AuthMapper;
 import app.service.AuthService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * Description：
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  *
  * @Author SillyBaka
  **/
+@Service
+
 public class AuthServiceImpl extends ServiceImpl<AuthMapper, Authority> implements AuthService {
 }

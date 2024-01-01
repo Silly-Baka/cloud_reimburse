@@ -25,13 +25,34 @@ public class CommonResult<T> {
     private T data;
 
     /**
+     * 请求是否成功
+     */
+    private Boolean isSuccess;
+
+
+    public CommonResult() {
+    }
+
+    /**
+     * 返回成功响应
+     * @return
+     * @param <T>
+     */
+    public static <T> CommonResult<T> ok() {
+        return new CommonResult<>(null);
+    }
+
+
+    /**
      * 返回成功响应
      * @param data
      * @return
      * @param <T>
      */
     public static <T> CommonResult<T> ok(T data) {
-        return new CommonResult<>(data);
+        CommonResult<T> result = new CommonResult<>(data);
+        result.setSuccess(true);
+        return result;
     }
 
     /**
@@ -41,8 +62,11 @@ public class CommonResult<T> {
      * @return
      */
     public static CommonResult<?> fail(Integer code, String message) {
-        return new CommonResult<>(code, message);
+        CommonResult<Object> result = new CommonResult<>(code, message);
+        result.setSuccess(false);
+        return result;
     }
+
 
     public CommonResult(T data) {
         this.data = data;
@@ -77,5 +101,13 @@ public class CommonResult<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public Boolean getSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(Boolean success) {
+        isSuccess = success;
     }
 }

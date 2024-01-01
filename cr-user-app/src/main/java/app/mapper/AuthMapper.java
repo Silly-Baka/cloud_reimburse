@@ -2,6 +2,7 @@ package app.mapper;
 
 import app.user.entity.Authority;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Description：
@@ -10,5 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *
  * @Author SillyBaka
  **/
+@Mapper
 public interface AuthMapper extends BaseMapper<Authority> {
 }

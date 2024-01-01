@@ -20,15 +20,15 @@ import java.util.List;
  * @Author SillyBaka
  **/
 //DONE 待实现方法逻辑
-@RestController("/user")
+@RestController
 public class UserController {
 
     @Resource
     private UserService userService;
 
     @ApiOperation("注册用户")
-    @PostMapping("/register")
-    public CommonResult register(@RequestParam User user) {
+    @PostMapping("/user/register")
+    public CommonResult register(@RequestBody User user) {
 
         //TODO：检验user的合法性
 
@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @ApiOperation("登录用户")
-    @PostMapping("/login")
-    public CommonResult login(@RequestParam User user) {
+    @PostMapping("/user/login")
+    public CommonResult login(@RequestBody User user) {
         String username = user.getUsername();
         if(StrUtil.isBlank(username)) {
             return CommonResult.fail(400, "用户名不可为空");
@@ -60,8 +60,8 @@ public class UserController {
     }
 
     @ApiOperation("修改用户信息")
-    @PostMapping("/update")
-    public CommonResult update(@RequestParam User user) {
+    @PostMapping("/user/update")
+    public CommonResult update(@RequestBody User user) {
         boolean result = userService.updateById(user);
 
         if(!result) {
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @ApiOperation("修改密码")
-    @PostMapping("/updatePwd")
+    @PostMapping("/user/updatePwd")
     public CommonResult updatePwd(@RequestParam(name = "username", required = false) String username,
                                           @RequestParam(name = "email", required = false) String email,
                                           @RequestParam("curPwd") String curPwd,
@@ -86,14 +86,14 @@ public class UserController {
     }
 
     @ApiOperation("条件查询用户信息")
-    @GetMapping("/getUserSelective")
-    public CommonResult getUserSelective(UserQryDTO qryDTO) {
+    @GetMapping("/user/getUserSelective")
+    public CommonResult getUserSelective(@RequestParam UserQryDTO qryDTO) {
         //TODO：补充逻辑
         return null;
     }
 
     @ApiOperation("查找指定部门的指定角色人员ID")
-    @GetMapping("/getUserByDeptAndRole")
+    @GetMapping("/user/getUserByDeptAndRole")
     public CommonResult getUserByDeptAndRole(@RequestParam("deptName") String deptName,
                                              @RequestParam("roleName") String roleName) {
         //DONE：补充逻辑
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @ApiOperation("根据id查询用户信息")
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public CommonResult getUserById(@PathVariable("userId") Long userId) {
 
         if(userId == null) {

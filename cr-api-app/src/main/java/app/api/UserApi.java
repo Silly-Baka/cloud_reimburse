@@ -6,10 +6,7 @@ import app.user.dto.UserQryDTO;
 import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,15 +22,15 @@ public interface UserApi {
 
     @ApiOperation("注册用户")
     @PostMapping("/register")
-    CommonResult register(@RequestParam("user") User user);
+    CommonResult register(@RequestBody User user);
 
     @ApiOperation("登录用户")
     @PostMapping("/login")
-    CommonResult login(@RequestParam("user") User user);
+    CommonResult login(@RequestBody User user);
 
     @ApiOperation("修改用户信息")
     @PostMapping("/update")
-    CommonResult<String> update(@RequestParam("user") User user);
+    CommonResult<String> update(@RequestBody User user);
 
     @ApiOperation("修改密码")
     @PostMapping("/updatePwd")
@@ -44,7 +41,7 @@ public interface UserApi {
 
     @ApiOperation("条件查询用户信息")
     @GetMapping("/getUserSelective")
-    CommonResult<List<UserDTO>> getUserSelective(UserQryDTO qryDTO);
+    CommonResult<List<UserDTO>> getUserSelective(@RequestParam("qryDTO") UserQryDTO qryDTO);
 
     @ApiOperation("查找指定部门的指定角色人员")
     @GetMapping("/getUserByDeptAndRole")
@@ -53,5 +50,5 @@ public interface UserApi {
 
     @ApiOperation("根据id查询用户信息")
     @GetMapping("/{userId}")
-    CommonResult<UserDTO> getUserById(@PathVariable("userId") Long userId);
+    CommonResult<UserDTO> getUserById(@RequestParam("userId") Long userId);
 }

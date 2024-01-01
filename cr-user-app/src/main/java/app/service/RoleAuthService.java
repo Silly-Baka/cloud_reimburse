@@ -1,5 +1,7 @@
 package app.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Description：角色权限模块的service层
  * <p>Date: 2023/12/12

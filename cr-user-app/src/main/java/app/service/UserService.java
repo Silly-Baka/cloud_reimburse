@@ -4,6 +4,7 @@ import app.common.CommonResult;
 import app.user.dto.UserDTO;
 import app.user.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
