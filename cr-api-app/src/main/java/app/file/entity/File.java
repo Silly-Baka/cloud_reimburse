@@ -1,5 +1,7 @@
 package app.file.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：文件信息
  * <p>Date: 2023/11/21
@@ -7,6 +9,7 @@ package app.file.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "file")
 public class File {
 
     /**

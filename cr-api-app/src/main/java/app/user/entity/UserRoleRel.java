@@ -1,5 +1,7 @@
 package app.user.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：用户角色关联表
  * <p>Date: 2023/12/12
@@ -7,6 +9,7 @@ package app.user.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "userRoleRel")
 public class UserRoleRel {
 
     private Long id;

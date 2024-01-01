@@ -1,5 +1,7 @@
 package app.event.entity;
 
+import app.common.LeafTag;
+
 import java.sql.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.sql.Date;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "todoEvent")
 public class TodoEvent {
 
     /**

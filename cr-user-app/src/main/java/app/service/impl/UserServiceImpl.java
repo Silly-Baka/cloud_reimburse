@@ -4,6 +4,7 @@ import app.user.dto.UserDTO;
 import app.user.entity.User;
 import app.mapper.UserMapper;
 import app.service.UserService;
+import app.utils.IdGenerator;
 import app.utils.PwdUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -31,6 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean register(User user) {
+
+        user.setId(IdGenerator.getUniqueId(User.class));
+
         // 将密码加密后存入库中
         String encodePwd = PwdUtil.encodePwd(user.getPassword());
         user.setPassword(encodePwd);

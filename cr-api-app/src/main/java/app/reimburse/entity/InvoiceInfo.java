@@ -1,5 +1,7 @@
 package app.reimburse.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：发票详情记录
  * <p>Date: 2023/11/21
@@ -7,6 +9,7 @@ package app.reimburse.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "invoiceInfo")
 public class InvoiceInfo {
     /**
      * 唯一标识

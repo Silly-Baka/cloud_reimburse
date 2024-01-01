@@ -2,10 +2,7 @@ package app.api;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Description：雪花服务api
@@ -18,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface LeafApi {
 
     @ApiOperation("使用号段模式获取id")
-    @RequestMapping(value = "/segment/get/{key}")
-    String getSegmentId(@PathVariable("key") String key);
+    @GetMapping(value = "/segment")
+    String getSegmentId(@RequestParam("key") String key);
 
     @ApiOperation("使用雪花模式获取id")
-    @RequestMapping(value = "/snowflake/get/{key}")
-    String getSnowflakeId(@PathVariable("key") String key);
+    @GetMapping(value = "/snowflake")
+    String getSnowflakeId(@RequestParam("key") String key);
 }

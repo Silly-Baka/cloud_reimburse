@@ -1,5 +1,7 @@
 package app.user.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：角色
  * <p>Date: 2023/11/21
@@ -7,6 +9,8 @@ package app.user.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "role")
+
 public class Role {
 
     /**

@@ -1,5 +1,7 @@
 package app.reimburse.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：流程节点
  * <p>Date: 2023/11/21
@@ -7,6 +9,7 @@ package app.reimburse.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "processNode")
 public class ProcessNode {
 
     /**

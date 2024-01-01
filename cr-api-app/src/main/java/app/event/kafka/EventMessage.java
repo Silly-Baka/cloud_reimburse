@@ -1,5 +1,6 @@
 package app.event.kafka;
 
+import app.common.LeafTag;
 import app.reimburse.entity.ProcessNode;
 
 /**
@@ -9,6 +10,7 @@ import app.reimburse.entity.ProcessNode;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "eventMessage")
 public class EventMessage {
 
     /**

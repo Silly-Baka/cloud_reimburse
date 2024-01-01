@@ -1,5 +1,7 @@
 package app.user.entity;
 
+import app.common.LeafTag;
+
 /**
  * Description：权限
  * <p>Date: 2023/11/21
@@ -7,6 +9,7 @@ package app.user.entity;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "authority")
 public class Authority {
 
     /**

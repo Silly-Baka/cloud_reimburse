@@ -1,5 +1,7 @@
 package app.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
+
 /**
  * Description：权限
  * <p>Date: 2023/11/21

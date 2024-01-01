@@ -1,5 +1,6 @@
 package app.event.kafka;
 
+import app.common.LeafTag;
 import app.event.entity.TodoEvent;
 import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
@@ -11,6 +12,7 @@ import app.reimburse.entity.ReimburseSheet;
  *
  * @Author SillyBaka
  **/
+@LeafTag(tag = "inmailMessage")
 public class InmailMessage {
 
     /**
