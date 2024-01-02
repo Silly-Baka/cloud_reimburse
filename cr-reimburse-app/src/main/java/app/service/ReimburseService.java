@@ -1,19 +1,15 @@
 package app.service;
 
 import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.reimburse.entity.ReimburseSheet;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Description：
- * <p>Date: 2023/12/18
- * <p>Time: 20:40
- *
- * @Author SillyBaka
- **/
-@Service
+import java.util.List;
+
+
 public interface ReimburseService extends IService<ReimburseSheet> {
 
     /**
@@ -34,4 +30,18 @@ public interface ReimburseService extends IService<ReimburseSheet> {
      */
     Boolean processChange(Long processNodeId, Long userId, String feedBack);
 
+    /**
+     * 获取指定用户的报销单列表
+     * @param userId 用户id
+     * @return 报销单列表
+     */
+    List<ReimburseSheet> getReimburseList(Long userId);
+
+
+    /**
+     * 条件查询报销单列表
+     * @param qryDTO 条件
+     * @return 报销单列表
+     */
+    List<ReimburseSheet> getReimburseListSelective(ReimburseSheetQryDTO qryDTO);
 }

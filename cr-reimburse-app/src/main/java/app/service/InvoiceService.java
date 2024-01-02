@@ -8,14 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Description：
- * <p>Date: 2023/12/31
- * <p>Time: 20:33
- *
- * @Author SillyBaka
- **/
-@Service
+
 public interface InvoiceService extends IService<Invoice> {
 
     /**

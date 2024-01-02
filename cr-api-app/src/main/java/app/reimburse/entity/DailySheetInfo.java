@@ -30,9 +30,12 @@ public class DailySheetInfo {
     private Date costDate;
 
     /**
-     * 费用类型
+     * 费用类型，0-设备使用成本
+     *         1-日常用品采购成本
+     *         2-培训课程费用
+     *         3-电话费
+     *         4-交通费
      */
-    //TODO：待处理常量枚举值
     private Integer costType;
 
     /**

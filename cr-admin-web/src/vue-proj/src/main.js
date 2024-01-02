@@ -1,21 +1,22 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "@/router";
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 
 import Notification from "vue-notification";
 import axios from "axios";
+import VueAxios from "vue-axios";
+import store from "./store";
 
 Vue.config.productionTip = false;
 Vue.use(Notification);
-
-// 存储用户信息到会话缓存
-Vue.prototype.$saveUserInfoToSessionStorage = function (userInfo) {
-  const userInfoJson = JSON.stringify(userInfo);
-  sessionStorage.setItem("userInfo", userInfoJson);
-};
+Vue.use(VueAxios, axios);
+Vue.use(ElementUI);
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
 
@@ -29,7 +30,7 @@ axios.interceptors.request.use((config) => {
 // 拦截所有响应，处理其错误信息
 axios.interceptors.response.use((response) => {
   const responseData = response.data;
-  if (responseData.isSuccess) {
+  if (responseData.success) {
     return responseData;
   } else {
     // 处理请求失败的情况，抛出异常让调用方捕获

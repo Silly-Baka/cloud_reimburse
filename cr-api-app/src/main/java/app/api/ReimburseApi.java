@@ -3,6 +3,7 @@ package app.api;
 import app.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.InvoiceAddDTO;
+import app.reimburse.dto.ReimburseSheetQryDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -46,4 +47,11 @@ public interface ReimburseApi {
     @PostMapping("/reimburse/process/change")
     CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId);
 
+    @ApiOperation("获取指定用户的报销单列表")
+    @GetMapping("/listById")
+    CommonResult getReimburseList(@RequestParam("userId") Long userId);
+
+    @ApiOperation("条件查询报销单列表")
+    @GetMapping("/listSelective")
+    CommonResult getReimburseListSelective(@RequestParam("qryDTO") ReimburseSheetQryDTO qryDTO);
 }

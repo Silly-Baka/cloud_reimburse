@@ -22,6 +22,9 @@
       </form>
       <p v-if="error" class="error-message">{{ error }}</p>
     </div>
+
+    <!-- 登录成功提示框 -->
+    <div v-if="showSuccessMessage" class="success-message">登录成功！</div>
   </div>
 </template>
 
@@ -29,6 +32,7 @@
 import axios from "axios";
 
 export default {
+  name: "login-view",
   data() {
     return {
       userInfo: {
@@ -42,6 +46,8 @@ export default {
         headerUrl: "",
         token: "",
       },
+      error: "",
+      showSuccessMessage: false, // 控制是否显示成功提示框
     };
   },
   methods: {
@@ -53,20 +59,21 @@ export default {
         })
         .then((response) => {
           this.userInfo = response.data;
-          this.$saveUserInfoToSessionStorage(this.userInfo);
+          // 保存userId到vuex中
+          this.$store.commit("saveUserId", this.userInfo.id);
 
           //TODO：登录成功，并且跳转至内部页面
-          this.$notify({
-            title: "登录成功",
-            text: "成功登陆用户，正在进入系统界面",
-            type: "success",
-          });
+          this.showSuccessMessage = true;
+
           setTimeout(() => {
             // 跳转至内部页面
+            this.showSuccessMessage = false;
+            this.$router.push("/index");
           }, 3000);
         })
         .catch((error) => {
           console.error("请求失败：", error);
+          this.error = error;
         });
     },
   },
@@ -121,5 +128,12 @@ button:hover {
 .error-message {
   color: #ff0000;
   margin-top: 10px;
+}
+.success-message {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 </style>

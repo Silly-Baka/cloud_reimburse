@@ -1,6 +1,7 @@
 package app.utils;
 
 import app.api.LeafApi;
+import app.common.LeafTag;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,7 +37,7 @@ public class IdGenerator implements ApplicationContextAware {
             leafApi = applicationContext.getBean(LeafApi.class);
         }
         // 利用LeafApi对雪花服务进行rpc调用
-        String idStr = leafApi.getSegmentId(clazz.getCanonicalName());
+        String idStr = leafApi.getSegmentId(clazz.getAnnotation(LeafTag.class).tag());
 
         return Long.parseLong(idStr);
     }

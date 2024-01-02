@@ -1,19 +1,40 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Login from "@/views/Login.vue";
-import Register from "@/views/Register.vue";
-
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/login",
-    component: Login,
+    component: () => import("../views/user/Login.vue"),
+  },
+  {
+    path: "/",
+    component: () => import("../views/user/Login.vue"),
   },
   {
     path: "/register",
-    component: Register,
+    component: () => import("../views/user/Register.vue"),
+  },
+  {
+    path: "/index",
+    component: () => import("../layout/Index.vue"),
+    children: [
+      {
+        path: "/myReimburse",
+        component: () => import("../views/reimburse/MyReimburse.vue"),
+      },
+    ],
+  },
+  {
+    path: "/reimburse/info",
+    component: () => import("../layout/ReimburseInfo.vue"),
+    children: [
+      {
+        path: "/apply/daily",
+        component: () => import("../views/reimburse/apply/DailyReimburse.vue"),
+      },
+    ],
   },
 ];
 

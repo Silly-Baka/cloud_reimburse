@@ -3,6 +3,8 @@ package app.controller;
 import app.api.RoleAuthApi;
 import app.api.UserApi;
 import app.CommonResult;
+import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.user.entity.Authority;
 import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
@@ -11,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
- * Description：api网关的controller，接收来自外部的所有请求并转发
+ * Description：api网关的controller，负责user模块的请求
  * <p>Date: 2023/11/21
  * <p>Time: 20:10
  *
  * @Author SillyBaka
  **/
 @RestController
-public class ApiController {
+public class UserApiController {
 
     @Resource
     private UserApi userApi;

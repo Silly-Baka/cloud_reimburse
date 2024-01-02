@@ -3,6 +3,7 @@ package app.service.impl;
 import app.constants.CommonState;
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.DailySheetInfoReqDTO;
+import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.reimburse.entity.DailySheetInfo;
 import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
@@ -13,12 +14,15 @@ import app.service.ProcessNodeService;
 import app.service.ReimburseService;
 import app.utils.IdGenerator;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
-
+@Service
 public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, ReimburseSheet> implements ReimburseService {
 
     @Resource
@@ -106,5 +110,30 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         kafkaService.sendEventMessage(nextNode);
 
         return true;
+    }
+
+    @Override
+    public List<ReimburseSheet> getReimburseList(Long userId) {
+        return this.query()
+                .eq("applicant_id", userId)
+                .list();
+    }
+
+    @Override
+    public List<ReimburseSheet> getReimburseListSelective(ReimburseSheetQryDTO qryDTO) {
+        QueryChainWrapper<ReimburseSheet> queryChainWrapper = this.query();
+        if(qryDTO.getApplicantId() != null) {
+            queryChainWrapper.eq("applicant_id", qryDTO.getApplicantId());
+        }
+        if(qryDTO.getStartDate() != null && qryDTO.getEndDate() != null) {
+            queryChainWrapper.between("create_time", qryDTO.getStartDate(), qryDTO.getEndDate());
+        }
+        if(qryDTO.getType() != null) {
+            queryChainWrapper.eq("type", qryDTO.getType());
+        }
+        if(qryDTO.getState() != null){
+            queryChainWrapper.eq("state", qryDTO.getState());
+        }
+        return queryChainWrapper.list();
     }
 }

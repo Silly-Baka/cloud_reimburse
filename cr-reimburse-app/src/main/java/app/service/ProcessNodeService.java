@@ -4,14 +4,7 @@ import app.reimburse.entity.ProcessNode;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;
 
-/**
- * Description：
- * <p>Date: 2023/12/18
- * <p>Time: 20:48
- *
- * @Author SillyBaka
- **/
-@Service
+
 public interface ProcessNodeService extends IService<ProcessNode> {
 
     /**

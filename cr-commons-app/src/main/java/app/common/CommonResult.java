@@ -29,7 +29,6 @@ public class CommonResult<T> {
      */
     private Boolean isSuccess;
 
-
     public CommonResult() {
     }
 
@@ -39,7 +38,7 @@ public class CommonResult<T> {
      * @param <T>
      */
     public static <T> CommonResult<T> ok() {
-        return new CommonResult<>(null);
+        return CommonResult.ok(null);
     }
 
 

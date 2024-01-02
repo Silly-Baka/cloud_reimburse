@@ -1,3 +1,5 @@
+server:
+  port: 8092
 spring:
   kafka:
     bootstrap-servers: localhost:9092
@@ -7,7 +9,23 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # 默认使用json类型序列化器
       acks: 1
 
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.75.100:3306/cloud-reimburse
+    username: root
+    password: hjh123123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
 kafka:
   topic:
     inmail-topic: inmail-topic    # 站内信topic
     event-topic: event-topic  # 待办事件topic
+
+api:
+  url:
+    api-leaf: http://localhost:8090
+    api-user: http://localhost:8091
+    api-roleAuth: http://localhost:8091
+    api-reimburse: http://localhost:8092
+    api-event: http://localhost:8093
+
