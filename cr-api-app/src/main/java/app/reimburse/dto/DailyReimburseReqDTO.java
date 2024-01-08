@@ -1,7 +1,5 @@
 package app.reimburse.dto;
 
-import app.reimburse.entity.DailySheetInfo;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -31,6 +29,11 @@ public class DailyReimburseReqDTO {
      * 报销金额
      */
     private Double price;
+
+    /**
+     * 报销单标题
+     */
+    private String name;
 
     /**
      * 报销单发起日期
@@ -74,6 +77,14 @@ public class DailyReimburseReqDTO {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreateTime() {

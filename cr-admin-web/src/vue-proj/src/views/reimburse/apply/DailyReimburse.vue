@@ -2,7 +2,16 @@
   <div class="center-container">
     <!-- 报销单基本信息 -->
     <el-card>
-      <h2 style="padding-left: 40px">基本信息</h2>
+      <div>
+        <h2 style="padding-left: 40px; display: inline-block">基本信息</h2>
+        <el-button
+          type="success"
+          style="display: inline-block; float: right"
+          round
+          disabled
+          >当前所处流程：{{ dailySheetInfo.curNodeType }}</el-button
+        >
+      </div>
       <el-form
         :model="expenseForm"
         label-width="200px"
@@ -13,16 +22,18 @@
           <el-col :span="9">
             <el-form-item label="报销金额合计" prop="expenseTitle">
               <div class="underline-text">
-                <span style="margin-left: 20px; color: red; font-size: 25px"
-                  >9999999999元</span
-                >
+                <span style="color: red; font-size: 25px">
+                  {{ totalPrice }}元
+                </span>
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="9">
             <el-form-item label="申请日期" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">测试用日期</span>
+                <span style="margin-left: 20px">{{
+                  dailySheetInfo.createTime
+                }}</span>
               </div>
             </el-form-item>
           </el-col>
@@ -31,14 +42,16 @@
           <el-col :span="9">
             <el-form-item label="标题" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">测试用标题</span>
+                <span style="margin-left: 20px">{{ dailySheetInfo.name }}</span>
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="9">
             <el-form-item label="报销人" prop="expenseTitle">
               <div class="underline-text">
-                <span style="margin-left: 20px">测试人</span>
+                <span style="margin-left: 20px">{{
+                  dailySheetInfo.applicantName
+                }}</span>
               </div>
             </el-form-item>
           </el-col>
@@ -47,7 +60,19 @@
           <el-col :span="9">
             <el-form-item label="报销状态" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">测试用状态</span>
+                <span style="margin-left: 20px">{{
+                  dailySheetInfo.state
+                }}</span>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
+            <el-form-item label="相关项目" prop="relevantProj">
+              <div class="underline-text">
+                <el-input
+                  placeholder="请输入相关项目名"
+                  v-model="dailySheetInfo.relevantProj"
+                ></el-input>
               </div>
             </el-form-item>
           </el-col>
@@ -66,7 +91,7 @@
           >
         </div>
         <el-table
-          :data="dailyInfoList"
+          :data="dailySheetInfo.dailySheetInfoList"
           style="width: 90%; margin-left: 5%"
           border
           stripe
@@ -107,7 +132,7 @@
               ></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="报销金额" align="price">
+          <el-table-column label="报销金额" prop="price">
             <template slot-scope="scope">
               <el-input
                 v-model="scope.row.price"
@@ -125,16 +150,85 @@
 export default {
   data() {
     return {
-      dailyInfoList: [
-        {
-          costDate: null,
-          costType: null,
-          description: "",
-          price: null,
-        },
-      ],
+      // 日常费用报销单信息
+      dailySheetInfo: {
+        // 报销单基本信息
+        applicantId: this.$store.state.userId,
+        price: null, // 报销总金额
+        name: "", // 报销标题
+        createTime: null, // 申请日期
+        relevantProj: "", // 相关项目名
+        applicantName: "",
+        state: "报销发起", // 报销单状态
+        curNodeType: "", // 流程状态
+        curNodeOprUser: null,
+
+        // 费用事项列表
+        dailySheetInfoList: [
+          {
+            costDate: null,
+            costType: null,
+            description: "",
+            invoiceId: null,
+            price: null,
+          },
+        ],
+      },
+      sheetState: {
+        "-1": "报销失败",
+        0: "报销中",
+        1: "报销完成",
+      },
+      processNodeType: {
+        0: "报销发起",
+        1: "业务审批",
+        2: "出纳付款",
+        3: "流程转发",
+        4: "报销完成",
+      },
+      costTypes: {
+        0: "设备使用成本",
+        1: "日常用品采购成本",
+        2: "培训课程费用",
+        3: "电话费",
+        4: "交通费",
+      },
       selectedRows: [], // 被选中的行
     };
+  },
+  mounted() {
+    const url = this.$route.path;
+
+    console.log(this.$store.state.isApplyView);
+    // 如果是申请页面，则自动生成信息
+    if (url === "/apply/daily") {
+      this.getCurrentDate();
+      this.getSheetName();
+      this.getApplicantName();
+      this.dailySheetInfo.curNodeType = "报销发起";
+      this.$store.state.isApplyView = true;
+    } else {
+      // 查看信息页面，获取信息并渲染
+      this.getDailyReimburseInfo(this.$route.params.id);
+
+      this.isApplyView = false;
+      this.$store.state.isApplyView = false;
+
+      // 判断当前用户是否负责操作此报销单
+      if (this.dailySheetInfo.curNodeOprUser === this.$store.state.userId) {
+        this.$store.state.isOprUser = true;
+      }
+    }
+  },
+  computed: {
+    totalPrice() {
+      let price = 0;
+      for (let i = 0; i < this.dailySheetInfo.dailySheetInfoList.length; i++) {
+        let addPrice = Number(this.dailySheetInfo.dailySheetInfoList[i].price);
+        price += addPrice;
+      }
+      return price;
+    },
   },
   methods: {
     submitExpense() {
@@ -142,7 +236,7 @@ export default {
       console.log("Expense Form Submitted:", this.expenseForm);
     },
     addRow() {
-      this.dailyInfoList.push({
+      this.dailySheetInfo.dailySheetInfoList.push({
         costDate: null,
         costType: null,
         description: "",
@@ -156,14 +250,75 @@ export default {
     // 删掉被选中的行
     removeSelectedRow() {
       for (let i = 0; i < this.selectedRows.length; i++) {
-        for (let j = 0; j < this.dailyInfoList.length; j++) {
-          if (this.dailyInfoList[j] == this.selectedRows[i]) {
-            this.dailyInfoList.splice(j, 1);
+        for (
+          let j = 0;
+          j < this.dailySheetInfo.dailySheetInfoList.length;
+          j++
+        ) {
+          if (
+            this.dailySheetInfo.dailySheetInfoList[j] == this.selectedRows[i]
+          ) {
+            this.dailySheetInfo.dailySheetInfoList.splice(j, 1);
             break;
           }
         }
       }
       this.selectedRows = [];
+    },
+    // 获取当前日期
+    getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+
+      this.dailySheetInfo.createTime = `${year}-${month}-${day}`;
+    },
+    // 获取报销单标题
+    getSheetName() {
+      let name = "";
+      name += "日常费用报销";
+      name += "-";
+      name += this.$store.state.userInfo.realName || "无名氏";
+      name += "-";
+      name += this.dailySheetInfo.createTime;
+
+      this.dailySheetInfo.name = name;
+    },
+    getApplicantName() {
+      this.dailySheetInfo.applicantName =
+        this.$store.state.userInfo.realName || "未登录";
+    },
+
+    // 提交日常报销单
+    submitDailyReimburse() {
+      this.axios.post("/reimburse/applyDaily", {
+        applicantId: this.dailySheetInfo.applicantId,
+        price: this.totalPrice,
+        name: this.dailySheetInfo.name,
+        createTime: this.dailySheetInfo.createTime,
+        relevantProj: this.dailySheetInfo.relevantProj,
+        dailySheetInfoReqDTOList: this.dailySheetInfo.dailySheetInfoList,
+      });
+    },
+    // 根据报销单id，获取日常报销单信息
+    getDailyReimburseInfo(id) {
+      this.axios
+        .get("/reimburse/daily/info", {
+          params: {
+            sheetId: id,
+          },
+        })
+        .then((response) => {
+          var data = response.data;
+          // 将常量值转换为常量名
+          data.state = this.sheetState[data.state];
+          for (let i = 0; i < data.dailySheetInfoList.length; i++) {
+            data.dailySheetInfoList[i].costType =
+              this.costTypes[data.dailySheetInfoList[i].costType];
+          }
+          this.dailySheetInfo = data;
+        });
     },
   },
 };
@@ -189,7 +344,7 @@ export default {
 .underline-text {
   border: none;
   border-bottom: 2px solid #ccc; /* 下划线样式，可以根据需要调整颜色和粗细 */
-  width: 200px; /* 可以根据需要调整宽度 */
+  width: 250px; /* 可以根据需要调整宽度 */
   white-space: pre-wrap; /* 保留换行符 */
 }
 </style>

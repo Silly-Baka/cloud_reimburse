@@ -1,6 +1,8 @@
 package app.event.entity;
 
 import app.common.LeafTag;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.sql.Date;
 
@@ -12,6 +14,7 @@ import java.sql.Date;
  * @Author SillyBaka
  **/
 @LeafTag(tag = "message")
+@TableName(value = "`message`")
 public class Message {
 
     /**
@@ -47,6 +50,7 @@ public class Message {
     /**
      * 状态，-1-已删除，0-未读，1-已读
      */
+    @TableField(value = "`state`")
     private Integer state;
 
     /**

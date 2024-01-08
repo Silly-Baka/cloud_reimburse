@@ -34,6 +34,10 @@ const routes = [
         path: "/apply/daily",
         component: () => import("../views/reimburse/apply/DailyReimburse.vue"),
       },
+      {
+        path: "/reimburse/info/daily/:id",
+        component: () => import("../views/reimburse/apply/DailyReimburse.vue"),
+      },
     ],
   },
 ];

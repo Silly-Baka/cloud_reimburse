@@ -1,10 +1,10 @@
 package app.service;
 
 import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.DailyReimburseResultDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.reimburse.entity.ReimburseSheet;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -44,4 +44,12 @@ public interface ReimburseService extends IService<ReimburseSheet> {
      * @return 报销单列表
      */
     List<ReimburseSheet> getReimburseListSelective(ReimburseSheetQryDTO qryDTO);
+
+    /**
+     * 获取日常报销单详细信息
+     *
+     * @param sheetId 报销单id
+     * @return
+     */
+    DailyReimburseResultDTO getDailyReimburseInfo(Long sheetId);
 }

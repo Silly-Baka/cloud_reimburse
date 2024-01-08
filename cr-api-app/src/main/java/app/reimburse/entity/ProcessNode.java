@@ -1,6 +1,7 @@
 package app.reimburse.entity;
 
 import app.common.LeafTag;
+import com.baomidou.mybatisplus.annotation.TableField;
 
 /**
  * Description：流程节点
@@ -25,12 +26,13 @@ public class ProcessNode {
     /**
      * 在流程线中的排序；用于生成流程图
      */
+    @TableField(value = "`order`")
     private Integer order;
 
     /**
      * 是否是流程线最后一个节点，1-是， 0-不是
      */
-    private Boolean isLast;
+    private Integer isLast;
 
     /**
      * 经销人id，即需要操作此节点的人员
@@ -43,11 +45,13 @@ public class ProcessNode {
      *   0-未操作，
      *   1-已通过
      */
+    @TableField(value = "`state`")
     private Integer state;
 
     /**
      * 节点类型，0-报销发起、1-业务审批、2-出纳付款、3-流程转发、4-报销完成
      */
+    @TableField(value = "`type`")
     private Integer type;
 
     /**
@@ -79,11 +83,11 @@ public class ProcessNode {
         this.order = order;
     }
 
-    public Boolean isLast() {
+    public Integer isLast() {
         return isLast;
     }
 
-    public void setLast(Boolean isLast) {
+    public void setLast(Integer isLast) {
         this.isLast = isLast;
     }
 

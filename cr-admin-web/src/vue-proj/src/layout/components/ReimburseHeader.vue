@@ -13,9 +13,24 @@
 
     <!-- 操作按钮 -->
     <div class="action-buttons">
-      <el-button type="primary" @click="submitExpense">提交报销单</el-button>
-      <el-button type="success" @click="approveExpense">审核通过</el-button>
-      <el-button type="warning" @click="forwardExpense">流程转发</el-button>
+      <el-button
+        type="primary"
+        @click="submitExpense"
+        :class="{ 'none-display': !this.$store.state.isApplyView }"
+        >提交报销单</el-button
+      >
+      <el-button
+        type="success"
+        @click="approveExpense"
+        :class="{ 'none-display': !this.$store.state.isOprUser }"
+        >审核通过</el-button
+      >
+      <el-button
+        type="warning"
+        @click="forwardExpense"
+        :class="{ 'none-display': !this.$store.state.isOprUser }"
+        >流程转发</el-button
+      >
     </div>
   </div>
 </template>
@@ -33,9 +48,14 @@ export default {
       console.log("Tab clicked:", tab);
     },
     submitExpense() {
-      // 提交报销单逻辑
-      console.log("Submit Expense");
+      // 根据不同路径触发不同的上传方式
+      const currentPath = this.$route.path;
+      // 日常报销
+      if (currentPath === "/apply/daily") {
+        this.$emit("submitDailyReimburse");
+      }
     },
+
     approveExpense() {
       // 审核通过逻辑
       console.log("Approve Expense");
@@ -51,17 +71,14 @@ export default {
 <style scoped>
 .header-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 20px;
 }
 
 .tabs-container {
-  flex: 1; /* 让标签页容器占据剩余空间 */
+  flex: 0.95; /* 让标签页容器占据剩余空间 */
 }
 
-.action-buttons {
-  display: flex;
-  gap: 10px; /* 按钮之间的间距 */
+.none-display {
+  display: none;
 }
 </style>

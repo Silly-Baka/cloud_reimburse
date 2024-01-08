@@ -1,7 +1,10 @@
 package app.service.impl;
 
+import app.api.UserApi;
 import app.constants.CommonState;
+import app.constants.ProcessNodeType;
 import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.DailyReimburseResultDTO;
 import app.reimburse.dto.DailySheetInfoReqDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.reimburse.entity.DailySheetInfo;
@@ -31,9 +34,10 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
     private ReimburseSheetMapper reimburseSheetMapper;
     @Resource
     private DailySheetInfoMapper dailySheetInfoMapper;
-
     @Resource
     private KafkaService kafkaService;
+    @Resource
+    private UserApi userApi;
 
     @Override
     @Transactional
@@ -99,7 +103,7 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         ReimburseSheet reimburseSheet = reimburseSheetMapper.selectById(curNode.getSheetId());
         kafkaService.sendInmailMessage(reimburseSheet, curNode);
 
-        if(curNode.isLast()) {
+        if(curNode.isLast() == 1) {
             return true;
         }
         //DONE：发起待办事件提醒【下一节点的用户】   -->  交给mq
@@ -135,5 +139,31 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
             queryChainWrapper.eq("state", qryDTO.getState());
         }
         return queryChainWrapper.list();
+    }
+
+    @Override
+    public DailyReimburseResultDTO getDailyReimburseInfo(Long sheetId) {
+
+        // 基础信息
+        ReimburseSheet reimburseSheet = this.query()
+                .eq("id", sheetId)
+                .one();
+
+        // 费用事项信息
+        List<DailySheetInfo> dailySheetInfoList = new QueryChainWrapper<>(dailySheetInfoMapper)
+                .eq("sheet_id", sheetId)
+                .list();
+
+        DailyReimburseResultDTO result = BeanUtil.copyProperties(reimburseSheet, DailyReimburseResultDTO.class);
+        result.setDailySheetInfoList(dailySheetInfoList);
+
+        String applicantName = userApi.getUserById(reimburseSheet.getApplicantId()).getData().getRealName();
+        result.setApplicantName(applicantName);
+
+        ProcessNode processNode = processNodeService.getById(reimburseSheet.getCurNodeId());
+        result.setCurNodeType(ProcessNodeType.NODE_TYPE_NAMES.get(processNode.getType()));
+        result.setCurNodeOprUser(processNode.getOprUser());
+
+        return result;
     }
 }

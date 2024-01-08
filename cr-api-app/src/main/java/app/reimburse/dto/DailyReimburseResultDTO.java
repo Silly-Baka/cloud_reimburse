@@ -1,78 +1,55 @@
-package app.reimburse.entity;
+package app.reimburse.dto;
 
-import app.common.LeafTag;
-import com.baomidou.mybatisplus.annotation.TableField;
+import app.reimburse.entity.DailySheetInfo;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
- * Description：报销单基础信息
- * <p>Date: 2023/11/21
- * <p>Time: 22:34
+ * Description：日常报销响应dto
+ * <p>Date: 2024/1/8
+ * <p>Time: 11:43
  *
  * @Author SillyBaka
  **/
-@LeafTag(tag = "reimburseSheet")
-public class ReimburseSheet {
+public class DailyReimburseResultDTO {
 
-    /**
-     * 唯一标识
-     */
     private Long id;
 
-    /**
-     * 报销单名称；一般由报销类型+报销人+日期组成
-     */
     private String name;
 
-    /**
-     * 报销类型；
-     *  0-差旅费，
-     *  1-日常费用，
-     *  2-业务招待费用
-     */
-    @TableField(value = "`type`")
     private Integer type;
 
-    /**
-     * 报销申请人用户id
-     */
     private Long applicantId;
 
-    /**
-     * 报销金额
-     */
     private Double price;
 
-    /**
-     * 报销状态。
-     *  -1-审批失败，
-     *  0-审批中，
-     *  1-审批通过
-     */
-    @TableField(value = "`state`")
     private Integer state;
 
-    /**
-     * 目前所处流程节点的id
-     */
     private Long curNodeId;
 
-    /**
-     * 报销单发起日期
-     */
     private Date createTime;
 
-    /**
-     * 报销单完成日期
-     */
     private Date finishTime;
 
-    /**
-     * 相关项目
-     */
     private String relevantProj;
 
+    /**
+     * 申请人名字
+     */
+    private String applicantName;
+
+    /**
+     * 当前流程节点类型-常量名
+     */
+    private String curNodeType;
+
+    /**
+     * 当前流程节点操作人id
+     */
+    private Long curNodeOprUser;
+
+    private List<DailySheetInfo> dailySheetInfoList;
 
     public Long getId() {
         return id;
@@ -152,5 +129,38 @@ public class ReimburseSheet {
 
     public void setRelevantProj(String relevantProj) {
         this.relevantProj = relevantProj;
+    }
+
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
+
+    public String getCurNodeType() {
+        return curNodeType;
+    }
+
+    public void setCurNodeType(String curNodeType) {
+        this.curNodeType = curNodeType;
+    }
+
+
+    public Long getCurNodeOprUser() {
+        return curNodeOprUser;
+    }
+
+    public void setCurNodeOprUser(Long curNodeOprUser) {
+        this.curNodeOprUser = curNodeOprUser;
+    }
+
+    public List<DailySheetInfo> getDailySheetInfoList() {
+        return dailySheetInfoList;
+    }
+
+    public void setDailySheetInfoList(List<DailySheetInfo> dailySheetInfoList) {
+        this.dailySheetInfoList = dailySheetInfoList;
     }
 }

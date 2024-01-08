@@ -1,6 +1,7 @@
 package app.event.entity;
 
 import app.common.LeafTag;
+import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.sql.Date;
 
@@ -22,6 +23,7 @@ public class TodoEvent {
     /**
      * 事件类型，1-业务审批、2-出纳付款
      */
+    @TableField(value = "`type`")
     private Integer type;
 
     /**
@@ -36,7 +38,9 @@ public class TodoEvent {
 
     /**
      * 事件状态，0-未处理，1-已处理，2-被督办，3-已超时
-     */private Integer state;
+     */
+    @TableField(value = "`state`")
+    private Integer state;
 
     /**
      * 事件描述

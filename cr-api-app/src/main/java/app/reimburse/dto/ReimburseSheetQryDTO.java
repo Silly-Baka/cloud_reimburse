@@ -1,5 +1,8 @@
 package app.reimburse.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -24,11 +27,13 @@ public class ReimburseSheetQryDTO {
     /**
      * 开始查询日期
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date startDate;
 
     /**
      * 结束查询日期
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date endDate;
 
     /**

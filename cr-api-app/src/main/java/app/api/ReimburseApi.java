@@ -41,17 +41,21 @@ public interface ReimburseApi {
 
     @ApiOperation("日常费用报销申请")
     @PostMapping("/reimburse/applyDaily")
-    CommonResult applyDaily(@RequestParam("dailyReimburseReqDTO") DailyReimburseReqDTO dailyReimburseReqDTO);
+    CommonResult applyDaily(@RequestBody DailyReimburseReqDTO dailyReimburseReqDTO);
 
     @ApiOperation("流程节点流转")
     @PostMapping("/reimburse/process/change")
     CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId);
 
     @ApiOperation("获取指定用户的报销单列表")
-    @GetMapping("/listById")
+    @GetMapping("/reimburse/listById")
     CommonResult getReimburseList(@RequestParam("userId") Long userId);
 
     @ApiOperation("条件查询报销单列表")
-    @GetMapping("/listSelective")
-    CommonResult getReimburseListSelective(@RequestParam("qryDTO") ReimburseSheetQryDTO qryDTO);
+    @PostMapping("/reimburse/listSelective")
+    CommonResult getReimburseListSelective(@RequestBody ReimburseSheetQryDTO qryDTO);
+
+    @ApiOperation("根据id获取日常报销单详细信息")
+    @GetMapping("/reimburse/daily/info")
+    CommonResult getDailyReimburseInfo(@RequestParam("sheetId") Long sheetId);
 }

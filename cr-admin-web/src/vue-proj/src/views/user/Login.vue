@@ -59,8 +59,9 @@ export default {
         })
         .then((response) => {
           this.userInfo = response.data;
-          // 保存userId到vuex中
+          // 保存用户信息到vuex中
           this.$store.commit("saveUserId", this.userInfo.id);
+          this.$store.commit("saveUserInfo", this.userInfo);
 
           //TODO：登录成功，并且跳转至内部页面
           this.showSuccessMessage = true;

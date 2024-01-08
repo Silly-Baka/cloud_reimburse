@@ -2,7 +2,7 @@ server:
   port: 8092
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.75.100:9092
     producer:   # 该服务只作为生产者使用
       retries: 3   # 允许重传3次
       key-serializer: org.springframework.kafka.support.serializer.JsonSerializer # 默认使用json类型序列化器

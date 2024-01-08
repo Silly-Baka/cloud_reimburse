@@ -33,15 +33,13 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         // 报销发起 --> 部门报销管控人员审批 --> 部门领导审批 --> 财务处理 --> 报销完成
 
         // 1、查找发起者所在部门名
-        UserQryDTO qryDTO = new UserQryDTO();
-        qryDTO.setId(userId);
-        List<UserDTO> result = userApi.getUserSelective(qryDTO).getData();
+        UserDTO result = userApi.getUserById(userId).getData();
         // 找不到发起者相关信息
-        if(result == null || result.size() == 0) {
+        if(result == null) {
             //TODO：补充自定义异常类
             throw new Exception();
         }
-        String deptName = result.get(0).getDeptName();
+        String deptName = result.getDeptName();
 
         int order = 0;
         List<ProcessNode> processNodeList = new ArrayList<>();
@@ -89,7 +87,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         processNodeList.add(deptNode);
 
         // 生成节点-财务处理
-        List<Long> financeStaffs = userApi.getUserByDeptAndRole(null, RoleName.FINANCE_STAFF).getData();
+        List<Long> financeStaffs = userApi.getUserByDeptAndRole(deptName, RoleName.FINANCE_STAFF).getData();
         if(financeStaffs == null || financeStaffs.size() == 0) {
             //TODO：补充自定义异常类
             throw new Exception();
@@ -108,13 +106,16 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         ProcessNode finishNode = new ProcessNode();
         finishNode.setId(IdGenerator.getUniqueId(ProcessNode.class));
         finishNode.setSheetId(sheetId);
-        finishNode.setOrder(order++);
+        finishNode.setOrder(order);
         finishNode.setState(CommonState.CONTINUE.getVal());
         finishNode.setType(ProcessNodeType.FINISH);
-        finishNode.setLast(true);
+        finishNode.setLast(1);
+        finishNode.setOprUser(userId);
         processNodeList.add(finishNode);
 
-        this.saveBatch(processNodeList);
+        for (ProcessNode processNode : processNodeList) {
+            this.save(processNode);
+        }
 
         // 返回当前流程节点的id
         return reimburseNode.getId();

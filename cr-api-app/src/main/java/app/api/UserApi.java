@@ -41,11 +41,11 @@ public interface UserApi {
 
     @ApiOperation("条件查询用户信息")
     @GetMapping("/getUserSelective")
-    CommonResult<List<UserDTO>> getUserSelective(@RequestParam("qryDTO") UserQryDTO qryDTO);
+    CommonResult<List<UserDTO>> getUserSelective(@RequestBody UserQryDTO qryDTO);
 
     @ApiOperation("查找指定部门的指定角色人员")
     @GetMapping("/getUserByDeptAndRole")
-    CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName") String deptName,
+    CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName" ) String deptName,
                                                   @RequestParam("roleName") String roleName);
 
     @ApiOperation("根据id查询用户信息")

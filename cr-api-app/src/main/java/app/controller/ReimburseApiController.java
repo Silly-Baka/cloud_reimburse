@@ -52,7 +52,7 @@ public class ReimburseApiController {
 
     @ApiOperation("日常费用报销申请")
     @PostMapping("/api/v1/reimburse/applyDaily")
-    CommonResult applyDaily(@RequestParam("dailyReimburseReqDTO") DailyReimburseReqDTO dailyReimburseReqDTO) {
+    CommonResult applyDaily(@RequestBody DailyReimburseReqDTO dailyReimburseReqDTO) {
         return reimburseApi.applyDaily(dailyReimburseReqDTO);
     }
 
@@ -70,7 +70,13 @@ public class ReimburseApiController {
 
     @ApiOperation("条件查询报销单列表")
     @GetMapping("/api/v1/reimburse/listSelective")
-    CommonResult getReimburseListSelective(@RequestParam("qryDTO") ReimburseSheetQryDTO qryDTO) {
+    CommonResult getReimburseListSelective(ReimburseSheetQryDTO qryDTO) {
         return reimburseApi.getReimburseListSelective(qryDTO);
+    }
+
+    @ApiOperation("根据id获取报销单详细信息")
+    @GetMapping("/api/v1/reimburse/daily/info")
+    public CommonResult getDailyReimburseInfo(@RequestParam("sheetId") Long sheetId) {
+        return reimburseApi.getDailyReimburseInfo(sheetId);
     }
 }

@@ -1,6 +1,14 @@
 server:
   port: 8089
 
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.75.100:3306/cloud-reimburse
+    username: root
+    password: hjh123123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
 api:
   url:
     api-leaf: http://localhost:8090

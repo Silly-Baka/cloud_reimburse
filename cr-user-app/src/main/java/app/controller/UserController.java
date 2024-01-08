@@ -87,9 +87,12 @@ public class UserController {
 
     @ApiOperation("条件查询用户信息")
     @GetMapping("/user/getUserSelective")
-    public CommonResult getUserSelective(@RequestParam UserQryDTO qryDTO) {
+    public CommonResult getUserSelective(@RequestBody UserQryDTO qryDTO) {
         //TODO：补充逻辑
-        return null;
+        if(qryDTO == null) {
+            return CommonResult.fail(400, "请求参数不能为空");
+        }
+        return CommonResult.ok();
     }
 
     @ApiOperation("查找指定部门的指定角色人员ID")
