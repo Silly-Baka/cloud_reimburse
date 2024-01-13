@@ -79,4 +79,10 @@ public class ReimburseApiController {
     public CommonResult getDailyReimburseInfo(@RequestParam("sheetId") Long sheetId) {
         return reimburseApi.getDailyReimburseInfo(sheetId);
     }
+
+    @ApiOperation("查询指定报销单的所有流程节点（用于生成流程图）")
+    @GetMapping("/api/v1/reimburse/process/list")
+    CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId) {
+        return reimburseApi.getReimburseProcessNodeList(sheetId);
+    }
 }

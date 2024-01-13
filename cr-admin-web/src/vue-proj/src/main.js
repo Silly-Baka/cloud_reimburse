@@ -8,11 +8,13 @@ import Notification from "vue-notification";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import store from "./store";
+import RouterUtilsPlugin from "./utils/routerUtils";
 
 Vue.config.productionTip = false;
 Vue.use(Notification);
 Vue.use(VueAxios, axios);
 Vue.use(ElementUI);
+Vue.use(RouterUtilsPlugin);
 
 new Vue({
   router,

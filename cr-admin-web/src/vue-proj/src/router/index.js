@@ -28,7 +28,7 @@ const routes = [
   },
   {
     path: "/reimburse/info",
-    component: () => import("../layout/ReimburseInfo.vue"),
+    component: () => import("../layout/ReimburseView.vue"),
     children: [
       {
         path: "/apply/daily",
@@ -38,7 +38,15 @@ const routes = [
         path: "/reimburse/info/daily/:id",
         component: () => import("../views/reimburse/apply/DailyReimburse.vue"),
       },
+      {
+        path: "/reimburse/process/graph/:sheetId",
+        component: () => import("../views/reimburse/ProcessGraph.vue"),
+      },
     ],
+  },
+  {
+    path: "/test",
+    component: () => import("../views/testView.vue"),
   },
 ];
 

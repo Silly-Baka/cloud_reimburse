@@ -68,4 +68,13 @@ public class ReimburseController {
         }
         return CommonResult.ok(reimburseService.getDailyReimburseInfo(sheetId));
     }
+
+    @ApiOperation("查询指定报销单的所有流程节点（用于生成流程图）")
+    @GetMapping("/reimburse/process/list")
+    public CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId) {
+        if(sheetId == null) {
+            return CommonResult.fail(400, "报销单id不可为空");
+        }
+        return CommonResult.ok(reimburseService.getReimburseProcessNodeList(sheetId));
+    }
 }

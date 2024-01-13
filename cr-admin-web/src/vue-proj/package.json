@@ -9,7 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "vue": "^2.6.14"
+    "jointjs": "^3.7.7",
+    "popper.js": "^1.16.1",
+    "tippy.js": "^6.3.7",
+    "tooltip.js": "^1.3.3",
+    "vue": "^2.6.14",
+    "vue-flowchart": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

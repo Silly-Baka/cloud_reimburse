@@ -58,4 +58,8 @@ public interface ReimburseApi {
     @ApiOperation("根据id获取日常报销单详细信息")
     @GetMapping("/reimburse/daily/info")
     CommonResult getDailyReimburseInfo(@RequestParam("sheetId") Long sheetId);
+
+    @ApiOperation("查询指定报销单的所有流程节点（用于生成流程图）")
+    @GetMapping("/reimburse/process/list")
+    CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId);
 }

@@ -2,6 +2,7 @@ package app.service;
 
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.DailyReimburseResultDTO;
+import app.reimburse.dto.ProcessNodeDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.reimburse.entity.ReimburseSheet;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -52,4 +53,12 @@ public interface ReimburseService extends IService<ReimburseSheet> {
      * @return
      */
     DailyReimburseResultDTO getDailyReimburseInfo(Long sheetId);
+
+    /**
+     * 获取指定报销单的流程节点列表
+     *
+     * @param sheetId 报销单id
+     * @return 流程节点列表
+     */
+    List<ProcessNodeDTO> getReimburseProcessNodeList(Long sheetId);
 }

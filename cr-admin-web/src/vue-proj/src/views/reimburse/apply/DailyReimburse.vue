@@ -210,6 +210,7 @@ export default {
     } else {
       // 查看信息页面，获取信息并渲染
       this.getDailyReimburseInfo(this.$route.params.id);
+      this.$store.state.sheetId = this.$route.params.id;
 
       this.isApplyView = false;
       this.$store.state.isApplyView = false;

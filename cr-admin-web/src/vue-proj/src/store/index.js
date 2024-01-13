@@ -31,6 +31,8 @@ export default new Vuex.Store({
     // },
     isApplyView: false, // 是否申请页面，用于动态修改界面样式
     isOprUser: false, // 当前用户是否负责操作当前报销单
+    sheetId: null,
+    activeTab: "", // 目前所在的标签页
   },
   mutations: {
     saveToken(state, token) {
@@ -44,6 +46,12 @@ export default new Vuex.Store({
     },
     saveIsApplyView(state, isApplyView) {
       state.isApplyView = isApplyView;
+    },
+    saveSheetId(state, sheetId) {
+      state.sheetId = sheetId;
+    },
+    saveActiveTab(state, activeTab) {
+      state.activeTab = activeTab;
     },
   },
   plugins: [

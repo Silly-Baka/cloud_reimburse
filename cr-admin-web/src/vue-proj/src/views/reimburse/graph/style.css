@@ -1,0 +1,73 @@
+.node-container {
+  width: 140px;
+  height: 80px;
+  display: flex;
+  text-align: center;
+}
+
+.node-type {
+  border-bottom: 3px solid gray;
+  height: 50%;
+  display: block;
+}
+
+.node-oprUser {
+  display: block;
+}
+
+.left-area {
+  flex: 0.25;
+}
+.right-area {
+  flex: 0.75;
+  background-color: whitesmoke;
+}
+
+.info-content {
+  padding-top: 20%;
+}
+
+/**
+*   -1-通过失败，
+*   0-未操作，
+*   1-已通过
+*/
+.state--1 {
+  border: 3px solid red;
+}
+.state-0 {
+  border: 3px solid gainsboro;
+}
+.state-1 {
+  border: 3px solid rgb(93, 234, 100);
+}
+
+.state--1 .left-area {
+  background-color: rgb(255, 51, 92);
+}
+.state-0 .left-area {
+  background-color: rgb(209, 203, 203);
+}
+.state-1 .left-area {
+  background-color: aquamarine;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 34%;
+}
+
+.isHover-true {
+  display: block;
+}
+
+.isHover-false {
+  display: none;
+}
+
+.popper-content {
+  width: 300px;
+  height: 400px;
+}

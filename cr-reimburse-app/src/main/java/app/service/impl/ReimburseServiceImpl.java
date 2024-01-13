@@ -3,10 +3,7 @@ package app.service.impl;
 import app.api.UserApi;
 import app.constants.CommonState;
 import app.constants.ProcessNodeType;
-import app.reimburse.dto.DailyReimburseReqDTO;
-import app.reimburse.dto.DailyReimburseResultDTO;
-import app.reimburse.dto.DailySheetInfoReqDTO;
-import app.reimburse.dto.ReimburseSheetQryDTO;
+import app.reimburse.dto.*;
 import app.reimburse.entity.DailySheetInfo;
 import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
@@ -15,6 +12,7 @@ import app.mapper.ReimburseSheetMapper;
 import app.service.KafkaService;
 import app.service.ProcessNodeService;
 import app.service.ReimburseService;
+import app.user.dto.UserDTO;
 import app.utils.IdGenerator;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -163,6 +162,30 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         ProcessNode processNode = processNodeService.getById(reimburseSheet.getCurNodeId());
         result.setCurNodeType(ProcessNodeType.NODE_TYPE_NAMES.get(processNode.getType()));
         result.setCurNodeOprUser(processNode.getOprUser());
+
+        return result;
+    }
+
+    @Override
+    public List<ProcessNodeDTO> getReimburseProcessNodeList(Long sheetId) {
+
+        List<ProcessNode> processNodeList = processNodeService.query()
+                .eq("sheet_id", sheetId)
+                .list();
+        // 根据排序升序排序
+        processNodeList.sort((n1, n2) -> {
+            return n1.getOrder()-n2.getOrder();
+        });
+
+        List<ProcessNodeDTO> result = new ArrayList<>();
+
+        for (ProcessNode processNode : processNodeList) {
+            ProcessNodeDTO processNodeDTO = BeanUtil.copyProperties(processNode, ProcessNodeDTO.class);
+
+            UserDTO userDTO = userApi.getUserById(processNodeDTO.getOprUser()).getData();
+            processNodeDTO.setOprUserName(userDTO.getRealName());
+            result.add(processNodeDTO);
+        }
 
         return result;
     }

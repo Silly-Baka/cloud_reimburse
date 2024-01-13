@@ -6,9 +6,16 @@
       @tab-click="handleTabClick"
       class="tabs-container"
     >
-      <el-tab-pane label="报销单信息" name="expenseInfo"> </el-tab-pane>
-      <el-tab-pane label="流程图" name="flowChart"> </el-tab-pane>
-      <el-tab-pane label="流程状态" name="flowStatus"> </el-tab-pane>
+      <el-tab-pane
+        label="报销单信息"
+        name="expenseInfo"
+        :disabled="isDisabled()"
+      >
+      </el-tab-pane>
+      <el-tab-pane label="流程图" name="flowChart" :disabled="isDisabled()">
+      </el-tab-pane>
+      <el-tab-pane label="流程状态" name="flowStatus" :disabled="isDisabled()">
+      </el-tab-pane>
     </el-tabs>
 
     <!-- 操作按钮 -->
@@ -39,13 +46,24 @@
 export default {
   data() {
     return {
-      activeTab: "expenseInfo", // 默认显示的标签页
+      activeTab: this.$store.state.activeTab, // 默认显示的标签页
     };
   },
   methods: {
-    handleTabClick(tab) {
+    handleTabClick() {
       // 处理标签页点击事件
-      console.log("Tab clicked:", tab);
+      if (this.activeTab === "expenseInfo") {
+        this.$pushRoute(
+          this.$router,
+          "/reimburse/info/daily/" + this.$store.state.sheetId
+        );
+      } else if (this.activeTab === "flowChart") {
+        this.$pushRoute(
+          this.$router,
+          "/reimburse/process/graph/" + this.$store.state.sheetId
+        );
+      }
+      this.$store.state.activeTab = this.activeTab;
     },
     submitExpense() {
       // 根据不同路径触发不同的上传方式
@@ -63,6 +81,13 @@ export default {
     forwardExpense() {
       // 流程转发逻辑
       console.log("Forward Expense");
+    },
+
+    // 判断当前路径是否允许点击标签页（申请报销单不可点击）
+    isDisabled() {
+      const currentPath = this.$route.path;
+      const pattern = /^\/apply\//;
+      return pattern.test(currentPath);
     },
   },
 };
