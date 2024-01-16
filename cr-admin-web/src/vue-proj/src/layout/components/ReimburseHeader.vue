@@ -14,8 +14,7 @@
       </el-tab-pane>
       <el-tab-pane label="流程图" name="flowChart" :disabled="isDisabled()">
       </el-tab-pane>
-      <el-tab-pane label="流程状态" name="flowStatus" :disabled="isDisabled()">
-      </el-tab-pane>
+      <!-- <el-tab-pane label="流程状态" name="flowStatus" :disabled="isDisabled()"></el-tab-pane> -->
     </el-tabs>
 
     <!-- 操作按钮 -->

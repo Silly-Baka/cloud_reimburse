@@ -3,7 +3,6 @@ import { HtmlNode, HtmlNodeModel } from "@logicflow/core";
 /**
  * 此类为自定义化节点类 -- 用于流程节点展示
  */
-
 class ProcessNodeModel extends HtmlNodeModel {
   setAttributes() {
     this.text.editable = false; // 禁止节点文本编辑

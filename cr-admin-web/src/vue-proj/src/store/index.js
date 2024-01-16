@@ -33,6 +33,7 @@ export default new Vuex.Store({
     isOprUser: false, // 当前用户是否负责操作当前报销单
     sheetId: null,
     activeTab: "", // 目前所在的标签页
+    invoiceId: null, // 目前正在编写的发票id
   },
   mutations: {
     saveToken(state, token) {
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     saveActiveTab(state, activeTab) {
       state.activeTab = activeTab;
+    },
+    saveInvoiceId(state, invoiceId) {
+      state.invoiceId = invoiceId;
     },
   },
   plugins: [

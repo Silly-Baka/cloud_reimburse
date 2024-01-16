@@ -14,12 +14,11 @@
         </el-submenu>
 
         <!-- 发票管理 -->
-        <el-menu-item index="invoices">
+        <el-menu-item index="invoices" @click="goInvoiceFloder">
           <template slot="title">
             <i class="el-icon-document"></i>
             <span>发票管理</span>
           </template>
-          <router-link to="/invoices"></router-link>
         </el-menu-item>
 
         <!-- 报销管理 -->
@@ -78,10 +77,13 @@ export default {
 
   methods: {
     goMyReimburse() {
-      this.$router.push("/myReimburse");
+      this.$pushRoute(this.$router, "/myReimburse");
     },
     goApplyDaily() {
-      this.$router.push("/apply/daily");
+      this.$pushRoute(this.$router, "/apply/daily");
+    },
+    goInvoiceFloder() {
+      this.$pushRoute(this.$router, "/invoice/floder");
     },
   },
 };

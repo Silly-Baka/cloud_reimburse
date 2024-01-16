@@ -24,6 +24,10 @@ const routes = [
         path: "/myReimburse",
         component: () => import("../views/reimburse/MyReimburse.vue"),
       },
+      {
+        path: "/invoice/floder",
+        component: () => import("../views/reimburse/InvoiceFloder.vue"),
+      },
     ],
   },
   {
@@ -47,6 +51,10 @@ const routes = [
   {
     path: "/test",
     component: () => import("../views/testView.vue"),
+  },
+  {
+    path: "/invoice/floder",
+    component: () => import("../views/reimburse/InvoiceFloder.vue"),
   },
 ];
 

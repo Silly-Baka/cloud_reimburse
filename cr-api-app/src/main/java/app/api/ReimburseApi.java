@@ -7,6 +7,7 @@ import app.reimburse.dto.ReimburseSheetQryDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Description：报销模块api
@@ -22,7 +23,7 @@ public interface ReimburseApi {
 
     @ApiOperation("上传发票")
     @PostMapping("/invoice/upload")
-    CommonResult upload(@RequestParam("invoice") InvoiceAddDTO invoice);
+    CommonResult upload(@RequestBody InvoiceAddDTO invoice);
 
     @ApiOperation("查询个人所有发票")
     @GetMapping("/invoice/getOwnInvoice")
@@ -34,7 +35,11 @@ public interface ReimburseApi {
 
     @ApiOperation("更新发票信息")
     @PutMapping("/invoice/update")
-    CommonResult update(@RequestParam("invoice") InvoiceAddDTO invoice);
+    CommonResult update(@RequestBody InvoiceAddDTO invoice);
+
+    @ApiOperation("上传发票文件（在发票信息已上传后调用）")
+    @PostMapping("/uploadInvoiceFile")
+    CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId);
 
 
     // ----------  报销单服务  -------------

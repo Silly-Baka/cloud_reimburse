@@ -7,6 +7,7 @@ import app.reimburse.dto.InvoiceAddDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -25,26 +26,32 @@ public class ReimburseApiController {
 
     @ApiOperation("上传发票")
     @PostMapping("/api/v1/invoice/upload")
-    CommonResult upload(@RequestParam("invoice") InvoiceAddDTO invoice) {
+    public CommonResult upload(@RequestBody InvoiceAddDTO invoice) {
         return reimburseApi.upload(invoice);
     }
 
     @ApiOperation("查询个人所有发票")
     @GetMapping("/api/v1/invoice/getOwnInvoice")
-    CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId) {
+    public CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId) {
         return reimburseApi.getOwnInvoice(ownerId);
     }
 
     @ApiOperation("查询指定发票信息")
     @GetMapping("/api/v1/invoice/{invoiceId}")
-    CommonResult getInvoice(@PathVariable("invoiceId") Long invoiceId) {
+    public CommonResult getInvoice(@PathVariable("invoiceId") Long invoiceId) {
         return reimburseApi.getInvoice(invoiceId);
     }
 
     @ApiOperation("更新发票信息")
     @PutMapping("/api/v1/invoice/update")
-    CommonResult update(@RequestParam("invoice") InvoiceAddDTO invoice) {
+    public CommonResult update(@RequestBody InvoiceAddDTO invoice) {
         return reimburseApi.update(invoice);
+    }
+
+    @ApiOperation("上传发票文件（在发票信息已上传后调用）")
+    @PostMapping("/api/v1/invoice/uploadInvoiceFile")
+    public CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) {
+        return reimburseApi.uploadInvoiceFile(file, invoiceId);
     }
 
 
@@ -52,25 +59,25 @@ public class ReimburseApiController {
 
     @ApiOperation("日常费用报销申请")
     @PostMapping("/api/v1/reimburse/applyDaily")
-    CommonResult applyDaily(@RequestBody DailyReimburseReqDTO dailyReimburseReqDTO) {
+    public CommonResult applyDaily(@RequestBody DailyReimburseReqDTO dailyReimburseReqDTO) {
         return reimburseApi.applyDaily(dailyReimburseReqDTO);
     }
 
     @ApiOperation("流程节点流转")
     @PostMapping("/api/v1/reimburse/process/change")
-    CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId) {
+    public CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId) {
         return reimburseApi.processChange(processNodeId, userId);
     }
 
     @ApiOperation("获取指定用户的报销单列表")
     @GetMapping("/api/v1/reimburse/listById")
-    CommonResult getReimburseList(@RequestParam("userId") Long userId) {
+    public CommonResult getReimburseList(@RequestParam("userId") Long userId) {
         return reimburseApi.getReimburseList(userId);
     }
 
     @ApiOperation("条件查询报销单列表")
     @GetMapping("/api/v1/reimburse/listSelective")
-    CommonResult getReimburseListSelective(ReimburseSheetQryDTO qryDTO) {
+    public CommonResult getReimburseListSelective(ReimburseSheetQryDTO qryDTO) {
         return reimburseApi.getReimburseListSelective(qryDTO);
     }
 
@@ -82,7 +89,7 @@ public class ReimburseApiController {
 
     @ApiOperation("查询指定报销单的所有流程节点（用于生成流程图）")
     @GetMapping("/api/v1/reimburse/process/list")
-    CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId) {
+    public CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId) {
         return reimburseApi.getReimburseProcessNodeList(sheetId);
     }
 }

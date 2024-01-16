@@ -4,8 +4,9 @@ import app.reimburse.dto.InvoiceAddDTO;
 import app.reimburse.dto.InvoiceUpdateDTO;
 import app.reimburse.entity.Invoice;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -13,10 +14,11 @@ public interface InvoiceService extends IService<Invoice> {
 
     /**
      * 上传发票信息
+     *
      * @param invoiceAddDTO
      * @return
      */
-    Boolean upload(InvoiceAddDTO invoiceAddDTO);
+    Long upload(InvoiceAddDTO invoiceAddDTO);
 
     /**
      * 更新发票信息
@@ -31,4 +33,12 @@ public interface InvoiceService extends IService<Invoice> {
      * @return 发票列表
      */
     List<Invoice> getOwnInvoice(Long ownerId);
+
+    /**
+     * 上传发票文件
+     * @param file 发票文件
+     * @param invoiceId 发票id
+     * @return
+     */
+    Boolean uploadInvoiceFile(MultipartFile file, Long invoiceId) throws IOException;
 }

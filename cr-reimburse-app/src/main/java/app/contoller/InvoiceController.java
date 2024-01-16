@@ -9,8 +9,10 @@ import app.service.InvoiceService;
 import cn.hutool.core.bean.BeanUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,15 +22,15 @@ import java.util.List;
  *
  * @Author SillyBaka
  **/
-@RestController("/invoice")
+@RestController
 public class InvoiceController {
 
     @Resource
     private InvoiceService invoiceService;
 
     @ApiOperation("上传发票")
-    @PostMapping("/upload")
-    public CommonResult upload(@RequestParam("invoiceAddDTO") InvoiceAddDTO invoiceAddDTO) {
+    @PostMapping("/invoice/upload")
+    public CommonResult upload(@RequestBody InvoiceAddDTO invoiceAddDTO) {
         //DONE：补充逻辑
         if(invoiceAddDTO == null) {
             return CommonResult.fail(400, "输入参数不能为空");
@@ -37,7 +39,7 @@ public class InvoiceController {
     }
 
     @ApiOperation("查询个人所有发票概要信息")
-    @GetMapping("/getOwnInvoice")
+    @GetMapping("/invoice/getOwnInvoice")
     public CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId) {
         //DONE：补充逻辑
         if(ownerId == null) {
@@ -47,7 +49,7 @@ public class InvoiceController {
     }
 
     @ApiOperation("查询指定发票信息")
-    @GetMapping("/{invoiceId}")
+    @GetMapping("/invoice/{invoiceId}")
     public CommonResult getInvoice(@PathVariable("invoiceId") Long invoiceId) {
         //DONE：补充逻辑
         if(invoiceId == null) {
@@ -57,12 +59,20 @@ public class InvoiceController {
     }
 
     @ApiOperation("更新发票信息")
-    @PutMapping("/update")
-    public CommonResult update(@RequestParam("invoice") InvoiceUpdateDTO invoiceUpdateDTO) {
+    @PutMapping("/invoice/update")
+    public CommonResult update(@RequestBody InvoiceUpdateDTO invoiceUpdateDTO) {
         if(invoiceUpdateDTO == null) {
             return CommonResult.fail(400, "输入参数不能为空");
         }
         return CommonResult.ok(invoiceService.updateInvoice(invoiceUpdateDTO));
     }
 
+    @ApiOperation("上传发票文件（在发票信息已上传后调用）")
+    @PostMapping("/invoice/uploadInvoiceFile")
+    public CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) throws IOException {
+        if(file == null) {
+            return CommonResult.fail(400, "上传的发票文件不能为空");
+        }
+        return CommonResult.ok(invoiceService.uploadInvoiceFile(file, invoiceId));
+    }
 }

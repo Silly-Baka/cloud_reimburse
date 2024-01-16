@@ -3,6 +3,8 @@ package app.reimburse.entity;
 
 import app.common.LeafTag;
 
+import java.util.Date;
+
 /**
  * Description：发票，包含发票基础信息
  * <p>Date: 2023/11/21
@@ -21,7 +23,7 @@ public class Invoice {
     /**
      * 发票持有者id
      */
-    private Long owner;
+    private Long ownerId;
 
     /**
      * 发票代码
@@ -41,6 +43,11 @@ public class Invoice {
      *  3-增值税电子专用发票
      */
     private Integer invType;
+
+    /**
+     * 开票日期
+     */
+    private Date invDate;
 
     /**
      * 不算税的总金额
@@ -96,12 +103,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public Long getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Long owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getInvCode() {
@@ -126,6 +133,14 @@ public class Invoice {
 
     public void setInvType(Integer invType) {
         this.invType = invType;
+    }
+
+    public Date getInvDate() {
+        return invDate;
+    }
+
+    public void setInvDate(Date invDate) {
+        this.invDate = invDate;
     }
 
     public Double getPriceTotal() {

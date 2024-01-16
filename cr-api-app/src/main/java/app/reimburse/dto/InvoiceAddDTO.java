@@ -2,6 +2,7 @@ package app.reimburse.dto;
 
 import app.reimburse.entity.InvoiceInfo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class InvoiceAddDTO {
     /**
      * 发票持有者id
      */
-    private Long owner;
+    private Long ownerId;
 
     /**
      * 发票代码
@@ -40,6 +41,11 @@ public class InvoiceAddDTO {
      *  3-增值税电子专用发票
      */
     private Integer invType;
+
+    /**
+     * 开票日期
+     */
+    private Date invDate;
 
     /**
      * 不算税的总金额
@@ -94,12 +100,12 @@ public class InvoiceAddDTO {
         this.id = id;
     }
 
-    public Long getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Long owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getInvCode() {
@@ -124,6 +130,14 @@ public class InvoiceAddDTO {
 
     public void setInvType(Integer invType) {
         this.invType = invType;
+    }
+
+    public Date getInvDate() {
+        return invDate;
+    }
+
+    public void setInvDate(Date invDate) {
+        this.invDate = invDate;
     }
 
     public Double getPriceTotal() {
