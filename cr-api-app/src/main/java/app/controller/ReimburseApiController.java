@@ -6,6 +6,7 @@ import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.InvoiceAddDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,8 +50,8 @@ public class ReimburseApiController {
     }
 
     @ApiOperation("上传发票文件（在发票信息已上传后调用）")
-    @PostMapping("/api/v1/invoice/uploadInvoiceFile")
-    public CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) {
+    @PostMapping(value = "/api/v1/invoice/uploadInvoiceFile")
+    public CommonResult uploadInvoiceFile(@RequestPart("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) {
         return reimburseApi.uploadInvoiceFile(file, invoiceId);
     }
 

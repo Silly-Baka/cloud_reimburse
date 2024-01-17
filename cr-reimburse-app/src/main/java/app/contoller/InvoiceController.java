@@ -8,6 +8,7 @@ import app.reimburse.entity.InvoiceInfo;
 import app.service.InvoiceService;
 import cn.hutool.core.bean.BeanUtil;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,8 +69,8 @@ public class InvoiceController {
     }
 
     @ApiOperation("上传发票文件（在发票信息已上传后调用）")
-    @PostMapping("/invoice/uploadInvoiceFile")
-    public CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) throws IOException {
+    @PostMapping(value = "/invoice/uploadInvoiceFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CommonResult uploadInvoiceFile(@RequestPart("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) throws IOException {
         if(file == null) {
             return CommonResult.fail(400, "上传的发票文件不能为空");
         }

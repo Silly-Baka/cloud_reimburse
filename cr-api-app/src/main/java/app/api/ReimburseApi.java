@@ -4,8 +4,10 @@ import app.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.InvoiceAddDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +40,8 @@ public interface ReimburseApi {
     CommonResult update(@RequestBody InvoiceAddDTO invoice);
 
     @ApiOperation("上传发票文件（在发票信息已上传后调用）")
-    @PostMapping("/uploadInvoiceFile")
-    CommonResult uploadInvoiceFile(@RequestParam("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId);
+    @PostMapping(value="/invoice/uploadInvoiceFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    CommonResult uploadInvoiceFile(@RequestPart("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId);
 
 
     // ----------  报销单服务  -------------
