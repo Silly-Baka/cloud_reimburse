@@ -1,15 +1,14 @@
 package app.api;
 
 import app.CommonResult;
-import app.reimburse.dto.DailyReimburseReqDTO;
-import app.reimburse.dto.InvoiceAddDTO;
-import app.reimburse.dto.ReimburseSheetQryDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import app.reimburse.dto.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * Description：报销模块api
@@ -29,7 +28,7 @@ public interface ReimburseApi {
 
     @ApiOperation("查询个人所有发票")
     @GetMapping("/invoice/getOwnInvoice")
-    CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId);
+    CommonResult<List<InvoiceResultDTO>> getOwnInvoice(@RequestParam("ownerId") Long ownerId);
 
     @ApiOperation("查询指定发票信息")
     @GetMapping("/invoice/{invoiceId}")
@@ -42,6 +41,14 @@ public interface ReimburseApi {
     @ApiOperation("上传发票文件（在发票信息已上传后调用）")
     @PostMapping(value="/invoice/uploadInvoiceFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     CommonResult uploadInvoiceFile(@RequestPart("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId);
+
+    @ApiOperation("删除指定发票列表")
+    @PostMapping("/invoice/delete/list")
+    CommonResult deleteInvoiceList(@RequestBody List<Long> invoiceIds);
+
+    @ApiOperation("条件查询发票列表")
+    @PostMapping("/invoice/list/selective")
+    CommonResult<List<InvoiceResultDTO>> getInvoiceListSelective(@RequestBody InvoiceQryDTO qryDTO);
 
 
     // ----------  报销单服务  -------------

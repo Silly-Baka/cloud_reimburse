@@ -21,4 +21,11 @@ public interface FileService extends IService<File> {
      * @return 文件id
      */
     Long saveInvoiceFile(MultipartFile file) throws IOException;
+
+    /**
+     * 删除指定id的文件
+     * @param fileId 文件id
+     * @return
+     */
+    Boolean removeFile(Long fileId);
 }

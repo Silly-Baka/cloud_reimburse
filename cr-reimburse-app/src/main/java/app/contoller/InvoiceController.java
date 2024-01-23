@@ -2,11 +2,9 @@ package app.contoller;
 
 import app.common.CommonResult;
 import app.reimburse.dto.InvoiceAddDTO;
+import app.reimburse.dto.InvoiceQryDTO;
 import app.reimburse.dto.InvoiceUpdateDTO;
-import app.reimburse.entity.Invoice;
-import app.reimburse.entity.InvoiceInfo;
 import app.service.InvoiceService;
-import cn.hutool.core.bean.BeanUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +39,7 @@ public class InvoiceController {
 
     @ApiOperation("查询个人所有发票概要信息")
     @GetMapping("/invoice/getOwnInvoice")
-    public CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId) {
+    public CommonResult getOwnInvoice(@RequestParam("ownerId") Long ownerId) {
         //DONE：补充逻辑
         if(ownerId == null) {
             return CommonResult.fail(400, "用户id不能为空");
@@ -75,5 +73,28 @@ public class InvoiceController {
             return CommonResult.fail(400, "上传的发票文件不能为空");
         }
         return CommonResult.ok(invoiceService.uploadInvoiceFile(file, invoiceId));
+    }
+
+//    @ApiOperation("获取发票文件并显示（目前只支持png、jpg等格式）")
+//    @GetMapping("/invoice/file")
+//    public
+
+
+    @ApiOperation("删除指定发票列表")
+    @PostMapping("/invoice/delete/list")
+    public CommonResult deleteInvoiceList(@RequestBody List<Long> invoiceIds) {
+        if(invoiceIds == null) {
+            return CommonResult.fail(400, "发票列表不能为空");
+        }
+        return CommonResult.ok(invoiceService.deleteInvoiceList(invoiceIds));
+    }
+
+    @ApiOperation("条件查询发票列表")
+    @PostMapping("/invoice/list/selective")
+    public CommonResult getInvoiceListSelective(@RequestBody InvoiceQryDTO qryDTO) {
+        if(qryDTO == null) {
+            return CommonResult.fail(400, "查询参数不能为空");
+        }
+        return CommonResult.ok(invoiceService.getInvoiceListSelective(qryDTO));
     }
 }

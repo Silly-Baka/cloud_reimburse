@@ -50,4 +50,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         // 返回文件id
         return entity.getId();
     }
+
+    @Override
+    public Boolean removeFile(Long fileId) {
+        //TODO：补充逻辑
+        return null;
+    }
 }

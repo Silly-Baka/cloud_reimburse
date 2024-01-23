@@ -12,8 +12,10 @@
             <el-dropdown-item>查验</el-dropdown-item>
             <el-dropdown-item>核销</el-dropdown-item>
             <el-dropdown-item>下载</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-            <el-dropdown-item>编辑</el-dropdown-item>
+            <el-dropdown-item @click.native="removeSelectedInvoice"
+              >删除</el-dropdown-item
+            >
+            <!-- <el-dropdown-item>编辑</el-dropdown-item> -->
           </el-dropdown-menu>
         </el-dropdown>
         <el-button class="header-button">发起报销</el-button>
@@ -49,14 +51,31 @@
             >
           </div>
         </el-dialog>
-
         <el-button class="header-button">文件识别</el-button>
       </el-header>
+
+      <div class="search-component">
+        <el-tabs
+          class="search-tabs"
+          v-model="isReimbursed"
+          @tab-click="changeReimburseList"
+        >
+          <el-tab-pane label="全部" name="-1"></el-tab-pane>
+          <el-tab-pane label="未报销" name="0"></el-tab-pane>
+          <el-tab-pane label="报销中" name="1"></el-tab-pane>
+          <el-tab-pane label="已报销" name="2"></el-tab-pane>
+        </el-tabs>
+      </div>
 
       <!-- 发票信息列表 -->
       <el-main class="main-container">
         <!-- 发票信息表格 -->
-        <el-table :data="invoiceList" style="width: 100%" stripe>
+        <el-table
+          :data="invoiceList"
+          style="width: 100%"
+          stripe
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection"></el-table-column>
           <!-- 展示费项信息的下拉框 -->
           <el-table-column type="expand">
@@ -177,6 +196,7 @@
 <script>
 import UploadComponent from "../../components/UploadComponent.vue";
 import InvoiceUploadForm from "@/components/InvoiceUploadForm.vue";
+import format from "date-fns/format";
 export default {
   components: {
     UploadComponent,
@@ -224,7 +244,26 @@ export default {
           ],
         },
       ],
+      reimburseStates: {
+        0: "未报销",
+        1: "报销中",
+        2: "已报销",
+      },
+      invoiceTypes: {
+        0: "增值税普通发票",
+        1: "增值税专用发票",
+        2: "增值税电子普通发票",
+        3: "增值税电子专用发票",
+      },
+
+      selectedRows: [], // 被选中的行
+
+      isReimbursed: null,
     };
+  },
+  mounted() {
+    // 获取发票列表
+    this.getOwnerInvoiceList();
   },
   methods: {
     // 上传发票信息
@@ -266,6 +305,105 @@ export default {
       this.addDialogVisable = false;
       this.$message("已取消手动录入");
     },
+
+    // 获取自己的发票列表
+    getOwnerInvoiceList() {
+      this.axios
+        .get("/invoice/getOwnInvoice", {
+          params: {
+            ownerId: this.$store.state.userId,
+          },
+        })
+        .then((response) => {
+          var data = response.data;
+          this.formatReimburseList(data);
+          this.invoiceList = data;
+        });
+    },
+
+    formatReimburseList(list) {
+      for (let i = 0; i < list.length; i++) {
+        // 格式化开票日期
+        var tmpDate = new Date(list[i].invDate);
+        list[i].invDate = format(tmpDate, "yyyy-MM-dd");
+
+        // 格式化报销状态
+        list[i].isReimbursed = this.reimburseStates[list[i].isReimbursed];
+
+        // 格式化发票类型
+        list[i].invType = this.invoiceTypes[list[i].invType];
+      }
+    },
+
+    // 删除被选中的发票
+    removeSelectedInvoice() {
+      console.log("已触发删除");
+      this.$confirm(
+        "此操作将删除被选中的发票信息包括其文件，是否确认?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).then(() => {
+        // 发请求让后台删除指定列
+        var invoiceIds = [];
+        for (let i = 0; i < this.selectedRows.length; i++) {
+          invoiceIds.push(this.selectedRows[i].id);
+        }
+        this.axios.post("/invoice/delete/list", invoiceIds).then((response) => {
+          if (response.data) {
+            console.log("删除发票列表成功");
+          } else {
+            console.log("删除发票列表失败");
+          }
+        });
+
+        // 删掉列表中相应的列
+        for (let i = 0; i < this.selectedRows.length; i++) {
+          for (let j = 0; j < this.invoiceList.length; j++) {
+            if (this.invoiceList[j] == this.selectedRows[i]) {
+              this.invoiceList.splice(j, 1);
+              break;
+            }
+          }
+        }
+        this.selectedRows = [];
+
+        // this.$message({
+        //   type: "success",
+        //   message: "删除发票成功",
+        // });
+      });
+    },
+
+    // 记录被选中的行
+    handleSelectionChange(selection) {
+      this.selectedRows = selection;
+      console.log(selection);
+    },
+
+    // 根据reimburseShowState改变显示的列表
+    changeReimburseList() {
+      if (this.isReimbursed === "-1") {
+        this.isReimbursed = null;
+      }
+      this.getInvoiceListSelective();
+    },
+
+    // 根据条件获取发票列表
+    getInvoiceListSelective() {
+      this.axios
+        .post("/invoice/list/selective", {
+          isReimbursed: this.isReimbursed,
+        })
+        .then((response) => {
+          var data = response.data;
+          this.formatReimburseList(data);
+          this.invoiceList = data;
+        });
+    },
   },
 };
 </script>
@@ -275,13 +413,18 @@ export default {
   position: relative;
   display: block;
   background: #f9f9f9;
-  box-shadow: 0 2px 12px 0 gainsboro;
+}
+
+.search-component {
+  background-color: white;
+  height: 40px;
+}
+.search-tabs {
+  margin-left: 12px;
 }
 
 .main-container {
   padding: 0;
-}
-.footer-container {
 }
 
 .header-title {

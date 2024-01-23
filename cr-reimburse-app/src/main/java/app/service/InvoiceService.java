@@ -1,6 +1,8 @@
 package app.service;
 
 import app.reimburse.dto.InvoiceAddDTO;
+import app.reimburse.dto.InvoiceQryDTO;
+import app.reimburse.dto.InvoiceResultDTO;
 import app.reimburse.dto.InvoiceUpdateDTO;
 import app.reimburse.entity.Invoice;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -32,7 +34,7 @@ public interface InvoiceService extends IService<Invoice> {
      * @param ownerId 指定用户id
      * @return 发票列表
      */
-    List<Invoice> getOwnInvoice(Long ownerId);
+    List<InvoiceResultDTO> getOwnInvoice(Long ownerId);
 
     /**
      * 上传发票文件
@@ -41,4 +43,13 @@ public interface InvoiceService extends IService<Invoice> {
      * @return
      */
     Boolean uploadInvoiceFile(MultipartFile file, Long invoiceId) throws IOException;
+
+    /**
+     * 删除指定的发票列表
+     * @param invoiceIds 发票id列表
+     * @return
+     */
+    Boolean deleteInvoiceList(List<Long> invoiceIds);
+
+    List<InvoiceResultDTO> getInvoiceListSelective(InvoiceQryDTO qryDTO);
 }

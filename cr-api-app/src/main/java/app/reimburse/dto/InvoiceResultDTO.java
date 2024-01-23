@@ -6,13 +6,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Description：发票-添加用DTO
- * <p>Date: 2023/12/18
- * <p>Time: 18:47
+ * Description：
+ * <p>Date: 2024/1/17
+ * <p>Time: 21:39
  *
  * @Author SillyBaka
  **/
-public class InvoiceAddDTO {
+public class InvoiceResultDTO {
+
+    /**
+     * 发票id
+     */
+    private Long id;
 
     /**
      * 发票持有者id
@@ -79,9 +84,32 @@ public class InvoiceAddDTO {
     private String sellTaxpayerNum;
 
     /**
+     * 发票文件id
+     */
+    private Long invFileId;
+
+    /**
+     * 是否已报销，0-否，1-报销中，2-已报销
+     */
+    private Integer isReimbursed;
+
+    /**
+     * 报销日期
+     */
+    private Date reimbursedDate;
+
+    /**
      * 发票信息列表
      */
     private List<InvoiceInfo> invoiceInfoList;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getOwnerId() {
         return ownerId;
@@ -177,6 +205,30 @@ public class InvoiceAddDTO {
 
     public void setSellTaxpayerNum(String sellTaxpayerNum) {
         this.sellTaxpayerNum = sellTaxpayerNum;
+    }
+
+    public Long getInvFileId() {
+        return invFileId;
+    }
+
+    public void setInvFileId(Long invFileId) {
+        this.invFileId = invFileId;
+    }
+
+    public Integer getIsReimbursed() {
+        return isReimbursed;
+    }
+
+    public void setIsReimbursed(Integer isReimbursed) {
+        this.isReimbursed = isReimbursed;
+    }
+
+    public Date getReimbursedDate() {
+        return reimbursedDate;
+    }
+
+    public void setReimbursedDate(Date reimbursedDate) {
+        this.reimbursedDate = reimbursedDate;
     }
 
     public List<InvoiceInfo> getInvoiceInfoList() {

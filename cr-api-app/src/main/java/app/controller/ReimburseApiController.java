@@ -2,15 +2,13 @@ package app.controller;
 
 import app.CommonResult;
 import app.api.ReimburseApi;
-import app.reimburse.dto.DailyReimburseReqDTO;
-import app.reimburse.dto.InvoiceAddDTO;
-import app.reimburse.dto.ReimburseSheetQryDTO;
+import app.reimburse.dto.*;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description：api网关，负责报销模块接口
@@ -33,7 +31,7 @@ public class ReimburseApiController {
 
     @ApiOperation("查询个人所有发票")
     @GetMapping("/api/v1/invoice/getOwnInvoice")
-    public CommonResult getOwnInvoice(@RequestParam("/ownerId") Long ownerId) {
+    public CommonResult<List<InvoiceResultDTO>> getOwnInvoice(@RequestParam("ownerId") Long ownerId) {
         return reimburseApi.getOwnInvoice(ownerId);
     }
 
@@ -53,6 +51,18 @@ public class ReimburseApiController {
     @PostMapping(value = "/api/v1/invoice/uploadInvoiceFile")
     public CommonResult uploadInvoiceFile(@RequestPart("file") MultipartFile file, @RequestParam("invoiceId") Long invoiceId) {
         return reimburseApi.uploadInvoiceFile(file, invoiceId);
+    }
+
+    @ApiOperation("删除指定发票列表")
+    @PostMapping("/api/v1/invoice/delete/list")
+    public CommonResult deleteInvoiceList(@RequestBody List<Long> invoiceIds) {
+        return reimburseApi.deleteInvoiceList(invoiceIds);
+    }
+
+    @ApiOperation("条件查询发票列表")
+    @PostMapping("/api/v1/invoice/list/selective")
+    public CommonResult<List<InvoiceResultDTO>> getInvoiceListSelective(@RequestBody InvoiceQryDTO qryDTO) {
+        return reimburseApi.getInvoiceListSelective(qryDTO);
     }
 
 
