@@ -12,7 +12,7 @@ public interface ProcessNodeService extends IService<ProcessNode> {
      *
      * @param userId  报销发起者id
      * @param sheetId 报销单id
-     * @return 当前流程节点id
+     * @return 当前流程节点
      */
-    Long generateReimburseProcessMap(Long userId, Long sheetId) throws Exception;
+    ProcessNode generateReimburseProcessMap(Long userId, Long sheetId) throws Exception;
 }

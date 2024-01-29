@@ -1,17 +1,15 @@
 package app.service;
 
+import app.common.CommonResult;
+import app.event.dto.TodoEventQryDTO;
+import app.event.dto.TodoEventResultDTO;
 import app.event.entity.TodoEvent;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
-/**
- * Description：
- * <p>Date: 2023/12/27
- * <p>Time: 21:18
- *
- * @Author SillyBaka
- **/
-@Service
+
 public interface TodoEventService extends IService<TodoEvent> {
 
     /**
@@ -34,4 +32,11 @@ public interface TodoEventService extends IService<TodoEvent> {
      * @return 已超时的事件数
      */
     int getOutOfTimeEventsNum(Long userId);
+
+    /**
+     * 条件查询待办事件列表
+     * @param qryDTO
+     * @return
+     */
+    Page<TodoEventResultDTO> listTodoEvents(@RequestBody TodoEventQryDTO qryDTO);
 }

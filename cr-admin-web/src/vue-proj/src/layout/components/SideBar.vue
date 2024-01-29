@@ -57,12 +57,11 @@
         </el-menu-item>
 
         <!-- 待办事件 -->
-        <el-menu-item index="todos">
+        <el-menu-item index="todos" @click="goTodoEvent">
           <template slot="title">
             <i class="el-icon-alarm-clock"></i>
             <span>待办事件</span>
           </template>
-          <router-link to="/todos"></router-link>
         </el-menu-item>
 
         <!-- 其他导航链接 -->
@@ -84,6 +83,9 @@ export default {
     },
     goInvoiceFloder() {
       this.$pushRoute(this.$router, "/invoice/floder");
+    },
+    goTodoEvent() {
+      this.$pushRoute(this.$router, "/event/list");
     },
   },
 };

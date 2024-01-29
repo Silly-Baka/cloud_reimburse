@@ -13,7 +13,7 @@
         >
       </div>
       <el-form
-        :model="expenseForm"
+        :model="dailySheetInfo"
         label-width="200px"
         @submit.native.prevent="submitExpense"
         style="padding-left: 40px; margin: 20px auto"
@@ -95,7 +95,6 @@
           style="width: 90%; margin-left: 5%"
           border
           stripe
-          v-loading="loading"
           @selection-change="handleSelectionChange"
           :row-key="(row) => row.id"
         >
@@ -154,7 +153,7 @@ export default {
       dailySheetInfo: {
         // 报销单基本信息
         applicantId: this.$store.state.userId,
-        price: null, // 报销总金额
+        price: 0, // 报销总金额
         name: "", // 报销标题
         createTime: null, // 申请日期
         relevantProj: "", // 相关项目名
@@ -165,13 +164,13 @@ export default {
 
         // 费用事项列表
         dailySheetInfoList: [
-          {
-            costDate: null,
-            costType: null,
-            description: "",
-            invoiceId: null,
-            price: null,
-          },
+          // {
+          //   costDate: null,
+          //   costType: null,
+          //   description: "",
+          //   invoiceId: null,
+          //   price: null,
+          // },
         ],
       },
       sheetState: {
@@ -232,10 +231,6 @@ export default {
     },
   },
   methods: {
-    submitExpense() {
-      // 在这里可以处理提交申请的逻辑，例如通过 API 发送请求
-      console.log("Expense Form Submitted:", this.expenseForm);
-    },
     addRow() {
       this.dailySheetInfo.dailySheetInfoList.push({
         costDate: null,

@@ -28,6 +28,10 @@ const routes = [
         path: "/invoice/floder",
         component: () => import("../views/reimburse/InvoiceFloder.vue"),
       },
+      {
+        path: "/event/list",
+        component: () => import("../views/event/TodoEvent.vue"),
+      },
     ],
   },
   {

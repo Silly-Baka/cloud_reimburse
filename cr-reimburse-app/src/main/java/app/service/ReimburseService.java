@@ -1,5 +1,6 @@
 package app.service;
 
+import app.common.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
 import app.reimburse.dto.DailyReimburseResultDTO;
 import app.reimburse.dto.ProcessNodeDTO;
@@ -61,4 +62,11 @@ public interface ReimburseService extends IService<ReimburseSheet> {
      * @return 流程节点列表
      */
     List<ProcessNodeDTO> getReimburseProcessNodeList(Long sheetId);
+
+    /**
+     * 根据id获取报销单的基本信息（通用信息）
+     * @param sheetId 报销单id
+     * @return
+     */
+    ReimburseSheet getReimburseSheetBase(Long sheetId);
 }

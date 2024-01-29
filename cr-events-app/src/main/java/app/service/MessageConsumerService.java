@@ -59,7 +59,7 @@ public class MessageConsumerService {
 
     private final InmailContentFormatter contentFormatter = new InmailContentFormatter();
 
-    @KafkaListener(topics = {"${kafka.topic.inmail-topic}"})
+    @KafkaListener(topics = {"${kafka.topic.inmail-topic}"}, groupId = "group1")
     public void consumeInmailMessage(ConsumerRecord<String, InmailMessage> record) {
         LOGGER.info("接收到来自topic[{}], partition[{}]的消息 --> {}", inmailTopic, record.partition(), record.value());
 
@@ -109,12 +109,13 @@ public class MessageConsumerService {
         LOGGER.info("成功消费消息：topic[{}], id[{}]", inmailTopic, inmailMessage.getId());
     }
 
-    @KafkaListener(topics = {"${kafka.topic.event-topic}"})
+    @KafkaListener(topics = {"${kafka.topic.event-topic}"}, groupId = "group1")
     public void consumeEventMessage(ConsumerRecord<String, EventMessage> record) {
         LOGGER.info("接收到来自topic[{}], partition[{}]的消息 --> {}", eventTopic, record.partition(), record.value());
         EventMessage eventMessage = record.value();
 
         ProcessNode processNode = eventMessage.getProcessNode();
+        ReimburseSheet reimburseSheet = eventMessage.getReimburseSheet();
 
         // 计算期望日期
         Date curTime = new Date(record.timestamp());
@@ -123,7 +124,7 @@ public class MessageConsumerService {
 
         //TODO：待修改期望完成天数，暂给定默认值3天
         calendar.add(Calendar.DAY_OF_MONTH, 3);
-        Date expectTime = (Date) calendar.getTime();
+        Date expectTime = new Date(calendar.getTime().getTime());
 
         TodoEvent todoEvent = new TodoEvent();
         todoEvent.setId(IdGenerator.getUniqueId(TodoEvent.class));
@@ -133,6 +134,12 @@ public class MessageConsumerService {
         todoEvent.setState(CommonState.CONTINUE.getVal());
         todoEvent.setCreateTime(curTime);
         todoEvent.setExpectTime(expectTime);
+
+        StringBuilder descStr = new StringBuilder();
+        descStr.append(NODE_TYPE_NAMES.get(processNode.getType()));
+        descStr.append('-');
+        descStr.append(reimburseSheet.getName());
+        todoEvent.setDescription(descStr.toString());
 
         switch (processNode.getType()) {
             case ProcessNodeType.APPROVAL:

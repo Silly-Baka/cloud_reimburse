@@ -35,11 +35,13 @@ public class Message {
      * 发起者，0则是admin发出
      * 目前此属性默认为0，暂未启用
      */
+    @TableField(value = "`from`")
     private Long from;
 
     /**
      * 接收者
      */
+    @TableField(value = "`to`")
     private Long to;
 
     /**

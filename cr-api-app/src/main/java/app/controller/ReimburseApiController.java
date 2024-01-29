@@ -3,6 +3,7 @@ package app.controller;
 import app.CommonResult;
 import app.api.ReimburseApi;
 import app.reimburse.dto.*;
+import app.reimburse.entity.ReimburseSheet;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,5 +103,11 @@ public class ReimburseApiController {
     @GetMapping("/api/v1/reimburse/process/list")
     public CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId) {
         return reimburseApi.getReimburseProcessNodeList(sheetId);
+    }
+
+    @ApiOperation("根据id获取报销单的基本信息（通用信息）")
+    @GetMapping("/api/v1/reimburse/sheet/base")
+    public CommonResult<ReimburseSheet> getReimburseSheetBase(@RequestParam("sheetId") Long sheetId) {
+        return reimburseApi.getReimburseSheetBase(sheetId);
     }
 }

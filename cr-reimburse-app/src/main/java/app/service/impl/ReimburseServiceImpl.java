@@ -46,13 +46,13 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         Long sheetId = IdGenerator.getUniqueId(ReimburseSheet.class);
 
         //1、生成流程节点
-        Long curNodeId = processNodeService.generateReimburseProcessMap(dailyReimburseReqDTO.getApplicantId(), sheetId);
+        ProcessNode curNode = processNodeService.generateReimburseProcessMap(dailyReimburseReqDTO.getApplicantId(), sheetId);
 
         //2、插入报销单表
         ReimburseSheet reimburseSheet = new ReimburseSheet();
         BeanUtil.copyProperties(dailyReimburseReqDTO, reimburseSheet);
         reimburseSheet.setId(sheetId);
-        reimburseSheet.setCurNodeId(curNodeId);
+        reimburseSheet.setCurNodeId(curNode.getId());
         reimburseSheet.setState(CommonState.CONTINUE.getVal());
         this.save(reimburseSheet);
 
@@ -65,6 +65,9 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
             dailySheetInfo.setSheetId(sheetId);
             dailySheetInfoMapper.insert(dailySheetInfo);
         }
+
+        // 4、向当前节点处理者发起待办事件
+        kafkaService.sendEventMessage(reimburseSheet, curNode);
 
         //4、返回报销单id
         return sheetId ;
@@ -110,7 +113,7 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
                 .eq("sheet_id", curNode.getSheetId())
                 .eq("order", curOrder + 1)
                 .one();
-        kafkaService.sendEventMessage(nextNode);
+        kafkaService.sendEventMessage(reimburseSheet, nextNode);
 
         return true;
     }
@@ -188,5 +191,12 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         }
 
         return result;
+    }
+
+    @Override
+    public ReimburseSheet getReimburseSheetBase(Long sheetId) {
+        return this.query()
+                .eq("id", sheetId)
+                .one();
     }
 }

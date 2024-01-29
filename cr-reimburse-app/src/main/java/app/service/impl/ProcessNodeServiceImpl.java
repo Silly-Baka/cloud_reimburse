@@ -29,7 +29,7 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
 
     @Override
     @Transactional
-    public Long generateReimburseProcessMap(Long userId, Long sheetId) throws Exception {
+    public ProcessNode generateReimburseProcessMap(Long userId, Long sheetId) throws Exception {
         // 报销发起 --> 部门报销管控人员审批 --> 部门领导审批 --> 财务处理 --> 报销完成
 
         // 1、查找发起者所在部门名
@@ -118,6 +118,6 @@ public class ProcessNodeServiceImpl extends ServiceImpl<ProcessNodeMapper, Proce
         }
 
         // 返回当前流程节点的id
-        return reimburseNode.getId();
+        return reimburseNode;
     }
 }

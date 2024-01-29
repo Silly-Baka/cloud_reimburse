@@ -2,6 +2,7 @@ package app.event.kafka;
 
 import app.common.LeafTag;
 import app.reimburse.entity.ProcessNode;
+import app.reimburse.entity.ReimburseSheet;
 
 /**
  * Description：待办事件topic中的信息
@@ -19,6 +20,11 @@ public class EventMessage {
     private Long id;
 
     /**
+     * 事件目标报销单信息
+     */
+    private ReimburseSheet reimburseSheet;
+
+    /**
      * 事件中需要处理的流程节点信息
      */
     private ProcessNode processNode;
@@ -29,6 +35,14 @@ public class EventMessage {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ReimburseSheet getReimburseSheet() {
+        return reimburseSheet;
+    }
+
+    public void setReimburseSheet(ReimburseSheet reimburseSheet) {
+        this.reimburseSheet = reimburseSheet;
     }
 
     public ProcessNode getProcessNode() {

@@ -1,13 +1,36 @@
+server:
+  port: 8093
+
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.75.100:9092
     consumer:
       auto-offset-reset: earliest  # 重连后offset设置为最初值
 
-      key-deserializer: org.springframework.kafka.support.serializer.JsonSerialize
-      value-deserializer: org.springframework.kafka.support.serializer.JsonSerialize
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.75.100:3306/cloud-reimburse
+    username: root
+    password: hjh123123
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 kafka:
   topic:
     inmail-topic: inmail-topic    # 站内信topic
     event-topic: event-topic  # 待办事件topic
+
+api:
+  url:
+    api-leaf: http://localhost:8090
+    api-user: http://localhost:8091
+    api-roleAuth: http://localhost:8091
+    api-reimburse: http://localhost:8092
+    api-todoEvent: http://localhost:8093

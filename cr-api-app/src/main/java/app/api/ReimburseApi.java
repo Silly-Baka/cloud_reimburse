@@ -2,6 +2,7 @@ package app.api;
 
 import app.CommonResult;
 import app.reimburse.dto.*;
+import app.reimburse.entity.ReimburseSheet;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -76,4 +77,8 @@ public interface ReimburseApi {
     @ApiOperation("查询指定报销单的所有流程节点（用于生成流程图）")
     @GetMapping("/reimburse/process/list")
     CommonResult getReimburseProcessNodeList(@RequestParam("sheetId") Long sheetId);
+
+    @ApiOperation("根据id获取报销单的基本信息（通用信息）")
+    @GetMapping("/reimburse/sheet/base")
+    CommonResult<ReimburseSheet> getReimburseSheetBase(@RequestParam("sheetId") Long sheetId);
 }

@@ -42,7 +42,7 @@ public class KafkaService {
      * @param topic
      * @param message
      */
-    public void sendMessage(String topic, Object message) {
+    private void sendMessage(String topic, Object message) {
         ListenableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic, null, System.currentTimeMillis(), String.valueOf(message.hashCode()), message);
         future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
             @Override
@@ -73,12 +73,14 @@ public class KafkaService {
 
     /**
      * 发起事件通知目标节点的处理者
+     * @param reimburseSheet 目标报销单信息
      * @param processNode 目标节点
      */
-    public void sendEventMessage(ProcessNode processNode) {
+    public void sendEventMessage(ReimburseSheet reimburseSheet,ProcessNode processNode) {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setId(IdGenerator.getUniqueId(EventMessage.class));
         eventMessage.setProcessNode(processNode);
+        eventMessage.setReimburseSheet(reimburseSheet);
 
         sendMessage(eventTopic, eventMessage);
     }

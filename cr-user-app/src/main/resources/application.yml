@@ -15,4 +15,4 @@ api:
     api-user: http://localhost:8091
     api-roleAuth: http://localhost:8091
     api-reimburse: http://localhost:8092
-    api-event: http://localhost:8093
+    api-todoEvent: http://localhost:8093

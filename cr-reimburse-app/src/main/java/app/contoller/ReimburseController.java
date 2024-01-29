@@ -77,4 +77,13 @@ public class ReimburseController {
         }
         return CommonResult.ok(reimburseService.getReimburseProcessNodeList(sheetId));
     }
+
+    @ApiOperation("根据id获取报销单的基本信息（通用信息）")
+    @GetMapping("/reimburse/sheet/base")
+    public CommonResult getReimburseSheetBase(@RequestParam("sheetId") Long sheetId) {
+        if(sheetId == null) {
+            return CommonResult.fail(400, "报销单id不可为空");
+        }
+        return CommonResult.ok(reimburseService.getReimburseSheetBase(sheetId));
+    }
 }
