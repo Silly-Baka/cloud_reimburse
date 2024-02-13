@@ -51,6 +51,10 @@ public interface ReimburseApi {
     @PostMapping("/invoice/list/selective")
     CommonResult<List<InvoiceResultDTO>> getInvoiceListSelective(@RequestBody InvoiceQryDTO qryDTO);
 
+    @ApiOperation("获取个人不可报销（报销中、已报销等）的发票列表")
+    @GetMapping("/invoice/list/canNotReimburse")
+    CommonResult<List<InvoiceResultDTO>> getInvoiceListCanNotReimburse(@RequestParam("ownerId") Long ownerId);
+
 
     // ----------  报销单服务  -------------
 

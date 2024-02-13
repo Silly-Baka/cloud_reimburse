@@ -97,4 +97,13 @@ public class InvoiceController {
         }
         return CommonResult.ok(invoiceService.getInvoiceListSelective(qryDTO));
     }
+
+    @ApiOperation("获取个人不可报销（报销中、已报销等）的发票列表")
+    @GetMapping("/invoice/list/canNotReimburse")
+    public CommonResult getInvoiceListCanNotReimburse(@RequestParam("ownerId") Long ownerId) {
+        if(ownerId == null) {
+            return CommonResult.fail(401, "用户尚未登录");
+        }
+        return CommonResult.ok(invoiceService.getInvoiceListCanNotReimburse(ownerId));
+    }
 }

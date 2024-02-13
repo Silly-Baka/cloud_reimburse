@@ -52,4 +52,11 @@ public interface InvoiceService extends IService<Invoice> {
     Boolean deleteInvoiceList(List<Long> invoiceIds);
 
     List<InvoiceResultDTO> getInvoiceListSelective(InvoiceQryDTO qryDTO);
+
+    /**
+     * 获取目标用户不可报销的发票列表
+     * @param ownerId 用户id
+     * @return
+     */
+    List<InvoiceResultDTO> getInvoiceListCanNotReimburse(Long ownerId);
 }

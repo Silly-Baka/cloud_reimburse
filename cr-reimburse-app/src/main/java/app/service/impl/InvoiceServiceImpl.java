@@ -116,12 +116,25 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
     @Override
     public List<InvoiceResultDTO> getInvoiceListSelective(InvoiceQryDTO qryDTO) {
         QueryChainWrapper<Invoice> queryChainWrapper = this.query();
+        if(qryDTO.getOwnerId() != null) {
+            queryChainWrapper.eq("owner_id", qryDTO.getOwnerId());
+        }
         if(qryDTO.getIsReimbursed() != null) {
             queryChainWrapper.eq("is_reimbursed", qryDTO.getIsReimbursed());
         }
         List<Invoice> invoiceList = queryChainWrapper.list();
 
 
+        return wrapInvoiceList(invoiceList);
+    }
+
+    @Override
+    public List<InvoiceResultDTO> getInvoiceListCanNotReimburse(Long ownerId) {
+        List<Invoice> invoiceList = this.query()
+                .eq("owner_id", ownerId)
+                // 除了未报销之外的所有发票
+                .ne("is_reimbursed", 0)
+                .list();
         return wrapInvoiceList(invoiceList);
     }
 

@@ -1,5 +1,13 @@
 <template>
   <div class="header-container">
+    <el-button
+      icon="el-icon-back"
+      style="margin-right: 20px"
+      @click="goBack"
+      type="primary"
+      round
+      >返回</el-button
+    >
     <!-- 页头标签页 -->
     <el-tabs
       v-model="activeTab"
@@ -49,15 +57,20 @@ export default {
     };
   },
   methods: {
+    // 返回上一级页面
+    goBack() {
+      this.$router.go(-1);
+    },
+
     handleTabClick() {
       // 处理标签页点击事件
       if (this.activeTab === "expenseInfo") {
-        this.$pushRoute(
+        this.$replaceRoute(
           this.$router,
           "/reimburse/info/daily/" + this.$store.state.sheetId
         );
       } else if (this.activeTab === "flowChart") {
-        this.$pushRoute(
+        this.$replaceRoute(
           this.$router,
           "/reimburse/process/graph/" + this.$store.state.sheetId
         );

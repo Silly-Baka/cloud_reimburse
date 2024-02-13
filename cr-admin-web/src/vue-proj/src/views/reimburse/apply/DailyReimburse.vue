@@ -77,6 +77,37 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="9">
+            <el-form-item label="相关发票" prop="expenseDate">
+              <div>
+                <!-- <span style="margin-left: 20px">顶头span</span> -->
+                <el-select
+                  v-model="selectedInvoiceList"
+                  multiple
+                  placeholder="请选择相关发票"
+                  ref="invoiceSelectBase"
+                  @focus="showInvoiceSelectDialog"
+                >
+                </el-select>
+                <el-dialog :visible.sync="invoiceSelectDialogVisible">
+                  <span slot="title" class="dialog-title">我的票夹</span>
+                  <InvoiceDialog ref="invoiceDialog"></InvoiceDialog>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="invoiceSelectDialogVisible = false"
+                      >取 消</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      @click="selectDialogConfirmHandler()"
+                      >确 定</el-button
+                    >
+                  </span>
+                </el-dialog>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </el-card>
 
@@ -146,7 +177,12 @@
 </template>
 
 <script>
+import InvoiceDialog from "@/components/InvoiceSelectDialog.vue";
+
 export default {
+  components: {
+    InvoiceDialog,
+  },
   data() {
     return {
       // 日常费用报销单信息
@@ -193,6 +229,9 @@ export default {
         4: "交通费",
       },
       selectedRows: [], // 被选中的行
+
+      selectedInvoiceList: [], // 被选中的发票
+      invoiceSelectDialogVisible: false, // 是否展示发票选择dialog
     };
   },
   mounted() {
@@ -316,6 +355,27 @@ export default {
           this.dailySheetInfo = data;
         });
     },
+
+    // 展示发票选择dialog
+    showInvoiceSelectDialog() {
+      // 关闭选择框的下拉
+      this.$refs.invoiceSelectBase.blur();
+      this.invoiceSelectDialogVisible = true;
+    },
+
+    selectDialogConfirmHandler() {
+      var selectedRows = this.$refs.invoiceDialog.selectedRows;
+      // 格式化每个值
+      for (let i = 0; i < selectedRows.length; i++) {
+        selectedRows[i].value = "牛逼" + i;
+        selectedRows[i].key = "牛逼" + i;
+        selectedRows[i].label = "牛逼" + i;
+      }
+      this.selectedInvoiceList = selectedRows;
+
+      console.log(this.selectedInvoiceList);
+      this.invoiceSelectDialogVisible = false;
+    },
   },
 };
 </script>
@@ -342,5 +402,11 @@ export default {
   border-bottom: 2px solid #ccc; /* 下划线样式，可以根据需要调整颜色和粗细 */
   width: 250px; /* 可以根据需要调整宽度 */
   white-space: pre-wrap; /* 保留换行符 */
+}
+
+.dialog-title {
+  width: fit-content;
+  font-size: 26px;
+  font-weight: 600;
 }
 </style>

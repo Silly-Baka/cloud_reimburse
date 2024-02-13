@@ -66,6 +66,11 @@ public class ReimburseApiController {
         return reimburseApi.getInvoiceListSelective(qryDTO);
     }
 
+    @ApiOperation("获取个人不可报销（报销中、已报销等）的发票列表")
+    @GetMapping("/api/v1/invoice/list/canNotReimburse")
+    public CommonResult<List<InvoiceResultDTO>> getInvoiceListCanNotReimburse(@RequestParam("ownerId") Long ownerId) {
+        return reimburseApi.getInvoiceListCanNotReimburse(ownerId);
+    }
 
     // ----------  报销单服务  -------------
 
