@@ -138,6 +138,23 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         return wrapInvoiceList(invoiceList);
     }
 
+    @Override
+    public List<InvoiceResultDTO> getInvoiceListBySheetId(Long sheetId) {
+        List<Invoice> invoiceList = this.query()
+                .eq("sheet_id", sheetId)
+                .list();
+        return wrapInvoiceList(invoiceList);
+    }
+
+    @Override
+    public Boolean updateInvoiceListSheetId(List<Long> invoiceIds, Long sheetId) {
+        boolean result = this.update()
+                .in("id", invoiceIds)
+                .set("sheet_id", sheetId)
+                .update();
+        return result;
+    }
+
 
     private List<InvoiceResultDTO> wrapInvoiceList(List<Invoice> invoiceList) {
         List<InvoiceResultDTO> invoiceResultDTOList = new ArrayList<>();

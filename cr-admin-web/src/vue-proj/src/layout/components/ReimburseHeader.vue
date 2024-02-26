@@ -35,9 +35,9 @@
       >
       <el-button
         type="success"
-        @click="approveExpense"
+        @click="showApproveDialog"
         :class="{ 'none-display': !this.$store.state.isOprUser }"
-        >审核通过</el-button
+        >审批</el-button
       >
       <el-button
         type="warning"
@@ -46,6 +46,22 @@
         >流程转发</el-button
       >
     </div>
+
+    <el-dialog :visible.sync="approveDialogVisible">
+      <span slot="title" class="dialog-title">审批</span>
+      <el-input
+        type="textarea"
+        :rows="2"
+        placeholder="请输入审批意见（若不通过请输入具体原因）"
+        v-model="feedback"
+      >
+      </el-input>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="approveFail">拒绝</el-button>
+        <el-button type="primary" @click="approvePass">审批通过</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -54,6 +70,8 @@ export default {
   data() {
     return {
       activeTab: this.$store.state.activeTab, // 默认显示的标签页
+      approveDialogVisible: false, // 审批浮窗是否可见
+      feedback: "", // 审批或流程转发的反馈信息
     };
   },
   methods: {
@@ -86,10 +104,45 @@ export default {
       }
     },
 
-    approveExpense() {
-      // 审核通过逻辑
-      console.log("Approve Expense");
+    showApproveDialog() {
+      // 打开浮窗
+      this.approveDialogVisible = true;
     },
+
+    // 审批通过
+    approvePass() {
+      this.axios
+        .post("/reimburse/process/change", {
+          processNodeId: this.$store.state.curNodeId,
+          userId: this.$store.state.userId,
+          feedBack: this.feedback,
+        })
+        .then(() => {
+          // 展示审批已通过的浮窗
+          this.approveDialogVisible = false;
+          this.$message({
+            message: "审批已通过，正在跳转待办事件列表...",
+            type: "success",
+          });
+
+          // 将该事件设置为已处理状态
+          this.axios
+            .post("/todo/done", {
+              sheetId: this.$route.params.id,
+              todoUser: this.$store.state.userId,
+            })
+            .then(() => {
+              // 跳转页面至待办事件列表
+              this.$pushRoute(this.$router, "/event/list");
+            });
+        });
+    },
+
+    // 审批不通过
+    approveFail() {
+      this.approveDialogVisible = false;
+    },
+
     forwardExpense() {
       // 流程转发逻辑
       console.log("Forward Expense");

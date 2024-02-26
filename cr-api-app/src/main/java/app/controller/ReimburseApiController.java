@@ -82,8 +82,8 @@ public class ReimburseApiController {
 
     @ApiOperation("流程节点流转")
     @PostMapping("/api/v1/reimburse/process/change")
-    public CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId) {
-        return reimburseApi.processChange(processNodeId, userId);
+    public CommonResult processChange(@RequestBody ProcessChangeReqDTO processChangeReqDTO) {
+        return reimburseApi.processChange(processChangeReqDTO);
     }
 
     @ApiOperation("获取指定用户的报销单列表")

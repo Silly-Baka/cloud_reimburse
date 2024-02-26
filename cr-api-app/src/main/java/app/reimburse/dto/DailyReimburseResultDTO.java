@@ -49,6 +49,11 @@ public class DailyReimburseResultDTO {
      */
     private Long curNodeOprUser;
 
+    /**
+     * 相关发票列表
+     */
+    private List<InvoiceResultDTO> relevantInvoiceList;
+
     private List<DailySheetInfo> dailySheetInfoList;
 
     public Long getId() {
@@ -154,6 +159,14 @@ public class DailyReimburseResultDTO {
 
     public void setCurNodeOprUser(Long curNodeOprUser) {
         this.curNodeOprUser = curNodeOprUser;
+    }
+
+    public List<InvoiceResultDTO> getRelevantInvoiceList() {
+        return relevantInvoiceList;
+    }
+
+    public void setRelevantInvoiceList(List<InvoiceResultDTO> relevantInvoiceList) {
+        this.relevantInvoiceList = relevantInvoiceList;
     }
 
     public List<DailySheetInfo> getDailySheetInfoList() {

@@ -64,7 +64,7 @@ public interface ReimburseApi {
 
     @ApiOperation("流程节点流转")
     @PostMapping("/reimburse/process/change")
-    CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId);
+    CommonResult processChange(@RequestBody  ProcessChangeReqDTO processChangeReqDTO);
 
     @ApiOperation("获取指定用户的报销单列表")
     @GetMapping("/reimburse/listById")

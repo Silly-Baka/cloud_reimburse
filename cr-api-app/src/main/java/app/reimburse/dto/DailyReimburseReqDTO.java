@@ -46,6 +46,11 @@ public class DailyReimburseReqDTO {
     private String relevantProj;
 
     /**
+     * 相关发票列表
+     */
+    private List<InvoiceResultDTO> relevantInvoiceList;
+
+    /**
      * 报销费用事项列表
      */
     private List<DailySheetInfoReqDTO> dailySheetInfoReqDTOList;
@@ -101,6 +106,14 @@ public class DailyReimburseReqDTO {
 
     public void setRelevantProj(String relevantProj) {
         this.relevantProj = relevantProj;
+    }
+
+    public List<InvoiceResultDTO> getRelevantInvoiceList() {
+        return relevantInvoiceList;
+    }
+
+    public void setRelevantInvoiceList(List<InvoiceResultDTO> relevantInvoiceList) {
+        this.relevantInvoiceList = relevantInvoiceList;
     }
 
     public List<DailySheetInfoReqDTO> getDailySheetInfoReqDTOList() {

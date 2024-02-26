@@ -72,6 +72,7 @@
                 <el-input
                   placeholder="请输入相关项目名"
                   v-model="dailySheetInfo.relevantProj"
+                  :disabled="isOprUser()"
                 ></el-input>
               </div>
             </el-form-item>
@@ -83,11 +84,12 @@
               <div>
                 <!-- <span style="margin-left: 20px">顶头span</span> -->
                 <el-select
-                  v-model="selectedInvoiceList"
+                  v-model="dailySheetInfo.relevantInvoiceList"
                   multiple
                   placeholder="请选择相关发票"
                   ref="invoiceSelectBase"
                   @focus="showInvoiceSelectDialog"
+                  :disabled="isOprUser()"
                 >
                 </el-select>
                 <el-dialog :visible.sync="invoiceSelectDialogVisible">
@@ -116,8 +118,13 @@
       <h2 style="padding-left: 40px">费用事项</h2>
       <div class="table-button-container">
         <div style="margin-left: 85%">
-          <el-button @click="addRow" class="add-row-btn">+</el-button>
-          <el-button @click="removeSelectedRow" class="add-row-btn"
+          <el-button @click="addRow" class="add-row-btn" :disabled="isOprUser()"
+            >+</el-button
+          >
+          <el-button
+            @click="removeSelectedRow"
+            class="add-row-btn"
+            :disabled="isOprUser()"
             >-</el-button
           >
         </div>
@@ -129,7 +136,10 @@
           @selection-change="handleSelectionChange"
           :row-key="(row) => row.id"
         >
-          <el-table-column type="selection"></el-table-column>
+          <el-table-column
+            type="selection"
+            :disabled="isOprUser()"
+          ></el-table-column>
           <el-table-column label="费用日期" prop="costDate">
             <template slot-scope="scope">
               <el-date-picker
@@ -178,7 +188,7 @@
 
 <script>
 import InvoiceDialog from "@/components/InvoiceSelectDialog.vue";
-
+import format from "date-fns/format";
 export default {
   components: {
     InvoiceDialog,
@@ -195,8 +205,11 @@ export default {
         relevantProj: "", // 相关项目名
         applicantName: "",
         state: "报销发起", // 报销单状态
+        curNodeId: null, // 当前流程节点id
         curNodeType: "", // 流程状态
         curNodeOprUser: null,
+
+        relevantInvoiceList: [], // 相关发票列表
 
         // 费用事项列表
         dailySheetInfoList: [
@@ -227,6 +240,17 @@ export default {
         2: "培训课程费用",
         3: "电话费",
         4: "交通费",
+      },
+      reimburseStates: {
+        0: "未报销",
+        1: "报销中",
+        2: "已报销",
+      },
+      invoiceTypes: {
+        0: "增值税普通发票",
+        1: "增值税专用发票",
+        2: "增值税电子普通发票",
+        3: "增值税电子专用发票",
       },
       selectedRows: [], // 被选中的行
 
@@ -327,15 +351,35 @@ export default {
 
     // 提交日常报销单
     submitDailyReimburse() {
+      // 格式化发票信息
+      this.formatReimburseList(this.dailySheetInfo.relevantInvoiceList);
+
       this.axios.post("/reimburse/applyDaily", {
         applicantId: this.dailySheetInfo.applicantId,
         price: this.totalPrice,
         name: this.dailySheetInfo.name,
         createTime: this.dailySheetInfo.createTime,
         relevantProj: this.dailySheetInfo.relevantProj,
+        relevantInvoiceList: this.dailySheetInfo.relevantInvoiceList,
         dailySheetInfoReqDTOList: this.dailySheetInfo.dailySheetInfoList,
       });
     },
+
+    // 格式化发票信息
+    formatReimburseList(list) {
+      for (let i = 0; i < list.length; i++) {
+        // 格式化开票日期
+        var tmpDate = new Date(list[i].invDate);
+        list[i].invDate = format(tmpDate, "yyyy-MM-dd");
+
+        // 格式化报销状态
+        list[i].isReimbursed = this.reimburseStates[list[i].isReimbursed];
+
+        // 格式化发票类型
+        list[i].invType = this.invoiceTypes[list[i].invType];
+      }
+    },
+
     // 根据报销单id，获取日常报销单信息
     getDailyReimburseInfo(id) {
       this.axios
@@ -353,6 +397,8 @@ export default {
               this.costTypes[data.dailySheetInfoList[i].costType];
           }
           this.dailySheetInfo = data;
+
+          this.$store.state.curNodeId = data.curNodeId;
         });
     },
 
@@ -371,10 +417,17 @@ export default {
         selectedRows[i].key = "牛逼" + i;
         selectedRows[i].label = "牛逼" + i;
       }
-      this.selectedInvoiceList = selectedRows;
+      this.dailySheetInfo.relevantInvoiceList = selectedRows;
 
-      console.log(this.selectedInvoiceList);
+      console.log(this.dailySheetInfo.relevantInvoiceList);
       this.invoiceSelectDialogVisible = false;
+    },
+
+    isOprUser() {
+      if (this.$store.state.isOprUser === true) {
+        return true;
+      }
+      return false;
     },
   },
 };

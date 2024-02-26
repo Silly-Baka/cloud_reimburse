@@ -59,4 +59,19 @@ public interface InvoiceService extends IService<Invoice> {
      * @return
      */
     List<InvoiceResultDTO> getInvoiceListCanNotReimburse(Long ownerId);
+
+    /**
+     * 根据报销单id获取相关发票列表
+     * @param sheetId 报销单id
+     * @return
+     */
+    List<InvoiceResultDTO> getInvoiceListBySheetId(Long sheetId);
+
+    /**
+     * 更新指定发票列表的sheetId
+     * @param invoiceIds
+     * @param sheetId
+     * @return
+     */
+    Boolean updateInvoiceListSheetId(List<Long> invoiceIds , Long sheetId);
 }

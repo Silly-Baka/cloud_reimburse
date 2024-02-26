@@ -1,6 +1,7 @@
 package app.service.impl;
 
 import app.api.ReimburseApi;
+import app.constants.TodoEventState;
 import app.event.dto.TodoEventQryDTO;
 import app.event.dto.TodoEventResultDTO;
 import app.event.entity.TodoEvent;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static app.constants.TodoEventState.*;
@@ -78,5 +80,17 @@ public class TodoEventServiceImpl extends ServiceImpl<TodoEventMapper, TodoEvent
         result.setRecords(todoEventResultDTOList);
 
         return result;
+    }
+
+    @Override
+    public Boolean doneTodoEvent(Long sheetId, Long todoUser) {
+        Date finishTime = new Date();
+
+        return this.update()
+                .eq("sheet_id", sheetId)
+                .eq("todo_user", todoUser)
+                .set("finish_time", finishTime)
+                .set("state", HANDLED)
+                .update();
     }
 }

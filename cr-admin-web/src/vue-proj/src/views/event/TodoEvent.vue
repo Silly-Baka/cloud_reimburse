@@ -253,6 +253,9 @@ export default {
      * @param {报销单类型} sheetType
      */
     toReimburseSheet(sheetId, sheetType) {
+      // 把state状态设置为当前用户为操作者，便于样式改变
+      this.$store.state.isOprUser = true;
+
       if (sheetType === 0) {
         // 差旅费页面
       } else if (sheetType === 1) {

@@ -39,4 +39,12 @@ public interface TodoEventService extends IService<TodoEvent> {
      * @return
      */
     Page<TodoEventResultDTO> listTodoEvents(@RequestBody TodoEventQryDTO qryDTO);
+
+    /**
+     * 将指定待办事件设置为已处理状态
+     * @param sheetId 报销单id
+     * @param todoUser 执行者id
+     * @return
+     */
+    Boolean doneTodoEvent(Long sheetId, Long todoUser);
 }

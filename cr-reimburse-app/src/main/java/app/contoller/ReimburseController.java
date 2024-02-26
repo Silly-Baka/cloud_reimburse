@@ -2,6 +2,7 @@ package app.contoller;
 
 import app.common.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.ProcessChangeReqDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.service.ReimburseService;
 import io.swagger.annotations.ApiOperation;
@@ -34,8 +35,10 @@ public class ReimburseController {
 
     @ApiOperation("流程节点流转")
     @PostMapping("/reimburse/process/change")
-    public CommonResult processChange(@RequestParam("processNodeId") Long processNodeId, @RequestParam("userId") Long userId,
-                                      @RequestParam("feedBack") String feedBack) {
+    public CommonResult processChange(@RequestBody  ProcessChangeReqDTO processChangeReqDTO) {
+        Long processNodeId = processChangeReqDTO.getProcessNodeId();
+        Long userId = processChangeReqDTO.getUserId();
+        String feedBack = processChangeReqDTO.getFeedBack();
         if(processNodeId == null || userId == null) {
             return CommonResult.fail(400, "请求参数不能为空");
         }

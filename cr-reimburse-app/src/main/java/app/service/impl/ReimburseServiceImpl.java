@@ -5,10 +5,12 @@ import app.constants.CommonState;
 import app.constants.ProcessNodeType;
 import app.reimburse.dto.*;
 import app.reimburse.entity.DailySheetInfo;
+import app.reimburse.entity.Invoice;
 import app.reimburse.entity.ProcessNode;
 import app.reimburse.entity.ReimburseSheet;
 import app.mapper.DailySheetInfoMapper;
 import app.mapper.ReimburseSheetMapper;
+import app.service.InvoiceService;
 import app.service.KafkaService;
 import app.service.ProcessNodeService;
 import app.service.ReimburseService;
@@ -35,6 +37,8 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
     private DailySheetInfoMapper dailySheetInfoMapper;
     @Resource
     private KafkaService kafkaService;
+    @Resource
+    private InvoiceService invoiceService;
     @Resource
     private UserApi userApi;
 
@@ -66,6 +70,13 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
             dailySheetInfoMapper.insert(dailySheetInfo);
         }
 
+        // 修改相关发票的sheet_id信息
+        List<Long> invoiceIds = new ArrayList<>();
+        for (InvoiceResultDTO invoiceResultDTO : dailyReimburseReqDTO.getRelevantInvoiceList()) {
+            invoiceIds.add(invoiceResultDTO.getId());
+        }
+        invoiceService.updateInvoiceListSheetId(invoiceIds, sheetId);
+
         // 4、向当前节点处理者发起待办事件
         kafkaService.sendEventMessage(reimburseSheet, curNode);
 
@@ -89,7 +100,7 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         ProcessNode latestNode = processNodeService.query()
                 .eq("sheet_id", curNode.getSheetId())
                 .eq("state", CommonState.PASS.getVal())
-                .orderByDesc("order")
+                .orderByDesc("`order`")
                 .last("limit 1")
                 .one();
         Integer curOrder = curNode.getOrder();
@@ -111,8 +122,15 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         //DONE：发起待办事件提醒【下一节点的用户】   -->  交给mq
         ProcessNode nextNode = processNodeService.query()
                 .eq("sheet_id", curNode.getSheetId())
-                .eq("order", curOrder + 1)
+                .eq("`order`", curOrder + 1)
                 .one();
+
+        // 将报销单curNodeId修改
+        this.update()
+                .eq("id", reimburseSheet.getId())
+                .set("cur_node_id", nextNode.getId())
+                .update();
+
         kafkaService.sendEventMessage(reimburseSheet, nextNode);
 
         return true;
@@ -165,6 +183,10 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         ProcessNode processNode = processNodeService.getById(reimburseSheet.getCurNodeId());
         result.setCurNodeType(ProcessNodeType.NODE_TYPE_NAMES.get(processNode.getType()));
         result.setCurNodeOprUser(processNode.getOprUser());
+
+        // 查询相关发票
+        List<InvoiceResultDTO> relevantInvoiceList = invoiceService.getInvoiceListBySheetId(sheetId);
+        result.setRelevantInvoiceList(relevantInvoiceList);
 
         return result;
     }

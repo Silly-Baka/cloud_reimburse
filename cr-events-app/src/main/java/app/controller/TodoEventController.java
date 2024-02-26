@@ -1,13 +1,11 @@
 package app.controller;
 
 import app.common.CommonResult;
+import app.event.dto.DoneEventReqDTO;
 import app.event.dto.TodoEventQryDTO;
 import app.service.TodoEventService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -34,5 +32,14 @@ public class TodoEventController {
             qryDTO.setPageSize(20);
         }
         return CommonResult.ok(todoEventService.listTodoEvents(qryDTO));
+    }
+
+    @PostMapping("/todo/done")
+    @ApiOperation("将指定待办事件设置为已处理状态")
+    public CommonResult doneTodoEvent(@RequestBody DoneEventReqDTO doneEventReqDTO) {
+        if(doneEventReqDTO.getSheetId() == null || doneEventReqDTO.getTodoUser() == null) {
+            return CommonResult.fail(400, "请求参数不可为空");
+        }
+        return CommonResult.ok(todoEventService.doneTodoEvent(doneEventReqDTO.getSheetId(), doneEventReqDTO.getTodoUser()));
     }
 }
