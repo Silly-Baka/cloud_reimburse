@@ -27,7 +27,7 @@
             <i class="el-icon-money"></i>
             <span>报销管理</span>
           </template>
-          <el-menu-item index="preApply">事前申请</el-menu-item>
+          <!-- <el-menu-item index="preApply">事前申请</el-menu-item> -->
           <el-submenu index="applyReimburse">
             <template slot="title">
               <span>报销申请</span>
@@ -44,17 +44,20 @@
           <el-menu-item index="myReimburse" @click="goMyReimburse">
             我的报销
           </el-menu-item>
-          <el-menu-item index="reimbuseReview">报销审核</el-menu-item>
+          <!-- <el-menu-item index="reimbuseReview">报销审核</el-menu-item> -->
         </el-submenu>
 
         <!-- 财务处理 -->
-        <el-menu-item index="finance">
+        <el-submenu index="finance">
           <template slot="title">
             <i class="el-icon-bank-card"></i>
             <span>财务处理</span>
           </template>
           <router-link to="/finance"></router-link>
-        </el-menu-item>
+          <el-menu-item index="accountingCenter" @click="goAccountingCenter">
+            结算中心
+          </el-menu-item>
+        </el-submenu>
 
         <!-- 待办事件 -->
         <el-menu-item index="todos" @click="goTodoEvent">
@@ -86,6 +89,9 @@ export default {
     },
     goTodoEvent() {
       this.$pushRoute(this.$router, "/event/list");
+    },
+    goAccountingCenter() {
+      this.$pushRoute(this.$router, "/finance/accounting/center");
     },
   },
 };

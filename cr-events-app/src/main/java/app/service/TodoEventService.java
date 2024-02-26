@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 
 public interface TodoEventService extends IService<TodoEvent> {
 
@@ -47,4 +49,6 @@ public interface TodoEventService extends IService<TodoEvent> {
      * @return
      */
     Boolean doneTodoEvent(Long sheetId, Long todoUser);
+
+    List<Long> getToPayList(Long userId);
 }

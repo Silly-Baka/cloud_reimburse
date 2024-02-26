@@ -148,6 +148,9 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
 
     @Override
     public Boolean updateInvoiceListSheetId(List<Long> invoiceIds, Long sheetId) {
+        if(invoiceIds == null || invoiceIds.size() == 0) {
+            return true;
+        }
         boolean result = this.update()
                 .in("id", invoiceIds)
                 .set("sheet_id", sheetId)

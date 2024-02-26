@@ -19,7 +19,7 @@
         style="padding-left: 40px; margin: 20px auto"
       >
         <el-row>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="报销金额合计" prop="expenseTitle">
               <div class="underline-text">
                 <span style="color: red; font-size: 25px">
@@ -28,10 +28,10 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="申请日期" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">{{
+                <span style="margin-left: 10px">{{
                   dailySheetInfo.createTime
                 }}</span>
               </div>
@@ -39,17 +39,17 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="标题" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">{{ dailySheetInfo.name }}</span>
+                <span style="margin-left: 10px">{{ dailySheetInfo.name }}</span>
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="报销人" prop="expenseTitle">
               <div class="underline-text">
-                <span style="margin-left: 20px">{{
+                <span style="margin-left: 10px">{{
                   dailySheetInfo.applicantName
                 }}</span>
               </div>
@@ -57,16 +57,16 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="报销状态" prop="expenseDate">
               <div class="underline-text">
-                <span style="margin-left: 20px">{{
+                <span style="margin-left: 10px">{{
                   dailySheetInfo.state
                 }}</span>
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="相关项目" prop="relevantProj">
               <div class="underline-text">
                 <el-input
@@ -79,7 +79,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label="相关发票" prop="expenseDate">
               <div>
                 <!-- <span style="margin-left: 20px">顶头span</span> -->
@@ -340,7 +340,12 @@ export default {
       name += "-";
       name += this.$store.state.userInfo.realName || "无名氏";
       name += "-";
+
+      const now = new Date();
+      const hours = ("0" + now.getHours()).slice(-2);
+      const minutes = ("0" + now.getMinutes()).slice(-2);
       name += this.dailySheetInfo.createTime;
+      name += " " + hours + ":" + minutes;
 
       this.dailySheetInfo.name = name;
     },
@@ -354,15 +359,25 @@ export default {
       // 格式化发票信息
       this.formatReimburseList(this.dailySheetInfo.relevantInvoiceList);
 
-      this.axios.post("/reimburse/applyDaily", {
-        applicantId: this.dailySheetInfo.applicantId,
-        price: this.totalPrice,
-        name: this.dailySheetInfo.name,
-        createTime: this.dailySheetInfo.createTime,
-        relevantProj: this.dailySheetInfo.relevantProj,
-        relevantInvoiceList: this.dailySheetInfo.relevantInvoiceList,
-        dailySheetInfoReqDTOList: this.dailySheetInfo.dailySheetInfoList,
-      });
+      this.axios
+        .post("/reimburse/applyDaily", {
+          applicantId: this.dailySheetInfo.applicantId,
+          price: this.totalPrice,
+          name: this.dailySheetInfo.name,
+          createTime: this.dailySheetInfo.createTime,
+          relevantProj: this.dailySheetInfo.relevantProj,
+          relevantInvoiceList: this.dailySheetInfo.relevantInvoiceList,
+          dailySheetInfoReqDTOList: this.dailySheetInfo.dailySheetInfoList,
+        })
+        .then(() => {
+          this.$message({
+            message: "成功发起报销单，正在跳转至个人报销单列表...",
+            type: "success",
+          });
+          setTimeout(() => {
+            this.$pushRoute(this.$router, "/myReimburse");
+          }, 1000);
+        });
     },
 
     // 格式化发票信息
@@ -453,7 +468,7 @@ export default {
 .underline-text {
   border: none;
   border-bottom: 2px solid #ccc; /* 下划线样式，可以根据需要调整颜色和粗细 */
-  width: 250px; /* 可以根据需要调整宽度 */
+  width: 280px; /* 可以根据需要调整宽度 */
   white-space: pre-wrap; /* 保留换行符 */
 }
 

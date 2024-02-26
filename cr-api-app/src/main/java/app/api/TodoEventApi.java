@@ -8,9 +8,12 @@ import app.event.entity.TodoEvent;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Description：待办事件api接口
@@ -29,4 +32,9 @@ public interface TodoEventApi {
     @PostMapping("/todo/done")
     @ApiOperation("将指定待办事件设置为已处理状态")
     CommonResult<Boolean> doneTodoEvent(@RequestBody DoneEventReqDTO doneEventReqDTO);
+
+    @ApiOperation("获取指定用户需要支付的报销单id列表")
+    @GetMapping("/todo/pay/list")
+    CommonResult<List<Long>> getToPayList(@RequestParam("userId") Long userId);
+
 }

@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description：负责待办事件的controller
@@ -41,5 +42,14 @@ public class TodoEventController {
             return CommonResult.fail(400, "请求参数不可为空");
         }
         return CommonResult.ok(todoEventService.doneTodoEvent(doneEventReqDTO.getSheetId(), doneEventReqDTO.getTodoUser()));
+    }
+
+    @ApiOperation("获取指定用户需要支付的报销单id列表")
+    @GetMapping("/todo/pay/list")
+    public  CommonResult getToPayList(@RequestParam Long userId) {
+        if(userId == null) {
+            return CommonResult.fail(400, "请求参数不可为空");
+        }
+        return CommonResult.ok(todoEventService.getToPayList(userId));
     }
 }

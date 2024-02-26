@@ -85,4 +85,17 @@ public interface ReimburseApi {
     @ApiOperation("根据id获取报销单的基本信息（通用信息）")
     @GetMapping("/reimburse/sheet/base")
     CommonResult<ReimburseSheet> getReimburseSheetBase(@RequestParam("sheetId") Long sheetId);
+
+
+    @ApiOperation("为指定报销单列表进行支付")
+    @PostMapping("/finance/pay")
+    CommonResult financePay(@RequestBody FinancePayReqDTO reqDTO);
+
+    @ApiOperation("获取指定用户需支付的报销单列表")
+    @GetMapping("/finance/toPay/list")
+    CommonResult getToPaySheetList(@RequestParam("userId") Long userId);
+
+    @ApiOperation("根据id获取指定报销单的报销金额")
+    @GetMapping("/reimburse/sheet/price")
+    CommonResult getReimburseSheetPrice(@RequestParam("sheetId") Long sheetId);
 }

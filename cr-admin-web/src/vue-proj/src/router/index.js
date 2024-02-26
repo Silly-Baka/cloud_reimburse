@@ -32,6 +32,10 @@ const routes = [
         path: "/event/list",
         component: () => import("../views/event/TodoEvent.vue"),
       },
+      {
+        path: "/finance/accounting/center",
+        component: () => import("../views/finance/accountingCenter.vue"),
+      },
     ],
   },
   {

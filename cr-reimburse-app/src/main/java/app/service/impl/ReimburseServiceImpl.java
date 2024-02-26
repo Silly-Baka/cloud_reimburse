@@ -1,8 +1,10 @@
 package app.service.impl;
 
+import app.api.TodoEventApi;
 import app.api.UserApi;
 import app.constants.CommonState;
 import app.constants.ProcessNodeType;
+import app.event.dto.DoneEventReqDTO;
 import app.reimburse.dto.*;
 import app.reimburse.entity.DailySheetInfo;
 import app.reimburse.entity.Invoice;
@@ -41,6 +43,8 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
     private InvoiceService invoiceService;
     @Resource
     private UserApi userApi;
+    @Resource
+    private TodoEventApi todoEventApi;
 
     @Override
     @Transactional
@@ -116,21 +120,37 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         ReimburseSheet reimburseSheet = reimburseSheetMapper.selectById(curNode.getSheetId());
         kafkaService.sendInmailMessage(reimburseSheet, curNode);
 
-        if(curNode.isLast() == 1) {
-            return true;
-        }
         //DONE：发起待办事件提醒【下一节点的用户】   -->  交给mq
         ProcessNode nextNode = processNodeService.query()
                 .eq("sheet_id", curNode.getSheetId())
                 .eq("`order`", curOrder + 1)
                 .one();
 
-        // 将报销单curNodeId修改
+        // 更新当前节点id
         this.update()
                 .eq("id", reimburseSheet.getId())
                 .set("cur_node_id", nextNode.getId())
                 .update();
 
+        // 如果下一个节点是最后一个节点，直接跳过，并更新报销单状态
+        if(nextNode.isLast() == 1) {
+            // 跳过节点
+            processNodeService.update()
+                    .eq("id", nextNode.getId())
+                    .set("state", CommonState.PASS.getVal())
+                    .update();
+
+            // 更新报销单状态
+            this.update()
+                    .eq("id", reimburseSheet.getId())
+                    .set("state", CommonState.PASS.getVal())
+                    .update();
+
+            // 发站内信提醒用户 报销已完成
+            kafkaService.sendInmailMessage(reimburseSheet, nextNode);
+
+            return true;
+        }
         kafkaService.sendEventMessage(reimburseSheet, nextNode);
 
         return true;
@@ -220,5 +240,60 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         return this.query()
                 .eq("id", sheetId)
                 .one();
+    }
+
+    @Override
+    @Transactional
+    public Boolean financePay(FinancePayReqDTO reqDTO) {
+        for (Long sheetId : reqDTO.getReimburseSheetIdList()) {
+            // 修改报销单支付状态
+            this.update()
+                    .eq("id", sheetId)
+                    .set("pay_state", CommonState.PASS.getVal())
+                    .update();
+
+            // 修改待办事件状态
+            DoneEventReqDTO doneEventReqDTO = new DoneEventReqDTO();
+            doneEventReqDTO.setSheetId(sheetId);
+            doneEventReqDTO.setTodoUser(reqDTO.getTodoUser());
+
+            // 修改节点状态
+            ReimburseSheet reimburseSheet = this.query()
+                    .eq("id", sheetId)
+                    .one();
+            this.processChange(reimburseSheet.getCurNodeId(), reqDTO.getTodoUser(), "");
+
+            todoEventApi.doneTodoEvent(doneEventReqDTO);
+        }
+        return true;
+    }
+
+    @Override
+    public List<ToPaySheetReqDTO> getToPaySheetList(Long userId) {
+
+        // 从todo-event模块获取需支付的报销单id列表
+        List<Long> sheetIdList = todoEventApi.getToPayList(userId).getData();
+
+        List<ToPaySheetReqDTO> result = new ArrayList<>();
+        // 获取报销单信息
+        for (Long sheetId : sheetIdList) {
+            ReimburseSheet reimburseSheet = this.query()
+                    .eq("id", sheetId)
+                    .one();
+
+            ToPaySheetReqDTO toPaySheetReqDTO = BeanUtil.copyProperties(reimburseSheet, ToPaySheetReqDTO.class);
+            toPaySheetReqDTO.setApplicantName(userApi.getUserById(reimburseSheet.getApplicantId()).getData().getRealName());
+
+            result.add(toPaySheetReqDTO);
+        }
+        return result;
+    }
+
+    @Override
+    public Double getReimburseSheetPrice(Long sheetId) {
+        ReimburseSheet reimburseSheet = this.query()
+                .eq("id", sheetId)
+                .one();
+        return reimburseSheet.getPrice();
     }
 }

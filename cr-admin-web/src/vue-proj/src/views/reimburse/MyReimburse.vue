@@ -32,17 +32,31 @@
 
     <!-- 报销单信息表格 -->
     <el-table :data="expenseReports" style="width: 100%; margin-top: 10px">
-      <el-table-column label="报销单名称" prop="name">
+      <el-table-column label="报销单名称" prop="name" width="280px">
         <template slot-scope="scope">
           <router-link :to="'/reimburse/info/daily/' + scope.row.id">
             {{ scope.row.name }}</router-link
           >
         </template>
       </el-table-column>
-      <el-table-column label="报销类型" prop="type"></el-table-column>
-      <el-table-column label="发起日期" prop="createTime"></el-table-column>
-      <el-table-column label="报销金额" prop="price"></el-table-column>
-      <el-table-column label="流程状态" prop="state"></el-table-column>
+      <el-table-column label="报销类型" prop="type" sortable></el-table-column>
+      <el-table-column
+        label="发起日期"
+        prop="createTime"
+        sortable
+      ></el-table-column>
+      <el-table-column label="报销金额" prop="price" sortable></el-table-column>
+      <el-table-column label="流程状态" prop="state" sortable></el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            type="warning"
+            @click="handleSinglePay(scope.row.id, scope.row.price)"
+            round
+            >督办</el-button
+          >
+        </template>
+      </el-table-column>
       <!-- 其他报销单信息列 -->
     </el-table>
   </div>

@@ -93,4 +93,18 @@ public class TodoEventServiceImpl extends ServiceImpl<TodoEventMapper, TodoEvent
                 .set("state", HANDLED)
                 .update();
     }
+
+    @Override
+    public List<Long> getToPayList(Long userId) {
+        List<TodoEvent> todoEventList = this.query()
+                .eq("todo_user", userId)
+                .eq("type", 2)
+                .list();
+
+        List<Long> sheetIds = new ArrayList<>();
+        for (TodoEvent todoEvent : todoEventList) {
+            sheetIds.add(todoEvent.getSheetId());
+        }
+        return sheetIds;
+    }
 }

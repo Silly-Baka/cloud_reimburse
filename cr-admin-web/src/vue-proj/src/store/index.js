@@ -35,6 +35,7 @@ export default new Vuex.Store({
     activeTab: "", // 目前所在的标签页
     invoiceId: null, // 目前正在编写的发票id
     curNodeId: null, // 报销单当前流程节点id
+    payAmount: null,
   },
   mutations: {
     saveToken(state, token) {
@@ -60,6 +61,9 @@ export default new Vuex.Store({
     },
     saveCurNodeId(state, curNodeId) {
       state.curNodeId = curNodeId;
+    },
+    savePayAmount(state, payAmount) {
+      state.payAmount = payAmount;
     },
   },
   plugins: [

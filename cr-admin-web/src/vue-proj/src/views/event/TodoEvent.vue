@@ -72,11 +72,25 @@
         </el-pagination>
       </div>
     </el-footer>
+
+    <el-dialog :visible.sync="payDialogVisible">
+      <span slot="title" class="dialog-title">付款支付</span>
+      <PaymentDialog ref="paymentDialog"></PaymentDialog>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="payDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleRealPay">支付</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import PaymentDialog from "@/components/PaymentDialog.vue";
+
 export default {
+  components: {
+    PaymentDialog,
+  },
   data() {
     return {
       currentPage: null, // 当前页号
@@ -135,6 +149,9 @@ export default {
         2: "业务招待费用",
       },
       showType: "all",
+
+      payDialogVisible: false, // 支付浮窗是否可见
+      paySheetId: null, // 正在支付的报销单id
     };
   },
   mounted() {
@@ -243,7 +260,20 @@ export default {
         // 业务审批，跳转至报销单页面
         this.toReimburseSheet(event.sheetId, event.sheetType);
       } else if (event.type === 2) {
-        // 出纳付款，跳转至财务页面
+        // 出纳付款
+        // 1、先获取该事件对应的报销金额
+        this.axios
+          .get("/reimburse/sheet/price", {
+            params: {
+              sheetId: event.sheetId,
+            },
+          })
+          .then((response) => {
+            this.$store.state.payAmount = response.data;
+            this.paySheetId = event.sheetId;
+            // 2、展示付款dialog
+            this.payDialogVisible = true;
+          });
       }
     },
 
@@ -264,6 +294,27 @@ export default {
       } else if (sheetType === 2) {
         // 业务招待费页面
       }
+    },
+
+    // 处理支付逻辑
+    handleRealPay() {
+      var arr = new Array();
+      arr.push(this.paySheetId);
+      this.axios
+        .post("/finance/pay", {
+          reimburseSheetIdList: arr,
+          todoUser: this.$store.state.userId,
+        })
+        .then(() => {
+          // 展示支付成功界面
+          this.$message({
+            message: "支付成功",
+            type: "success",
+          });
+          this.payDialogVisible = false;
+
+          location.reload(); //刷新当前页面
+        });
     },
   },
 };

@@ -73,6 +73,11 @@ public class ReimburseSheet {
      */
     private String relevantProj;
 
+    /**
+     * 支付状态，0-未支付，1-已支付
+     */
+    private Integer payState;
+
 
     public Long getId() {
         return id;
@@ -152,5 +157,13 @@ public class ReimburseSheet {
 
     public void setRelevantProj(String relevantProj) {
         this.relevantProj = relevantProj;
+    }
+
+    public Integer getPayState() {
+        return payState;
+    }
+
+    public void setPayState(Integer payState) {
+        this.payState = payState;
     }
 }

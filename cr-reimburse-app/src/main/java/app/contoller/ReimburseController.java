@@ -2,6 +2,7 @@ package app.contoller;
 
 import app.common.CommonResult;
 import app.reimburse.dto.DailyReimburseReqDTO;
+import app.reimburse.dto.FinancePayReqDTO;
 import app.reimburse.dto.ProcessChangeReqDTO;
 import app.reimburse.dto.ReimburseSheetQryDTO;
 import app.service.ReimburseService;
@@ -88,5 +89,32 @@ public class ReimburseController {
             return CommonResult.fail(400, "报销单id不可为空");
         }
         return CommonResult.ok(reimburseService.getReimburseSheetBase(sheetId));
+    }
+
+    @ApiOperation("为指定报销单列表进行支付")
+    @PostMapping("/finance/pay")
+    public CommonResult financePay(@RequestBody FinancePayReqDTO reqDTO) {
+        if(reqDTO.getReimburseSheetIdList() == null || reqDTO.getReimburseSheetIdList().size() == 0) {
+            return CommonResult.fail(400, "支付条目不可为空");
+        }
+        return CommonResult.ok(reimburseService.financePay(reqDTO));
+    }
+
+    @ApiOperation("获取指定用户需支付的报销单列表")
+    @GetMapping("/finance/toPay/list")
+    public CommonResult getToPaySheetList(@RequestParam("userId") Long userId) {
+        if(userId == null) {
+            return CommonResult.fail(401, "用户id不可为空");
+        }
+        return CommonResult.ok(reimburseService.getToPaySheetList(userId));
+    }
+
+    @ApiOperation("根据id获取指定报销单的报销金额")
+    @GetMapping("/reimburse/sheet/price")
+    public CommonResult getReimburseSheetPrice(@RequestParam("sheetId") Long sheetId) {
+        if(sheetId == null) {
+            return CommonResult.fail(400, "报销单id不可为空");
+        }
+        return CommonResult.ok(reimburseService.getReimburseSheetPrice(sheetId));
     }
 }

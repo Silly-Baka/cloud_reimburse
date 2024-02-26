@@ -115,4 +115,22 @@ public class ReimburseApiController {
     public CommonResult<ReimburseSheet> getReimburseSheetBase(@RequestParam("sheetId") Long sheetId) {
         return reimburseApi.getReimburseSheetBase(sheetId);
     }
+
+    @ApiOperation("为指定报销单列表进行支付")
+    @PostMapping("/api/v1/finance/pay")
+    public CommonResult financePay(@RequestBody FinancePayReqDTO reqDTO) {
+        return reimburseApi.financePay(reqDTO);
+    }
+
+    @ApiOperation("获取指定用户需支付的报销单列表")
+    @GetMapping("/api/v1/finance/toPay/list")
+    public CommonResult getToPaySheetList(@RequestParam("userId") Long userId) {
+        return reimburseApi.getToPaySheetList(userId);
+    }
+
+    @ApiOperation("根据id获取指定报销单的报销金额")
+    @GetMapping("/api/v1/reimburse/sheet/price")
+    public CommonResult getReimburseSheetPrice(@RequestParam("sheetId") Long sheetId) {
+        return reimburseApi.getReimburseSheetPrice(sheetId);
+    }
 }
