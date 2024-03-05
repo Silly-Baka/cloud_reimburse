@@ -65,6 +65,11 @@ public class Message {
      */
     private String redirectUrl;
 
+    /**
+     * 目标实体id
+     */
+    private Long entityId;
+
 
     public Long getId() {
         return id;
@@ -128,5 +133,13 @@ public class Message {
 
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
 }

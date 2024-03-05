@@ -1,10 +1,7 @@
 package app.contoller;
 
 import app.common.CommonResult;
-import app.reimburse.dto.DailyReimburseReqDTO;
-import app.reimburse.dto.FinancePayReqDTO;
-import app.reimburse.dto.ProcessChangeReqDTO;
-import app.reimburse.dto.ReimburseSheetQryDTO;
+import app.reimburse.dto.*;
 import app.service.ReimburseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -116,5 +113,14 @@ public class ReimburseController {
             return CommonResult.fail(400, "报销单id不可为空");
         }
         return CommonResult.ok(reimburseService.getReimburseSheetPrice(sheetId));
+    }
+
+    @ApiOperation("流程督办")
+    @PostMapping("/reimburse/supervise")
+    public CommonResult superviseSheet(@RequestBody SuperviseSheetReqDTO reqDTO) {
+        if(reqDTO == null || reqDTO.getSheetId() == null) {
+            return CommonResult.fail(400, "未知错误，请求失败");
+        }
+        return CommonResult.ok(reimburseService.superviseSheet(reqDTO));
     }
 }

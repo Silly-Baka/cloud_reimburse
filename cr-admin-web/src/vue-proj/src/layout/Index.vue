@@ -1,11 +1,13 @@
 <template>
   <div>
-    <el-container>
+    <el-container style="height: 100vh">
       <!-- 头部 -->
-      <el-header>Header</el-header>
-      <el-container>
+      <el-header>
+        <IndexHeader></IndexHeader>
+      </el-header>
+      <el-container height="100%">
         <!-- 侧边栏 -->
-        <el-aside width="200px">
+        <el-aside width="15%">
           <SideBar />
         </el-aside>
         <!-- 页面主体内容 -->
@@ -19,11 +21,13 @@
 
 <script>
 import SideBar from "./components/SideBar.vue";
+import IndexHeader from "./components/IndexHeader.vue";
 
 export default {
   name: "index-view",
   components: {
     SideBar,
+    IndexHeader,
   },
   data() {
     return {
@@ -41,7 +45,6 @@ export default {
   background-color: #b3c0d1;
   color: #333;
   text-align: center;
-  line-height: 60px;
 }
 .el-main {
   background-color: #e9eef3;

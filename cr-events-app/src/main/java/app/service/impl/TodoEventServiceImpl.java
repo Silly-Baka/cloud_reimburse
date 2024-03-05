@@ -47,7 +47,7 @@ public class TodoEventServiceImpl extends ServiceImpl<TodoEventMapper, TodoEvent
     public int getOutOfTimeEventsNum(Long userId) {
         return this.query()
                 .eq("todo_user", userId)
-                .ne("state", OUT_OF_TIME)
+                .eq("state", OUT_OF_TIME)
                 .count();
     }
 
@@ -77,6 +77,11 @@ public class TodoEventServiceImpl extends ServiceImpl<TodoEventMapper, TodoEvent
         }
         Page<TodoEventResultDTO> result = new Page<>();
         BeanUtil.copyProperties(todoEventPage, result);
+
+        // 按照发起日期倒序排序
+        todoEventResultDTOList.sort(((o1, o2) -> {
+            return -o1.getCreateTime().compareTo(o2.getCreateTime());
+        }));
         result.setRecords(todoEventResultDTOList);
 
         return result;

@@ -100,7 +100,6 @@ export default {
 <style scoped>
 /* 样式可以根据实际需求进行调整 */
 .sidebar {
-  width: 200px;
   color: white;
 }
 

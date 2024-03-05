@@ -133,4 +133,10 @@ public class ReimburseApiController {
     public CommonResult getReimburseSheetPrice(@RequestParam("sheetId") Long sheetId) {
         return reimburseApi.getReimburseSheetPrice(sheetId);
     }
+
+    @ApiOperation("流程督办")
+    @PostMapping("/api/v1/reimburse/supervise")
+    public CommonResult superviseSheet(@RequestBody SuperviseSheetReqDTO reqDTO) {
+        return reimburseApi.superviseSheet(reqDTO);
+    }
 }

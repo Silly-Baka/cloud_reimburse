@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="page-title">云报销管理系统</h1>
-    <router-link to="/testGraph">测试用</router-link>
+    <!-- <router-link to="/testGraph">测试用</router-link> -->
     <div class="login-container">
       <h2>登录系统</h2>
       <form @submit.prevent="login">

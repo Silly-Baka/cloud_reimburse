@@ -98,4 +98,8 @@ public interface ReimburseApi {
     @ApiOperation("根据id获取指定报销单的报销金额")
     @GetMapping("/reimburse/sheet/price")
     CommonResult getReimburseSheetPrice(@RequestParam("sheetId") Long sheetId);
+
+    @ApiOperation("流程督办")
+    @PostMapping("/reimburse/supervise")
+    CommonResult superviseSheet(@RequestBody SuperviseSheetReqDTO reqDTO);
 }

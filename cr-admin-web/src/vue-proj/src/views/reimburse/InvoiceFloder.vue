@@ -108,6 +108,13 @@
           <el-table-column label="开票日期" prop="invDate" width="110" sortable>
           </el-table-column>
           <el-table-column
+            label="上传日期"
+            prop="uploadDate"
+            width="110"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
             label="发票代码"
             prop="invCode"
             width="120"
@@ -226,6 +233,7 @@ export default {
           isReimbursed: "已报销", // 是否已报销，0-否，1-报销中，2-已报销
           reimbursedDate: "2024-01-13", // 报销日期
           sheetId: null, // 所处报销单id
+          uploadDate: null, //上传日期
 
           // 具体费项信息列表
           invoiceInfoList: [
@@ -323,9 +331,12 @@ export default {
 
     formatReimburseList(list) {
       for (let i = 0; i < list.length; i++) {
-        // 格式化开票日期
+        // 格式化日期
         var tmpDate = new Date(list[i].invDate);
         list[i].invDate = format(tmpDate, "yyyy-MM-dd");
+
+        tmpDate = new Date(list[i].uploadDate);
+        list[i].uploadDate = format(tmpDate, "yyyy-MM-dd");
 
         // 格式化报销状态
         list[i].isReimbursed = this.reimburseStates[list[i].isReimbursed];

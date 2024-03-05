@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         Invoice invoice = BeanUtil.copyProperties(invoiceAddDTO, Invoice.class);
         invoice.setId(IdGenerator.getUniqueId(Invoice.class));
         invoice.setIsReimbursed(0);   //TODO：补充常量值
+        invoice.setUploadDate(new Date());
 
         // 入库发票
         this.save(invoice);
@@ -124,6 +126,9 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         }
         List<Invoice> invoiceList = queryChainWrapper.list();
 
+        invoiceList.sort((o1, o2) -> {
+            return -o1.getUploadDate().compareTo(o2.getUploadDate());
+        });
 
         return wrapInvoiceList(invoiceList);
     }

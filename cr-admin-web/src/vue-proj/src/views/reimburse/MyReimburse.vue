@@ -31,7 +31,11 @@
     </div>
 
     <!-- 报销单信息表格 -->
-    <el-table :data="expenseReports" style="width: 100%; margin-top: 10px">
+    <el-table
+      :data="reimburstSheetList"
+      style="width: 100%; margin-top: 10px"
+      :row-class-name="tableRowClassName"
+    >
       <el-table-column label="报销单名称" prop="name" width="280px">
         <template slot-scope="scope">
           <router-link :to="'/reimburse/info/daily/' + scope.row.id">
@@ -51,7 +55,14 @@
         <template slot-scope="scope">
           <el-button
             type="warning"
-            @click="handleSinglePay(scope.row.id, scope.row.price)"
+            :class="{ 'display-none': scope.row.state === '报销完成' }"
+            @click="
+              handlerSupervise(
+                scope.row.id,
+                scope.row.name,
+                scope.row.curNodeId
+              )
+            "
             round
             >督办</el-button
           >
@@ -70,7 +81,11 @@ export default {
         state: "", // 流程状态
         dateRange: [], // 事件范围
       },
-      expenseReports: [], // 报销单信息表格数据
+      reimburstSheetList: [
+        {
+          state: "报销完成",
+        },
+      ], // 报销单信息表格数据
       sheetState: {
         "-1": "报销失败",
         0: "报销中",
@@ -107,7 +122,7 @@ export default {
           // 将常量值转换为常量名
           var data = response.data;
           this.changeConstants(data);
-          this.expenseReports = data;
+          this.reimburstSheetList = data;
         });
     },
     // 将每一个报销单信息的常量值转化为常量名
@@ -116,6 +131,31 @@ export default {
         sheetList[i].type = this.sheetTypes[sheetList[i].type];
         sheetList[i].state = this.sheetState[sheetList[i].state];
       }
+    },
+
+    handlerSupervise(sheetId, sheetName, curNodeId) {
+      this.axios
+        .post("/reimburse/supervise", {
+          sheetId: sheetId,
+          sheetName: sheetName,
+          curNodeId: curNodeId,
+        })
+        .then(() => {
+          this.$message({
+            message: "成功督办此流程，请耐心等待工作人员处理！",
+            type: "success",
+          });
+        });
+    },
+
+    // 根据每一行的状态改变其样式
+    tableRowClassName({ row, rowIndex }) {
+      console.log(row.state, rowIndex);
+      if (row.state === "报销完成") {
+        console.log("牛逼！换颜色了");
+        return "success-row";
+      }
+      return "";
     },
   },
   mounted() {
@@ -130,16 +170,20 @@ export default {
         // 将常量值转换为常量名
         var data = response.data;
         this.changeConstants(data);
-        this.expenseReports = data;
+        this.reimburstSheetList = data;
       });
   },
 };
 </script>
 
-<style scoped>
+<style>
 .el-table {
   margin-top: 0px;
   line-height: 0px;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 
 /* .search-style {
@@ -147,4 +191,7 @@ export default {
   margin-bottom: 5px;
   display: inline-block;
 } */
+.display-none {
+  display: none;
+}
 </style>

@@ -36,6 +36,10 @@ const routes = [
         path: "/finance/accounting/center",
         component: () => import("../views/finance/accountingCenter.vue"),
       },
+      {
+        path: "/user/info",
+        component: () => import("../views/user/UserInfo.vue"),
+      },
     ],
   },
   {
@@ -57,12 +61,12 @@ const routes = [
     ],
   },
   {
-    path: "/test",
-    component: () => import("../views/testView.vue"),
-  },
-  {
     path: "/invoice/floder",
     component: () => import("../views/reimburse/InvoiceFloder.vue"),
+  },
+  {
+    path: "/text/header",
+    component: () => import("../layout/components/IndexHeader.vue"),
   },
 ];
 

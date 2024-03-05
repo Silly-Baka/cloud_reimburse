@@ -27,8 +27,7 @@ import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.Calendar;
 
-import static app.constants.InmailContentFormat.NEW_EVENT_FORMAT;
-import static app.constants.InmailContentFormat.PROCESS_CHANGE_FORMAT;
+import static app.constants.InmailContentFormat.*;
 import static app.constants.InmailType.*;
 import static app.constants.ProcessNodeType.NODE_TYPE_NAMES;
 
@@ -75,29 +74,38 @@ public class MessageConsumerService {
         message.setCreateTime(new Date(record.timestamp()));
 
         String content = "";
+        ReimburseSheet reimburseSheet = inmailMessage.getReimburseSheet();
+        TodoEvent todoEvent = inmailMessage.getTodoEvent();
+        ProcessNode processNode = inmailMessage.getProcessNode();
         switch (inmailMessage.getInmailType()) {
             case PROCESS_CHANGE:
-                ReimburseSheet reimburseSheet = inmailMessage.getReimburseSheet();
-                ProcessNode processNode = inmailMessage.getProcessNode();
-                message.setMsgType(PROCESS_CHANGE);
+                message.setMsgType(1);
                 message.setTo(reimburseSheet.getApplicantId());
                 content = contentFormatter.processChangeContent(reimburseSheet, processNode);
+                message.setEntityId(reimburseSheet.getId());
+
                 break;
 
             case NEW_EVENT:
                 //DONE：待补充逻辑
-                TodoEvent todoEvent = inmailMessage.getTodoEvent();
-                message.setMsgType(NEW_EVENT);
+                message.setMsgType(2);
                 message.setTo(todoEvent.getTodoUser());
                 content = contentFormatter.newEventContent(todoEvent);
+                message.setEntityId(todoEvent.getId());
                 break;
 
             case PROCESS_SUPERVISE:
                 //TODO：待补充逻辑
+                message.setMsgType(2);
+                message.setEntityId(reimburseSheet.getId());
+                message.setTo(processNode.getOprUser());
+                content = contentFormatter.processSuperviseContent(reimburseSheet.getName(), processNode.getType());
+
                 break;
 
             case TIMEOUT_EVENT:
                 //TODO：待补充定时查询超时事件的逻辑
+                message.setMsgType(2);
                 break;
 
             default:
@@ -205,14 +213,18 @@ public class MessageConsumerService {
          * @return
          */
         public String newEventContent(TodoEvent todoEvent) {
-            //TODO：待补充额外逻辑
+            //DONE：待补充额外逻辑
             Long userId = todoEvent.getTodoUser();
 
             int unhandledEventsNum = todoEventService.getUnhandledEventsNum(userId);
             int supervisedEventsNum = todoEventService.getSupervisedEventsNum(userId);
             int outOfTimeEventsNum = todoEventService.getOutOfTimeEventsNum(userId);
 
-            return String.format(NEW_EVENT_FORMAT, unhandledEventsNum, supervisedEventsNum, outOfTimeEventsNum);
+            return String.format(NEW_EVENT_FORMAT, todoEvent.getDescription(), unhandledEventsNum, supervisedEventsNum, outOfTimeEventsNum);
+        }
+
+        public String processSuperviseContent(String sheetName, Integer processNodeType) {
+            return String.format(PROCESS_SUPERVISE_FORMAT, sheetName, NODE_TYPE_NAMES.get(processNodeType));
         }
 
     }

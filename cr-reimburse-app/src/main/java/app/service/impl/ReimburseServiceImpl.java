@@ -3,6 +3,7 @@ package app.service.impl;
 import app.api.TodoEventApi;
 import app.api.UserApi;
 import app.constants.CommonState;
+import app.constants.InmailType;
 import app.constants.ProcessNodeType;
 import app.event.dto.DoneEventReqDTO;
 import app.reimburse.dto.*;
@@ -118,7 +119,7 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
 
         //DONE：发起站内信提醒【发起流程的用户】   -->  交给mq，
         ReimburseSheet reimburseSheet = reimburseSheetMapper.selectById(curNode.getSheetId());
-        kafkaService.sendInmailMessage(reimburseSheet, curNode);
+        kafkaService.sendInmailMessage(reimburseSheet, curNode, InmailType.PROCESS_CHANGE);
 
         //DONE：发起待办事件提醒【下一节点的用户】   -->  交给mq
         ProcessNode nextNode = processNodeService.query()
@@ -147,7 +148,7 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
                     .update();
 
             // 发站内信提醒用户 报销已完成
-            kafkaService.sendInmailMessage(reimburseSheet, nextNode);
+            kafkaService.sendInmailMessage(reimburseSheet, nextNode, InmailType.PROCESS_CHANGE);
 
             return true;
         }
@@ -158,9 +159,15 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
 
     @Override
     public List<ReimburseSheet> getReimburseList(Long userId) {
-        return this.query()
+        List<ReimburseSheet> reimburseSheetList = this.query()
                 .eq("applicant_id", userId)
                 .list();
+
+        reimburseSheetList.sort((o1, o2) -> {
+            return -o1.getCreateTime().compareTo(o2.getCreateTime());
+        });
+
+        return reimburseSheetList;
     }
 
     @Override
@@ -178,7 +185,14 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
         if(qryDTO.getState() != null){
             queryChainWrapper.eq("state", qryDTO.getState());
         }
-        return queryChainWrapper.list();
+        List<ReimburseSheet> reimburseSheetList = queryChainWrapper.list();
+
+
+        reimburseSheetList.sort((o1, o2) -> {
+            return -o1.getCreateTime().compareTo(o2.getCreateTime());
+        });
+
+        return reimburseSheetList;
     }
 
     @Override
@@ -295,5 +309,23 @@ public class ReimburseServiceImpl extends ServiceImpl<ReimburseSheetMapper, Reim
                 .eq("id", sheetId)
                 .one();
         return reimburseSheet.getPrice();
+    }
+
+    @Override
+    public Boolean superviseSheet(SuperviseSheetReqDTO reqDTO) {
+
+        // 查询目标报销单目前所处的报销节点
+        ProcessNode processNode = processNodeService.query()
+                .eq("id", reqDTO.getCurNodeId())
+                .one();
+
+        // 发送给消息中心处理
+        ReimburseSheet reimburseSheet = new ReimburseSheet();
+        reimburseSheet.setId(reqDTO.getSheetId());
+        reimburseSheet.setName(reqDTO.getSheetName());
+
+        kafkaService.sendInmailMessage(reimburseSheet, processNode, InmailType.PROCESS_SUPERVISE);
+
+        return true;
     }
 }

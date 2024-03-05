@@ -57,14 +57,14 @@ public class KafkaService {
     }
 
     /**
-     * 发起站内信通知报销单的发起者
+     * 发起站内信
      * @param reimburseSheet 报销单信息
      * @param curNode 当前流程节点
      */
-    public void sendInmailMessage(ReimburseSheet reimburseSheet, ProcessNode curNode) {
+    public void sendInmailMessage(ReimburseSheet reimburseSheet, ProcessNode curNode, Integer inmailType) {
         InmailMessage inmailMessage = new InmailMessage();
         inmailMessage.setId(IdGenerator.getUniqueId(InmailMessage.class));
-        inmailMessage.setInmailType(1);
+        inmailMessage.setInmailType(inmailType);
         inmailMessage.setReimburseSheet(reimburseSheet);
         inmailMessage.setProcessNode(curNode);
 

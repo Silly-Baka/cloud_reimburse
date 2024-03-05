@@ -95,6 +95,11 @@ public class Invoice {
      */
     private Integer isReimbursed;
 
+    /**
+     * 上传日期
+     */
+    private Date uploadDate;
+
     public Long getId() {
         return id;
     }
@@ -213,5 +218,13 @@ public class Invoice {
 
     public void setIsReimbursed(Integer isReimbursed) {
         this.isReimbursed = isReimbursed;
+    }
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
     }
 }

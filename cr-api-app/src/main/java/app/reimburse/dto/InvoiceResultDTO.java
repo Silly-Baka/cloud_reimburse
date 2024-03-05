@@ -103,6 +103,11 @@ public class InvoiceResultDTO {
      */
     private List<InvoiceInfo> invoiceInfoList;
 
+    /**
+     * 上传日期
+     */
+    private Date uploadDate;
+
     public Long getId() {
         return id;
     }
@@ -237,5 +242,13 @@ public class InvoiceResultDTO {
 
     public void setInvoiceInfoList(List<InvoiceInfo> invoiceInfoList) {
         this.invoiceInfoList = invoiceInfoList;
+    }
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
     }
 }

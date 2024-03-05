@@ -82,4 +82,11 @@ public interface ReimburseService extends IService<ReimburseSheet> {
      * @return
      */
     Double getReimburseSheetPrice(Long sheetId);
+
+    /**
+     * 流程督办
+     * @param reqDTO
+     * @return
+     */
+    Boolean superviseSheet(SuperviseSheetReqDTO reqDTO);
 }
