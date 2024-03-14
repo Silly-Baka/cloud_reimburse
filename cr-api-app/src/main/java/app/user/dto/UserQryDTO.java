@@ -10,6 +10,16 @@ package app.user.dto;
 public class UserQryDTO {
 
     /**
+     * 当前页
+     */
+    private Integer pageNum;
+
+    /**
+     * 页大小
+     */
+    private Integer pageSize;
+
+    /**
      * 用户id
      */
     private Long id;
@@ -98,5 +108,21 @@ public class UserQryDTO {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

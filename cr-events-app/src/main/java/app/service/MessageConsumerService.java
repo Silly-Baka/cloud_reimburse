@@ -58,7 +58,7 @@ public class MessageConsumerService {
 
     private final InmailContentFormatter contentFormatter = new InmailContentFormatter();
 
-    @KafkaListener(topics = {"${kafka.topic.inmail-topic}"}, groupId = "group1")
+    @KafkaListener(topics = {"${kafka.topic.inmail-topic}"}, groupId = "group0")
     public void consumeInmailMessage(ConsumerRecord<String, InmailMessage> record) {
         LOGGER.info("接收到来自topic[{}], partition[{}]的消息 --> {}", inmailTopic, record.partition(), record.value());
 
@@ -117,7 +117,7 @@ public class MessageConsumerService {
         LOGGER.info("成功消费消息：topic[{}], id[{}]", inmailTopic, inmailMessage.getId());
     }
 
-    @KafkaListener(topics = {"${kafka.topic.event-topic}"}, groupId = "group1")
+    @KafkaListener(topics = {"${kafka.topic.event-topic}"}, groupId = "group0")
     public void consumeEventMessage(ConsumerRecord<String, EventMessage> record) {
         LOGGER.info("接收到来自topic[{}], partition[{}]的消息 --> {}", eventTopic, record.partition(), record.value());
         EventMessage eventMessage = record.value();

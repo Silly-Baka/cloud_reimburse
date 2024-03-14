@@ -1,5 +1,8 @@
 package app.service.impl;
 
+import app.mapper.UserRoleRelMapper;
+import app.service.RoleService;
+import app.user.entity.Role;
 import app.user.entity.RoleAuthRel;
 import app.user.entity.UserRoleRel;
 import app.service.RoleAuthRelService;
@@ -9,6 +12,7 @@ import app.utils.IdGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description：
@@ -24,6 +28,10 @@ public class RoleAuthServiceImpl implements RoleAuthService {
     private UserRoleRelService userRoleRelService;
     @Resource
     private RoleAuthRelService roleAuthRelService;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private UserRoleRelMapper userRoleRelMapper;
 
     @Override
     public Boolean setRole(Long userId, Long roleId) {
@@ -46,4 +54,15 @@ public class RoleAuthServiceImpl implements RoleAuthService {
 
         return roleAuthRelService.save(entity);
     }
+
+    @Override
+    public List<Role> getRoleList() {
+        return roleService.query().list();
+    }
+
+    @Override
+    public Role getRoleByUserId(Long userId) {
+        return userRoleRelMapper.getRoleByUserId(userId);
+    }
+
 }

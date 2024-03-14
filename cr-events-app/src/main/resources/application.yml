@@ -5,7 +5,7 @@ spring:
   kafka:
     bootstrap-servers: 192.168.75.100:9092
     consumer:
-      auto-offset-reset: earliest  # 重连后offset设置为最初值
+      auto-offset-reset: latest  # 重连后offset设置为最初值
 
       key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

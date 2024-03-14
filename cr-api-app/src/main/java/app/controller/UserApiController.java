@@ -3,6 +3,8 @@ package app.controller;
 import app.api.RoleAuthApi;
 import app.api.UserApi;
 import app.CommonResult;
+import app.user.dto.UpdateUserRoleReqDTO;
+import app.user.dto.UserQryDTO;
 import app.user.entity.Authority;
 import app.user.entity.User;
 import io.swagger.annotations.ApiOperation;
@@ -52,26 +54,41 @@ public class UserApiController {
         return userApi.updatePwd(username, email, curPwd, newPwd);
     }
 
-
+    @ApiOperation("条件查询用户信息")
+    @PostMapping("/api/v1/user/list/selective")
+    public CommonResult getUserListSelective(@RequestBody UserQryDTO qryDTO) {
+        return userApi.getUserListSelective(qryDTO);
+    }
 
     @ApiOperation("增加权限单元，目前仅供开发使用")
-    @PostMapping("/api/v1/user/addAuth")
+    @PostMapping("/api/v1/role/addAuth")
     public CommonResult addAuth(@RequestBody Authority authority) {
         return roleAuthApi.addAuth(authority);
     }
 
     @ApiOperation("为指定用户设置角色")
-    @PostMapping("/api/v1/user/setRole")
+    @PostMapping("/api/v1/role/setRole")
     public CommonResult setRole(@RequestParam("userId") Long userId, @RequestParam("roleId") Long roleId) {
 
         return roleAuthApi.setRole(userId, roleId);
     }
 
     @ApiOperation("为指定角色添加权限")
-    @PostMapping("/api/v1/user/addRoleAuth")
+    @PostMapping("/api/v1/role/addRoleAuth")
     public CommonResult addRoleAuth(@RequestParam("roleId") Long roleId, @RequestParam("authId") Long authId) {
 
         return roleAuthApi.addRoleAuth(roleId, authId);
     }
 
+    @ApiOperation("获取角色列表")
+    @GetMapping("/api/v1/role/list")
+    public CommonResult getRoleList() {
+        return roleAuthApi.getRoleList();
+    }
+
+    @ApiOperation("更新用户的角色")
+    @PostMapping("/api/v1/user/updateRole")
+    public CommonResult updateUserRole(@RequestBody UpdateUserRoleReqDTO reqDTO) {
+        return userApi.updateUserRole(reqDTO);
+    }
 }

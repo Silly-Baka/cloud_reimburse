@@ -9,16 +9,18 @@
             批量操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查验</el-dropdown-item>
-            <el-dropdown-item>核销</el-dropdown-item>
-            <el-dropdown-item>下载</el-dropdown-item>
+            <!-- <el-dropdown-item>查验</el-dropdown-item> -->
+            <!-- <el-dropdown-item>核销</el-dropdown-item> -->
+            <el-dropdown-item @click="downloadInvoiceFile"
+              >下载文件</el-dropdown-item
+            >
             <el-dropdown-item @click.native="removeSelectedInvoice"
               >删除</el-dropdown-item
             >
             <!-- <el-dropdown-item>编辑</el-dropdown-item> -->
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button class="header-button">发起报销</el-button>
+        <!-- <el-button class="header-button">发起报销</el-button> -->
         <el-button class="header-button" @click="addDialogVisable = true"
           >手动录入</el-button
         >
@@ -51,7 +53,7 @@
             >
           </div>
         </el-dialog>
-        <el-button class="header-button">文件识别</el-button>
+        <!-- <el-button class="header-button">文件识别</el-button> -->
       </el-header>
 
       <div class="search-component">
@@ -415,6 +417,9 @@ export default {
           this.invoiceList = data;
         });
     },
+
+    // 下载被选中发票的文件
+    downloadInvoiceFile() {},
   },
 };
 </script>

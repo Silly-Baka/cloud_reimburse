@@ -53,6 +53,16 @@ public class UserDTO {
      */
     private String token;
 
+    /**
+     * 角色名称
+     */
+    private String roleName;
+
+    /**
+     * 账号状态
+     */
+    private Boolean state;
+
     public Long getId() {
         return id;
     }
@@ -123,5 +133,21 @@ public class UserDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

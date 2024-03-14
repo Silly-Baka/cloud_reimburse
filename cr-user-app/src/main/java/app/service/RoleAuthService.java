@@ -1,6 +1,10 @@
 package app.service;
 
-import org.springframework.stereotype.Service;
+
+
+import app.user.entity.Role;
+
+import java.util.List;
 
 /**
  * Description：角色权限模块的service层
@@ -25,4 +29,7 @@ public interface RoleAuthService {
      */
     Boolean addRoleAuth(Long roleId, Long authId);
 
+    List<Role> getRoleList();
+
+    Role getRoleByUserId(Long userId);
 }

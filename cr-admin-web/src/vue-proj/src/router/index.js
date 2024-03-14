@@ -40,6 +40,10 @@ const routes = [
         path: "/user/info",
         component: () => import("../views/user/UserInfo.vue"),
       },
+      {
+        path: "/user/control",
+        component: () => import("../views/user/UserContol.vue"),
+      },
     ],
   },
   {

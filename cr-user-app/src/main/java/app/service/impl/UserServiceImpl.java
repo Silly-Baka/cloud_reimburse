@@ -1,19 +1,30 @@
 package app.service.impl;
 
+import app.event.dto.TodoEventResultDTO;
+import app.event.entity.TodoEvent;
+import app.service.RoleAuthService;
+import app.service.UserRoleRelService;
+import app.user.dto.UpdateUserRoleReqDTO;
 import app.user.dto.UserDTO;
+import app.user.dto.UserQryDTO;
+import app.user.entity.Role;
 import app.user.entity.User;
 import app.mapper.UserMapper;
 import app.service.UserService;
+import app.user.entity.UserRoleRel;
 import app.utils.IdGenerator;
 import app.utils.PwdUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RoleAuthService roleAuthService;
+    @Resource
+    private UserRoleRelService userRoleRelService;
 
     @Override
     public Boolean register(User user) {
@@ -50,6 +65,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq("username", username)
                 .one();
         if(user == null) {
+            return null;
+        }
+        // 账号被禁用
+        if((Integer.valueOf(0).equals(user.getState()))) {
             return null;
         }
         String realPassword = user.getPassword();
@@ -110,5 +129,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = this.getById(userId);
 
         return BeanUtil.copyProperties(user, UserDTO.class);
+    }
+
+    @Override
+    public Page<UserDTO> getUserListSelective(UserQryDTO qryDTO) {
+
+        Page<User> page = new Page<>(qryDTO.getPageNum(), qryDTO.getPageSize());
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if(StrUtil.isNotBlank(qryDTO.getRealName())) {
+            queryWrapper.like("real_name", qryDTO.getRealName());
+        }
+        if(StrUtil.isNotBlank(qryDTO.getDeptName())) {
+            queryWrapper.like("dept_name", qryDTO.getDeptName());
+        }
+        if(StrUtil.isNotBlank(qryDTO.getPhone())) {
+            queryWrapper.like("phone", qryDTO.getPhone());
+        }
+
+        Page<User> userPage = this.page(page, queryWrapper);
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for (User user : userPage.getRecords()) {
+            UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
+            // 获取该用户的角色
+            Role role = roleAuthService.getRoleByUserId(user.getId());
+            if(role == null) {
+                userDTO.setRoleName("暂无角色");
+            } else {
+                userDTO.setRoleName(role.getRoleName());
+            }
+            userDTOList.add(userDTO);
+        }
+        Page<UserDTO> result = new Page<>();
+        BeanUtil.copyProperties(userPage, result);
+        result.setRecords(userDTOList);
+
+        return result;
+    }
+
+    @Override
+    public Boolean updateUserRole(UpdateUserRoleReqDTO reqDTO) {
+        boolean result = userRoleRelService.update()
+                .eq("user_id", reqDTO.getUserId())
+                .set("role_id", reqDTO.getRoleId())
+                .update();
+
+        // 该角色暂无角色，新增记录
+        if(!result) {
+            Long uniqueId = IdGenerator.getUniqueId(UserRoleRel.class);
+            UserRoleRel userRoleRel = new UserRoleRel();
+            userRoleRel.setId(uniqueId);
+            userRoleRel.setUserId(reqDTO.getUserId());
+            userRoleRel.setRoleId(reqDTO.getRoleId());
+
+            userRoleRelService.save(userRoleRel);
+        }
+        return true;
     }
 }

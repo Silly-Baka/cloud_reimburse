@@ -4,14 +4,14 @@
     <div class="nav-links">
       <el-menu class="el-menu-vertical">
         <!-- 人员管理 -->
-        <el-submenu index="personnel">
+        <el-menu-item index="personnel" @click="goUserControl">
           <template slot="title">
             <i class="el-icon-user"></i>
             <span>人员管理</span>
           </template>
-          <el-menu-item index="addPerson"> 添加人员 </el-menu-item>
-          <el-menu-item index="viewPerson">查看人员</el-menu-item>
-        </el-submenu>
+          <!-- <el-menu-item index="addPerson"> 添加人员 </el-menu-item>
+          <el-menu-item index="viewPerson">查看人员</el-menu-item> -->
+        </el-menu-item>
 
         <!-- 发票管理 -->
         <el-menu-item index="invoices" @click="goInvoiceFloder">
@@ -36,10 +36,10 @@
             <el-menu-item index="dailyReimburse" @click="goApplyDaily"
               >日常费用报销</el-menu-item
             >
-            <el-menu-item index="travelReimburse">差旅费报销</el-menu-item>
+            <!-- <el-menu-item index="travelReimburse">差旅费报销</el-menu-item>
             <el-menu-item index="businessReceptionReimburse"
               >业务招待费用报销</el-menu-item
-            >
+            > -->
           </el-submenu>
           <el-menu-item index="myReimburse" @click="goMyReimburse">
             我的报销
@@ -92,6 +92,9 @@ export default {
     },
     goAccountingCenter() {
       this.$pushRoute(this.$router, "/finance/accounting/center");
+    },
+    goUserControl() {
+      this.$pushRoute(this.$router, "/user/control");
     },
   },
 };

@@ -69,6 +69,7 @@
             type="warning"
             @click="handleSinglePay(scope.row.id, scope.row.price)"
             plain
+            :class="{ 'display-none': scope.row.payState === '已支付' }"
             >支付</el-button
           >
         </template>
@@ -220,5 +221,9 @@ export default {
 .el-table {
   margin-top: 0px;
   line-height: 0px;
+}
+
+.display-none {
+  display: none;
 }
 </style>

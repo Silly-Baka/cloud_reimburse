@@ -1,6 +1,7 @@
 package app.api;
 
 import app.CommonResult;
+import app.user.dto.UpdateUserRoleReqDTO;
 import app.user.dto.UserDTO;
 import app.user.dto.UserQryDTO;
 import app.user.entity.User;
@@ -17,38 +18,42 @@ import java.util.List;
  *
  * @Author SillyBaka
  **/
-@FeignClient(name = "api-user", url = "${api.url.api-user}", path = "/user")   //TODO 补充configuration、内部写url、端口等信息
+@FeignClient(name = "api-user", url = "${api.url.api-user}")   //TODO 补充configuration、内部写url、端口等信息
 public interface UserApi {
 
     @ApiOperation("注册用户")
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     CommonResult register(@RequestBody User user);
 
     @ApiOperation("登录用户")
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     CommonResult login(@RequestBody User user);
 
     @ApiOperation("修改用户信息")
-    @PostMapping("/update")
+    @PostMapping("/user/update")
     CommonResult<String> update(@RequestBody User user);
 
     @ApiOperation("修改密码")
-    @PostMapping("/updatePwd")
+    @PostMapping("/user/updatePwd")
     CommonResult<String> updatePwd(@RequestParam(name = "username", required = false) String username,
                                    @RequestParam(name = "email", required = false) String email,
                                    @RequestParam("curPwd") String curPwd,
                                    @RequestParam("newPwd") String newPwd);
 
     @ApiOperation("条件查询用户信息")
-    @GetMapping("/getUserSelective")
-    CommonResult<List<UserDTO>> getUserSelective(@RequestBody UserQryDTO qryDTO);
+    @PostMapping("/user/list/selective")
+    CommonResult getUserListSelective(@RequestBody UserQryDTO qryDTO);
 
     @ApiOperation("查找指定部门的指定角色人员")
-    @GetMapping("/getUserByDeptAndRole")
+    @GetMapping("/user/getUserByDeptAndRole")
     CommonResult<List<Long>> getUserByDeptAndRole(@RequestParam("deptName" ) String deptName,
                                                   @RequestParam("roleName") String roleName);
 
     @ApiOperation("根据id查询用户信息")
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     CommonResult<UserDTO> getUserById(@RequestParam("userId") Long userId);
+
+    @ApiOperation("更新用户的角色")
+    @PostMapping("/user/updateRole")
+    CommonResult updateUserRole(@RequestBody UpdateUserRoleReqDTO reqDTO);
 }

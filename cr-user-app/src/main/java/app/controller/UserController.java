@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.common.CommonResult;
+import app.user.dto.UpdateUserRoleReqDTO;
 import app.user.dto.UserDTO;
 import app.user.dto.UserQryDTO;
 import app.user.entity.User;
@@ -10,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Description：用户模块controller
@@ -86,13 +86,19 @@ public class UserController {
     }
 
     @ApiOperation("条件查询用户信息")
-    @GetMapping("/user/getUserSelective")
-    public CommonResult getUserSelective(@RequestBody UserQryDTO qryDTO) {
-        //TODO：补充逻辑
+    @PostMapping("/user/list/selective")
+    public CommonResult getUserListSelective(@RequestBody UserQryDTO qryDTO) {
+        //DONE：补充逻辑
         if(qryDTO == null) {
             return CommonResult.fail(400, "请求参数不能为空");
         }
-        return CommonResult.ok();
+        if(qryDTO.getPageNum() == null || qryDTO.getPageNum() == 0) {
+            qryDTO.setPageNum(1);
+        }
+        if(qryDTO.getPageSize() == null || qryDTO.getPageSize() == 0) {
+            qryDTO.setPageSize(20);
+        }
+        return CommonResult.ok(userService.getUserListSelective(qryDTO));
     }
 
     @ApiOperation("查找指定部门的指定角色人员ID")
@@ -110,10 +116,18 @@ public class UserController {
     @ApiOperation("根据id查询用户信息")
     @GetMapping("/user/{userId}")
     public CommonResult getUserById(@PathVariable("userId") Long userId) {
-
         if(userId == null) {
             return CommonResult.fail(400, "请求参数不能为空");
         }
         return CommonResult.ok(userService.getUserById(userId));
+    }
+
+    @ApiOperation("更新用户的角色")
+    @PostMapping("/user/updateRole")
+    public CommonResult updateUserRole(@RequestBody UpdateUserRoleReqDTO reqDTO) {
+        if(reqDTO == null) {
+            return CommonResult.fail(400, "请求参数不能为空");
+        }
+        return CommonResult.ok(userService.updateUserRole(reqDTO));
     }
 }

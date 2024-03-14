@@ -57,6 +57,11 @@ public class User {
      */
     private Long headerId;
 
+    /**
+     * 账号状态
+     */
+    private Boolean state;
+
     public Long getId() {
         return id;
     }
@@ -127,5 +132,13 @@ public class User {
 
     public void setHeaderId(Long headerId) {
         this.headerId = headerId;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }
